@@ -559,7 +559,7 @@ describe("PATCH Modifier une user story", function() {
 
 
     describe("PATCH Modifier desrcription et difficulte d'une user story", function() {
-        var localurl = url + "userStories/my_prefered_user_story4/projects/Bepp/user/PO";
+        var localurl = url + "userStories/my_prefered_user_story4/projects/Bepp/user/Product%20Owner";
         var authurl = url + "users/token";
 
         it("Bad request (missing Argument) : returns status 422", function(done) {
@@ -619,7 +619,7 @@ describe("PATCH Modifier une user story", function() {
                 var bodyJson = JSON.parse(body);
                 request.patch({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     url + "userStories/my_prefered_US/projects/Bepp/user/PO",
+                    url:     url + "userStories/my_prefered_US/projects/Bepp/user/Product%20Owner",
                     form:    { priority: "1"}
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(409);
@@ -629,7 +629,7 @@ describe("PATCH Modifier une user story", function() {
             });
         });
 
-        localurl = url + "userStories/my_prefered_user_story4/projects/Bepp/user/PO";
+        localurl = url + "userStories/my_prefered_user_story4/projects/Bepp/user/Product Owner";
         it("Good request : returns status 200", function(done) {
             request.post({
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
@@ -639,7 +639,7 @@ describe("PATCH Modifier une user story", function() {
                 var bodyJson = JSON.parse(body);
                 request.patch({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     url + "userStories/my_prefered_user_story4/projects/Bepp/user/PO",
+                    url:     url + "userStories/my_prefered_user_story4/projects/Bepp/user/Product%20Owner",
                     form:    { priority: "1"}
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(200);
