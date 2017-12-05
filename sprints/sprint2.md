@@ -27,15 +27,15 @@
 | T10_P | Créer l'interface Front-end d'un sprint contenant : <br><ul><li>Une liste des US associées au sprint</li></ul>| Amine | 2 | 1 | :white_check_mark:
 | T11_P | Créer l'interface Front-end de modification/suppression d'une US du backlog d'un projet| Amine | 2 | 1 | :white_check_mark:
 | T12_P | Créer l'interface Front-end de saisie et modification de la priorité d'une US du projet| Amine | 2 | 1 | :white_check_mark:
-| T13_MB | Définir les requêtes (MongoDB) dont on aura besoin pour chaque service:<br><ul><li>Compléter le service REST qui insère une US dans la BD(création d'une US -US5)</li><li>Compléter le service REST qui modifie une US dans la BD à partir d'un utilisateur DEV(modification d'une US -US6)</li><li>Compléter le service REST qui supprime une US dans la BD(suppression d'une US -US6)</li><li>Compléter le service REST qui insère un sprint dans la BD(création d'un sprint -US7)</li><li>Compléter le service REST qui recupere la liste des US d'un projet(lister les US d'un projet -US18)</li><li>Compléter le service REST qui modifie une US dans la BD à partir d'un utilisateur PO(modification d'une US -US23)</li></ul>|  | 2 | 1 | :x:
+| T13_MB | Définir les requêtes (MongoDB) dont on aura besoin pour chaque service:<br><ul><li>Compléter le service REST qui insère une US dans la BD(création d'une US -US5)</li><li>Compléter le service REST qui modifie une US dans la BD à partir d'un utilisateur DEV(modification d'une US -US6)</li><li>Compléter le service REST qui supprime une US dans la BD(suppression d'une US -US6)</li><li>Compléter le service REST qui insère un sprint dans la BD(création d'un sprint -US7)</li><li>Compléter le service REST qui recupere la liste des US d'un projet(lister les US d'un projet -US18)</li><li>Compléter le service REST qui modifie une US dans la BD à partir d'un utilisateur PO(modification d'une US -US23)</li></ul>| Mathieu | 4 | 1 | :x:
 | T14_PM | Définir les liaisons entre les placeholders et les services<br><ul><li></li><li></li></ul>|  | 2 | 1 | :x:
-| T15_M | Service REST PUT  : Créer une US |  | 2 | 1 | :x:
-| T16_M | Service REST PATCH  : Modifier une US |  | 2 | 1 | :x:
-| T17_M | Service REST DELETE  : Supprimer une US |  | 2 | 1 | :x:
-| T18_M | Service REST PATCH  : Mettre à jour le nombre de sprints |  | 2 | 1 | :x:
-| T19_M | Service REST PATCH  : Associer une US à un sprint |  | 2 | 1 | :x:
-| T20_M | Service REST PATCH  : Modifier la priorité d'une US (Vérification Authentification PO) |  | 2 | 1 | :x:
-| T21_DOC | La documentation des services "SWAGGER"|  | 2 | 1 | :x:
+| T15_M | Service REST PUT  : Créer une US | Mathieu | 3 | 1 | :white_check_mark:
+| T16_M | Service REST PATCH  : Modifier une US | Mathieu | 3 | 1 | :white_check_mark:
+| T17_M | Service REST DELETE  : Supprimer une US | Mathieu | 3 | 1 | :white_check_mark:
+| T18_M | Service REST PATCH  : Mettre à jour le nombre de sprints | Mathieu |  | 1 | :x:
+| T19_M | Service REST PATCH  : Associer une US à un sprint | Mathieu |  | 1 | :x:
+| T20_M | Service REST PATCH  : Modifier la priorité d'une US (Vérification Authentification PO) | Mathieu | 2 | 1 | :x:
+| T21_DOC | La documentation des services "SWAGGER"| Mathieu | 3 | 1 | :white_check_mark:
 | T22_TEST | Redaction des tests : E2E(Protractor)| Amine | 2 | 1 | :white_check_mark:
 | T23_TEST | Effectuer les tests : E2E(Protractor)| Amine | 2 | 1 | :x:
 | T24_PM | Faire le lien entre l'interface de la tâche T8_P et les services de l'api| Adrien | 4 | 1 | :x:
