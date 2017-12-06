@@ -19,12 +19,6 @@ RUN cd /home/node/app/web-app && npm run build:dev
 
 COPY web-app/. /home/node/app/web-app
 
-# buidl:prod for production
-
-
-
-#CMD ["npm", "run", "build:dev"]
-
 #Run Express
 
 RUN mkdir -p /home/node/app/api
@@ -38,14 +32,6 @@ COPY api/package-lock.json /home/node/app/api
 RUN npm install -save
 
 COPY api /home/node/app/api
-
-RUN ls
-
-RUN ls ..
-
-RUN ls ../web-app
-
-RUN ls ../web-app/dist
 
 EXPOSE 8080
 
