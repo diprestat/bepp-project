@@ -10,6 +10,8 @@ import {NewProjectComponent} from "./components/dashboard/main-container/new-pro
 import {ProjectContainerComponent} from "./components/dashboard/main-container/project-container/project-container.component";
 import {AuthGuard} from "./guards/auth/auth.guard";
 import {UnAuthGuard} from "./guards/un-auth/un-auth.guard";
+import {SprintsListComponent} from "./components/dashboard/main-container/project-container/sprints-container/sprints-list/sprints-list.component";
+import {SprintComponent} from "./components/dashboard/main-container/project-container/sprints-container/sprints-list/sprint/sprint.component";
 
 const routes: Routes = [
     {
@@ -30,7 +32,13 @@ const routes: Routes = [
                     { path:'', redirectTo: 'overview', pathMatch: 'full' },
                     { path: 'overview', component: OverviewContainerComponent },
                     { path: 'backlog', component: BacklogContainerComponent },
-                    { path: 'sprints', component: SprintsContainerComponent }
+                    {
+                        path: 'sprints',
+                        component: SprintsContainerComponent,
+                        children: [
+                            { path:'', component: SprintsListComponent },
+                            { path:'test', component: SprintComponent }
+                        ]}
                 ]
             },
             { path: 'newproject', component: NewProjectComponent }
