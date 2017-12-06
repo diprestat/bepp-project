@@ -9,7 +9,7 @@ services:
   express:
     build: .
     volumes:
-      - .:/home/node/app
+      - ./api:/home/node/app/api
       - /home/node/app/api/node_modules
       - /home/node/app/web-app/node_modules
     environment:
