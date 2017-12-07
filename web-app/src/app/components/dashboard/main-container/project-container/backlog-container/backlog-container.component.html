@@ -28,13 +28,13 @@
                         </td>
                         <td align="right">
                             <div [hidden]="showModifyUS">
-                                <button type="button" class="btn btn-default"  (click)="toggleModifyUS(us.description)">
+                                <button type="button" class="btn-xs btn-default"  (click)="toggleModifyUS(us.description)">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                     <span> Modifier</span>
                                 </button>
 
                                 <button type="button"
-                                        class="btn btn-default"
+                                        class="btn-xs btn-default"
                                         (click)="deleteUS(us.description)"
                                         *ngIf="!userIsPO">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -46,7 +46,7 @@
                 </ng-container>
 
                 <tr *ngIf="showModifyUS">
-                    <td colspan="6">
+                    <td colspan="12">
                         <form novalidate
                               [formGroup]="modifyUsForm">
                             <div class="row">
@@ -86,12 +86,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-default" (click)="submitModifyUSForm()">
+                                    <button type="button" class="btn-xs btn-default" (click)="submitModifyUSForm()">
                                         <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                                         <span> Valider</span>
                                     </button>
                                     <button type="button"
-                                            class="btn btn-default"
+                                            class="btn-xs btn-default"
                                             (click)="cancelModifyUS()">Annuler</button>
                                 </div>
                             </div>
@@ -194,6 +194,12 @@
                 <button class="btn-add btn btn-success pull-right" name="addus" (click)="submitAddUSForm()">
                     <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                     <span > Ajouter</span>
+                </button>
+            </div>
+            <div class="panel-body" [hidden]="!showAddUS">
+                <button class="btn-add btn btn-default pull-right" name="cancel_add" (click)="toggleAddUS()">
+                    <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                    <span > Annuler</span>
                 </button>
             </div>
         </div>

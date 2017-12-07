@@ -9,18 +9,20 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class SprintComponent implements OnInit {
 
-  public showSelectUS: boolean;
+  private showSelectUS: boolean;
   private showAddTask: boolean;
+  private showModifyTask: boolean;
   private addTaskForm: FormGroup;
 
   constructor() {
       this.showSelectUS = false;
       this.showAddTask = false;
+      this.showModifyTask = false;
 
       this.addTaskForm = new FormGroup ({
           task_desc: new FormControl(''),
           task_difficulty: new FormControl(''),
-          task_affect: new FormControl('')
+          related_tasks: new FormControl('')
       });
   }
 
@@ -42,5 +44,14 @@ export class SprintComponent implements OnInit {
 
   public submitAddTaskForm() {
         this.toggleAddTask();
-    }
+  }
+
+  public toggleModifyTask() {
+        this.showModifyTask = !this.showModifyTask;
+  }
+
+  public ModifyTask() {
+        this.toggleModifyTask();
+  }
+
 }

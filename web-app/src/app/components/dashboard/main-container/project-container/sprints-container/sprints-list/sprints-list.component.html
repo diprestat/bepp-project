@@ -11,30 +11,42 @@
     <div class="panel panel-default">
         <table class="table">
             <thead>
-            <tr>
-                <th>Sprints</th>
-                <th>Date de début</th>
-                <th>Date de fin</th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>Sprints</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>12/12/17</td>
-                <td>20/12/18</td>
-                <td><button class="btn-xs btn-primary" [routerLink]="['test']"><span class="glyphicon glyphicon-open"></span>
-                    Aller à
-                </button></td>
-                <td><button class="btn-xs btn-info"><span class="glyphicon glyphicon-edit"></span>
-                    Modifier
-                </button></td>
-                <td><button class="btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span>
-                    Supprimer
-                </button></td>
-            </tr>
+                <tr [hidden]="showModifySprint">
+                    <td>1</td>
+                    <td>12/12/17</td>
+                    <td>20/12/18</td>
+                    <td><button class="btn-xs btn-primary" [routerLink]="['test']"><span class="glyphicon glyphicon-open"></span>
+                        Aller à
+                    </button></td>
+                    <td><button class="btn-xs btn-info" (click)="toggleModifySprint()"><span class="glyphicon glyphicon-edit"></span>
+                        Modifier
+                    </button></td>
+                    <td><button class="btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span>
+                        Supprimer
+                    </button></td>
+                </tr>
+                <tr [hidden]="!showModifySprint">
+                    <td></td>
+                    <td><input type="date" class="form-control"/></td>
+                    <td><input type="date" class="form-control"/></td>
+                    <td></td>
+                    <td><button class="btn btn-success" (click)="ModifySprint()"><span class="glyphicon glyphicon-check"></span>
+                        Valider
+                    </button></td>
+                    <td><button class="btn btn-danger" (click)="cancelModifySprint()"><span class="glyphicon glyphicon-ban-circle"></span>
+                        Annuler
+                    </button></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -99,6 +111,12 @@
             <button class="btn-add btn btn-success pull-right" name="addsprint" (click)="submitAddSprintForm()">
                 <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                 <span > Ajouter</span>
+            </button>
+        </div>
+        <div class="panel-body" [hidden]="!showAddSprint">
+            <button class="btn-add btn btn-default pull-right" name="cancel_add" (click)="toggleAddSprint()">
+                <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                <span > Annuler</span>
             </button>
         </div>
     </div>

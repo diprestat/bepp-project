@@ -41,30 +41,13 @@
                 </tr>
                 <tr>
                     <td>
-                        <div [hidden]='showModifyUS'>En tant que *** Je souhaite *** afin de ***</div>
-
-                        <div [hidden]='!showModifyUS'>
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Userstory" size="50"/>
-                            </div>
-                        </div>
-
+                        <div>En tant que *** Je souhaite *** afin de ***</div>
                     </td>
                     <td>
-                        <div [hidden]='showModifyUS'>3</div>
-                        <div [hidden]='!showModifyUS'>
-                            <div class="input-group">
-                                <input type="number" min="0" class="form-control" placeholder="Difficulté" size="4"/>
-                            </div>
-                        </div>
+                        <div>3</div>
                     </td>
                     <td>
-                        <div [hidden]='showModifyUS'>3</div>
-                        <div [hidden]='!showModifyUS'>
-                            <div class="input-group">
-                                <input type="number" min="0" class="form-control" placeholder="Priorité" size="4"/>
-                            </div>
-                        </div>
+                        <div>3</div>
                     </td>
                     <td align="center">
                         <input class="done_checkbox" type="checkbox">
@@ -72,30 +55,14 @@
                 </tr>
                 <tr>
                     <td>
-                        <div [hidden]='showModifyUS'>En tant que *** Je souhaite *** afin de ***</div>
-
-                        <div [hidden]='!showModifyUS'>
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Userstory" size="50"/>
-                            </div>
-                        </div>
+                        <div>En tant que *** Je souhaite *** afin de ***</div>
 
                     </td>
                     <td>
-                        <div [hidden]='showModifyUS'>3</div>
-                        <div [hidden]='!showModifyUS'>
-                            <div class="input-group">
-                                <input type="number" min="0" class="form-control" placeholder="Difficulté" size="4"/>
-                            </div>
-                        </div>
+                        <div>3</div>
                     </td>
                     <td>
-                        <div [hidden]='showModifyUS'>3</div>
-                        <div [hidden]='!showModifyUS'>
-                            <div class="input-group">
-                                <input type="number" min="0" class="form-control" placeholder="Priorité" size="4"/>
-                            </div>
-                        </div>
+                        <div>3</div>
                     </td>
                     <td align="center">
                         <input class="done_checkbox" type="checkbox">
@@ -118,7 +85,12 @@
                 <span > Ajouter</span>
             </button>
         </div>
-
+        <div class="panel-body" [hidden]="!showSelectUS">
+            <button class="btn-add btn btn-default pull-right" name="cancel_add" (click)="toggleSelectUS()">
+                <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                <span > Annuler</span>
+            </button>
+        </div>
     </div>
 </div>
 
@@ -133,15 +105,56 @@
                     <th>ID Tâche</th>
                     <th>Intitulé</th>
                     <th>Tâches reliées</th>
-                    <th>Difficulté</th>
+                    <th>Durée estimée (jh)</th>
                     <th>État</th>
+                    <th></th>
+                    <th></th>
                 </tr>
-                <tr>
+                <tr [hidden]="showModifyTask">
                     <td>1</td>
                     <td>Visualiser les pages</td>
                     <td>1 - 2</td>
-                    <td>1</td>
-                    <td>XXX</td>
+                    <td>2</td>
+                    <td>
+                        <!--<button class="btn-xs btn-danger" disabled>To do</button>-->
+                        <!--<button class="btn-xs btn-warning" disabled>In progress</button>-->
+                        <button class="btn-xs btn-success" disabled>Done</button>
+                    </td>
+                    <td><button class="btn-xs btn-info" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-edit"></span>
+                        Modifier
+                    </button></td>
+                    <td><button class="btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span>
+                        Supprimer
+                    </button></td>
+                </tr>
+                <tr [hidden]="!showModifyTask">
+                    <td></td>
+                    <td>
+                        <input type="text" class="form-control"/>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control"/>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control"/>
+                    </td>
+                    <td>
+                        <select class="form-control">
+                            <option>To do</option>
+                            <option>In Progress</option>
+                            <option>Done</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" (click)="ModifyTask()"><span class="glyphicon glyphicon-edit"></span>
+                        Valider
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-ban-circle"></span>
+                        Annuler
+                        </button>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -224,6 +237,12 @@
             <button class="btn-add btn btn-success pull-right" name="addtask" (click)="submitAddTaskForm()">
                 <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                 <span>Ajouter</span>
+            </button>
+        </div>
+        <div class="panel-body" [hidden]="!showAddTask">
+            <button class="btn-add btn btn-default pull-right" name="addtask" (click)="toggleAddTask()">
+                <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                <span>Annuler</span>
             </button>
         </div>
     </div>
