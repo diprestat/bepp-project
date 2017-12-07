@@ -721,4 +721,107 @@ describe("DELETE Supprimer une user story", function() {
         });
     });
 
+
+
+
+
+
+describe("POST Créer un sprint", function() {
+        var localurl = url + "sprints/projects/Bepp";
+        var authurl = url + "users/token";
+
+        it("Bad request (missing Argument) : returns status 422", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.put({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { duree: "2"}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(422);
+                    done();
+                });
+
+            });
+        });
+
+        it("Bad request (missing Token) : returns status 401", function(done) {
+                request.put({
+                    url:     localurl,
+                    form:    { name: "Bepp"}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(422);
+                    done();
+                });
+        });
+
+        it("Bad request (bad Token) : returns status 401", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "abounad", password: "ab33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.put({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { duree: "2", date_debut: "15/12/2017"}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(401);
+                    done();
+                });
+
+            });
+        });
+
+        it("Good request : returns status 200", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.put({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { duree: "2", date_debut: "15/12/2017"}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+
+            });
+        });
+
+        it("Good request : returns status 200", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.put({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { duree: "3", date_debut: "29/12/2017"}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+
+            });
+        });
+
+    });
+
+
+
+
+
+
+
 });

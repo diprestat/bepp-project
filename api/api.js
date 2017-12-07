@@ -10,6 +10,7 @@ var fs = require('fs');
 const users = require('./users');
 const projects = require('./projects');
 const userStories = require('./userStories');
+const sprints = require('./sprints');
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use(function (req, res, next) {
 app.use('/api/users', users);
 app.use('/api/projects', projects);
 app.use('/api/userStories', userStories);
+app.use('/api/sprints', sprints);
 
 app.set('superSecret', "12345"); // secret variable
 
