@@ -1,0 +1,125 @@
+<br>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <h1 align="center">Liste des sprints</h1>
+    </div>
+</div>
+<br>
+
+<div>
+    <div class="panel panel-default">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sprints</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr [hidden]="showModifySprint">
+                    <td>1</td>
+                    <td>12/12/17</td>
+                    <td>20/12/18</td>
+                    <td><button class="btn-xs btn-primary" [routerLink]="['test']"><span class="glyphicon glyphicon-open"></span>
+                        Aller à
+                    </button></td>
+                    <td><button class="btn-xs btn-info" (click)="toggleModifySprint()"><span class="glyphicon glyphicon-edit"></span>
+                        Modifier
+                    </button></td>
+                    <td><button class="btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span>
+                        Supprimer
+                    </button></td>
+                </tr>
+                <tr [hidden]="!showModifySprint">
+                    <td></td>
+                    <td><input type="date" class="form-control"/></td>
+                    <td><input type="date" class="form-control"/></td>
+                    <td></td>
+                    <td><button class="btn btn-success" (click)="ModifySprint()"><span class="glyphicon glyphicon-check"></span>
+                        Valider
+                    </button></td>
+                    <td><button class="btn btn-danger" (click)="cancelModifySprint()"><span class="glyphicon glyphicon-ban-circle"></span>
+                        Annuler
+                    </button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-10">
+        <div [hidden]="!showAddSprint" class="panel panel-default">
+            <h4 align="center">Ajouter un sprint</h4>
+            <form novalidate [formGroup]="addSprintForm">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <div class="form-group has-feedback">
+                                <label>Date de début</label>
+                                <input class="form-control"
+                                       type="date"
+                                       name="start_date"
+                                       id="start_date"
+                                       [formControlName]="'sprint_start'"/>
+
+                                <!--<span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"-->
+                                      <!--[ngClass]="{ 'show': start_date.invalid && (start_date.dirty || start_date.touched || addSprintSubmitted) }"></span>-->
+                                <!--<div class="col-12 text-danger"-->
+                                     <!--*ngIf="start_date.invalid && (start_date.dirty || start_date.touched || addSprintSubmitted)">-->
+                                    <!--<span class="validation-message" *ngIf="start_date.errors.required">La date de début doit être saisie.</span>-->
+                                <!--</div>-->
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group has-feedback">
+                                <label>Date de fin</label>
+                                <input type="date"
+                                       id="end_date"
+                                       name="end_date"
+                                       class="form-control"
+                                       [formControlName]="'sprint_end'"/>
+
+                                <!--<span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"-->
+                                      <!--[ngClass]="{ 'show': sprint_end.invalid && (sprint_end.dirty || sprint_end.touched || addSprintSubmitted) }"></span>-->
+                                <!--<div class="col-12 text-danger"-->
+                                     <!--*ngIf="difficulty.invalid && (sprint_end.dirty || sprint_end.touched || addSprintSubmitted)">-->
+                                    <!--<span class="validation-message" *ngIf="sprint_end.errors.required">La date de fin doit être saisie.</span>-->
+                                <!--</div>-->
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="panel-body" [hidden]="showAddSprint">
+            <button class="btn-add btn btn-primary pull-right" name="newsprint" (click)="toggleAddSprint()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <span >Ajouter Sprint</span>
+            </button>
+        </div>
+        <div class="panel-body" [hidden]="!showAddSprint">
+            <button class="btn-add btn btn-success pull-right" name="addsprint" (click)="submitAddSprintForm()">
+                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                <span > Ajouter</span>
+            </button>
+        </div>
+        <div class="panel-body" [hidden]="!showAddSprint">
+            <button class="btn-add btn btn-default pull-right" name="cancel_add" (click)="toggleAddSprint()">
+                <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                <span > Annuler</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+

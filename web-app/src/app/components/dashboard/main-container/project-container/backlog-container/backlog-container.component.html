@@ -12,7 +12,7 @@
                     <th>UserStory</th>
                     <th>Difficulté</th>
                     <th>Priorité</th>
-                    <th>Fait</th>
+                    <th>Faite</th>
                     <th></th>
                 </tr>
             </thead>
@@ -28,13 +28,17 @@
                         </td>
                         <td align="right">
                             <div [hidden]="showModifyUS">
-                                <button type="button" class="btn btn-default"  (click)="toggleModifyUS(us.description)">
+                                <button type="button"
+                                        class="btn-xs btn-default"
+                                        name="modifyus"
+                                        (click)="toggleModifyUS(us.description)">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                     <span> Modifier</span>
                                 </button>
 
                                 <button type="button"
-                                        class="btn btn-default"
+                                        class="btn-xs btn-default"
+                                        name="deleteus"
                                         (click)="deleteUS(us.description)"
                                         *ngIf="!userIsPO">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -46,7 +50,7 @@
                 </ng-container>
 
                 <tr *ngIf="showModifyUS">
-                    <td colspan="6">
+                    <td colspan="12">
                         <form novalidate
                               [formGroup]="modifyUsForm">
                             <div class="row">
@@ -57,6 +61,7 @@
                                                class="form-control"
                                                placeholder="Userstory"
                                                size="50"
+                                               name="modifydescription"
                                                [formControlName]="'us'"/>
                                     </div>
                                 </div>
@@ -67,6 +72,7 @@
                                                min="0"
                                                class="form-control"
                                                placeholder="Difficulté"
+                                               name="modifydifficulty"
                                                size="4"
                                                [formControlName]="'difficulty'"/>
                                     </div>
@@ -81,17 +87,18 @@
                                         <input type="number"
                                                min="0" class="form-control"
                                                placeholder="Priorité"
+                                               name="modifypriority"
                                                size="4"
                                                [formControlName]="'priority'"/>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-default" (click)="submitModifyUSForm()">
+                                    <button type="button" name="validatemodifs" class="btn-xs btn-default" (click)="submitModifyUSForm()">
                                         <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                                         <span> Valider</span>
                                     </button>
                                     <button type="button"
-                                            class="btn btn-default"
+                                            class="btn-xs btn-default"
                                             (click)="cancelModifyUS()">Annuler</button>
                                 </div>
                             </div>
@@ -141,6 +148,7 @@
                                         <label for="priority">Priorité</label>
                                         <input type="number"
                                                id="priority"
+                                               name="priority"
                                                min="0"
                                                size="5"
                                                name="priority" class="form-control"
@@ -194,6 +202,12 @@
                 <button class="btn-add btn btn-success pull-right" name="addus" (click)="submitAddUSForm()">
                     <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                     <span > Ajouter</span>
+                </button>
+            </div>
+            <div class="panel-body" [hidden]="!showAddUS">
+                <button class="btn-add btn btn-default pull-right" name="cancel_add" (click)="toggleAddUS()">
+                    <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                    <span > Annuler</span>
                 </button>
             </div>
         </div>

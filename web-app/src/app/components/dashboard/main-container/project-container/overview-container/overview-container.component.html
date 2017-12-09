@@ -109,6 +109,12 @@
                     <span > Ajouter</span>
                 </button>
             </div>
+            <div class="panel-body" [hidden]="!showAddMember">
+                <button class="btn-add btn btn-default pull-right" name="cancel_add" (click)="toggleAddMember()">
+                    <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                    <span > Annuler</span>
+                </button>
+            </div>
         </div>
 
     </div>
