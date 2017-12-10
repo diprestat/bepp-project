@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require("body-parser");
 var monk = require('monk'); //we use monk to talk to MongoDB
-var db = monk('mongo:27017/nodetest1'); //our database is nodetest1
+var db = monk(process.env.MONGOLAB_URI || 'mongo:27017/nodetest1'); //our database is nodetest1
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var http = require('http');
 var path = require('path');
