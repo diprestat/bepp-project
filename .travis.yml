@@ -34,9 +34,11 @@ script:
 - npm install
 - npm run e2e
 after_success:
+- if [ "$TRAVIS_BRANCH" == "master" || "$TRAVIS_BRANCH" == "Dev-Sprint3" ]; then
 - docker tag beppproject_express registry.heroku.com/bepp-project/web
 - docker login --username=_ --password=0bb9660b-60ca-4694-9c77-cb7ec07c1d55 registry.heroku.com
 - docker push registry.heroku.com/bepp-project/web
+- fi
 after_script:
 - docker-compose kill
 before_deploy:
