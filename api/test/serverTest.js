@@ -14,7 +14,7 @@ describe("Scrum Management API", function() {
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
                 url:     localurl,
                 form:    { login: "dprestat", password: "dp33", surname: "Dimitri"}
-            }, function(error, response, body) {
+            }, function(error, response) {
                 expect(response.statusCode).to.equal(422);
                 done();
             });
@@ -25,7 +25,7 @@ describe("Scrum Management API", function() {
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
                 url:     localurl,
                 form:    { login: "dprestat", password: "dp33", name: "Prestat", surname: "Dimitri"}
-            }, function(error, response, body) {
+            }, function(error, response) {
                 expect(response.statusCode).to.equal(200);
                 done();
             });
@@ -36,7 +36,7 @@ describe("Scrum Management API", function() {
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
                 url:     localurl,
                 form:    { login: "abounader", password: "ab33", name: "Bounader", surname: "Adrien"}
-            }, function(error, response, body) {
+            }, function(error, response) {
                 expect(response.statusCode).to.equal(200);
                 done();
             });
@@ -47,7 +47,7 @@ describe("Scrum Management API", function() {
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
                 url:     localurl,
                 form:    { login: "dprestat", password: "dp33", name: "Prestat", surname: "Dimitri"}
-            }, function(error, response, body) {
+            }, function(error, response) {
                 expect(response.statusCode).to.equal(409);
                 done();
             });
@@ -63,7 +63,7 @@ describe("Scrum Management API", function() {
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
                 url:     localurl,
                 form:    {password: "dp33"}
-            }, function(error, response, body) {
+            }, function(error, response) {
                 expect(response.statusCode).to.equal(422);
                 done();
             });
@@ -74,7 +74,7 @@ describe("Scrum Management API", function() {
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
                 url:     localurl,
                 form:    { login: "dpresta", password: "dp33"}
-            }, function(error, response, body) {
+            }, function(error, response) {
                 expect(response.statusCode).to.equal(400);
                 done();
             });
@@ -85,7 +85,7 @@ describe("Scrum Management API", function() {
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
                 url:     localurl,
                 form:    { login: "dprestat", password: "dp33"}
-            }, function(error, response, body) {
+            }, function(error, response) {
                 expect(response.statusCode).to.equal(200);
                 done();
             });
@@ -127,7 +127,7 @@ describe("Scrum Management API", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { name: "Bepp"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
                 });
@@ -139,7 +139,7 @@ describe("Scrum Management API", function() {
                 request.post({
                     url:     localurl,
                     form:    { name: "Bepp"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
                 });
@@ -157,7 +157,7 @@ describe("Scrum Management API", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { name: "Bepp", description: "Notre projet"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
                 });
@@ -177,7 +177,7 @@ describe("Scrum Management API", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { name: "Bepp", description: "Notre projet"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
@@ -198,7 +198,7 @@ describe("Scrum Management API", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { name: "Bepp", description: "Notre projet"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(409);
                     done();
                 });
@@ -214,8 +214,8 @@ describe("Scrum Management API", function() {
         it("Good request : returns status 200", function(done) {
             request.get({
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                url:     localurl,
-            }, function(error, response, body) {
+                url:     localurl
+            }, function(error, response) {
                 expect(response.statusCode).to.equal(200);
                 done();
             });
@@ -224,7 +224,7 @@ describe("Scrum Management API", function() {
         it("fetched the associated user", function(done) {
             request.get({
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                url:     localurl,
+                url:     localurl
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
                 var login = bodyJson.login;
@@ -247,8 +247,8 @@ describe("Scrum Management API", function() {
 
         it("Bad request (missing Token) : returns status 401", function(done) {
             request.get({
-                url:     localurl,
-            }, function(error, response, body) {
+                url:     localurl
+            }, function(error, response) {
                 expect(response.statusCode).to.equal(401);
                 done();
             });
@@ -264,8 +264,8 @@ describe("Scrum Management API", function() {
                 //done();
                 request.get({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl,
-                }, function(error, response, body) {
+                    url:     localurl
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
                 });
@@ -283,8 +283,8 @@ describe("Scrum Management API", function() {
                 //done();
                 request.get({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl,
-                }, function(error, response, body) {
+                    url:     localurl
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(403);
                     done();
                 });
@@ -301,8 +301,8 @@ describe("Scrum Management API", function() {
                 //done();
                 request.get({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl,
-                }, function(error, response, body) {
+                    url:     localurl
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
@@ -317,8 +317,8 @@ describe("Scrum Management API", function() {
 
         it("Bad request (missing Token) : returns status 401", function(done) {
             request.put({
-                url:     localurl,
-            }, function(error, response, body) {
+                url:     localurl
+            }, function(error, response) {
                 expect(response.statusCode).to.equal(401);
                 done();
             });
@@ -334,8 +334,8 @@ describe("Scrum Management API", function() {
                 //done();
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl,
-                }, function(error, response, body) {
+                    url:     localurl
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
                 });
@@ -353,8 +353,8 @@ describe("Scrum Management API", function() {
                 //done();
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl,
-                }, function(error, response, body) {
+                    url:     localurl
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(403);
                     done();
                 });
@@ -371,8 +371,8 @@ describe("Scrum Management API", function() {
                 //done();
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl,
-                }, function(error, response, body) {
+                    url:     localurl
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
@@ -399,7 +399,7 @@ describe("PUT Créer une user story", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "ma user story préférée"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
                 });
@@ -411,7 +411,7 @@ describe("PUT Créer une user story", function() {
                 request.put({
                     url:     localurl,
                     form:    { name: "Bepp"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
                 });
@@ -428,7 +428,7 @@ describe("PUT Créer une user story", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "ma_user_story_preferee", difficulty: "3"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
                 });
@@ -447,7 +447,7 @@ describe("PUT Créer une user story", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "ma_user_story_preferee", difficulty: "3" }
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
@@ -466,7 +466,7 @@ describe("PUT Créer une user story", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "my_best_user_story", difficulty: "3" }
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
@@ -496,7 +496,7 @@ describe("PATCH Modifier une user story", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "ma_user_story_pref"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
                 });
@@ -508,7 +508,7 @@ describe("PATCH Modifier une user story", function() {
                 request.patch({
                     url:     localurl,
                     form:    { name: "Bepp"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
                 });
@@ -525,7 +525,7 @@ describe("PATCH Modifier une user story", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "ma_user_story_pref", difficulty: "3"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
                 });
@@ -545,7 +545,7 @@ describe("PATCH Modifier une user story", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl2,
                     form:    { description: "ma_user_story_pref3", difficulty: "3" }
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(409);
                     done();
                 });
@@ -563,7 +563,7 @@ describe("PATCH Modifier une user story", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "my_prefered_user_story4", difficulty: "3" }
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
@@ -590,7 +590,7 @@ describe("PATCH Modifier une user story", function() {
                 request.patch({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
                 });
@@ -602,7 +602,7 @@ describe("PATCH Modifier une user story", function() {
             request.patch({
                 url:     localurl,
                 form:    { name: "Bepp"}
-            }, function(error, response, body) {
+            }, function(error, response) {
                 expect(response.statusCode).to.equal(422);
                 done();
             });
@@ -619,7 +619,7 @@ describe("PATCH Modifier une user story", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { priority: "1"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
                 });
@@ -627,7 +627,6 @@ describe("PATCH Modifier une user story", function() {
             });
         });
 
-        var localurl2 = url + "userStories/my_prefered_US/projects/Bepp/user/PO";
         it("Bad request (UserStory not found) : returns status 409", function(done) {
             request.post({
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
@@ -639,7 +638,7 @@ describe("PATCH Modifier une user story", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     url + "userStories/my_prefered_US/projects/Bepp/user/Product%20Owner",
                     form:    { priority: "1"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(409);
                     done();
                 });
@@ -659,7 +658,7 @@ describe("PATCH Modifier une user story", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     url + "userStories/my_prefered_user_story4/projects/Bepp/user/Product%20Owner",
                     form:    { priority: "1"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
@@ -677,7 +676,7 @@ describe("DELETE Supprimer une user story", function() {
                 request.delete({
                     url:     localurl,
                     form:    { name: "Bepp"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
                 });
@@ -693,7 +692,7 @@ describe("DELETE Supprimer une user story", function() {
                 request.delete({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
                 });
@@ -712,7 +711,7 @@ describe("DELETE Supprimer une user story", function() {
                 request.delete({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     url + "userStories/my_prefered_US/projects/Bepp/"
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(409);
                     done();
                 });
@@ -730,7 +729,7 @@ describe("DELETE Supprimer une user story", function() {
                 request.delete({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     url + "userStories/my_prefered_user_story4/projects/Bepp/"
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
@@ -759,7 +758,7 @@ describe("POST Créer un sprint", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { duree: "2"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
                 });
@@ -771,7 +770,7 @@ describe("POST Créer un sprint", function() {
                 request.put({
                     url:     localurl,
                     form:    { name: "Bepp"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
                 });
@@ -788,7 +787,7 @@ describe("POST Créer un sprint", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { duree: "2", date_debut: "15/12/2017"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
                 });
@@ -807,7 +806,7 @@ describe("POST Créer un sprint", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { duree: "2", date_debut: "15/12/2017"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
@@ -826,7 +825,7 @@ describe("POST Créer un sprint", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { duree: "3", date_debut: "29/12/2017"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
@@ -854,7 +853,7 @@ describe("PATCH Associer une UserStory à un sprint", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "my_best_user_story"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
                 });
@@ -866,7 +865,7 @@ describe("PATCH Associer une UserStory à un sprint", function() {
                 request.patch({
                     url:     localurl,
                     form:    { name: "Bepp"}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
                 });
@@ -883,7 +882,7 @@ describe("PATCH Associer une UserStory à un sprint", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "my_best_user_story", difficulty: 3, priority: 1}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
                 });
@@ -902,7 +901,7 @@ describe("PATCH Associer une UserStory à un sprint", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "my_best_user_story", difficulty: 3, priority: 1}
-                }, function(error, response, body) {
+                }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });

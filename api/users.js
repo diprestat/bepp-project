@@ -3,7 +3,6 @@ var bodyParser = require("body-parser");
 var monk = require('monk');	//we use monk to talk to MongoDB
 var db = monk('mongo:27017/nodetest1');	//our database is nodetest1
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-const users = require('./users');
 const router = express.Router();
 
 var app = express();
@@ -40,7 +39,6 @@ router.post('/token', function (req, res) {
 
         db.collection("userCollection").find(query, {}, function (e, docs) {
             if (docs.length != 0) {
-                var query = {login: userLogin};
                 var token = jwt.sign(docs[0], app.get('superSecret'));
                 res.json({
                     success: true,
@@ -85,7 +83,7 @@ router.post('/', function (req, res) {
                         "surname": surname,
                         "login": login,
                         "password": password
-                    }, function (err, doc) {
+                    }, function (err) {
                         if (err) {
                             res.status(500).send("There was a problem with the database while adding the user.");
                         }

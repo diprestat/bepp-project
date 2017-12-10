@@ -3,7 +3,6 @@ var bodyParser = require("body-parser");
 var monk = require('monk');	//we use monk to talk to MongoDB
 var db = monk('mongo:27017/nodetest1');	//our database is nodetest1
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-const userStories = require('./userStories');
 const router = express.Router();
 
 var app = express();
@@ -73,7 +72,7 @@ router.put('/projects/:name', function (req, res) {
             //add the userStory in the projectCollection
             var updateProject = {$addToSet: {userStories: {"description": description, "difficulty": difficulty}}};
             var projectQuery = {name: projectName};
-            projectCollection.update(projectQuery, updateProject, function (err, doc) {
+            projectCollection.update(projectQuery, updateProject, function (err) {
                     if (err) {
                         res.status(500).send("There was a problem with the database while updating the project: adding the userStory to the project's userStory list.");
                     }
@@ -94,7 +93,6 @@ router.put('/projects/:name', function (req, res) {
 router.patch('/:oldDescription/projects/:name/', function (req, res) {
     var description = req.body.description;
     var difficulty = req.body.difficulty;
-    var priority = req.body.priority;
     var projectName = req.params.name;
     var userStoryOldDescription = req.params.oldDescription;
 

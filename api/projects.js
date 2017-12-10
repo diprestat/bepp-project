@@ -63,11 +63,9 @@ router.post('/', function (req, res) {
         res.status(422).send("Missing Arguments.");
     }
     else {
-        var token = req.body.token;
-
         var db = req.db;
         var userCollection = db.get('userCollection');
-        var projectCollection = db.get('projectCollection')
+        var projectCollection = db.get('projectCollection');
 
         verifyAuth(req, res, function () {
 
@@ -99,7 +97,7 @@ router.post('/', function (req, res) {
                                 req.decoded.role = "Développeur";
 
                                 var updateProject = {$addToSet: {users: req.decoded}};
-                                projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
+                                projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err) {
                                     if (err) {
                                         res.status(500).send("There was a problem with the database while creating the project: adding the user to the project's user list.");
                                     }

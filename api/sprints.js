@@ -3,10 +3,6 @@ var bodyParser = require("body-parser");
 var monk = require('monk');	//we use monk to talk to MongoDB
 var db = monk('mongo:27017/nodetest1');	//our database is nodetest1
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-var http = require('http');
-var path = require('path');
-var fs = require('fs');
-const sprints = require('./sprints');
 const router = express.Router();
 
 var app = express();
@@ -78,8 +74,8 @@ router.put('/projects/:name', function (req, res) {
             db.get('sprintCollection').count(sprintQuery,function(error, count) {
              //add the sprint in the sprintCollection
                 var sprintNumber=count+1;
-                sprintData = {"number": sprintNumber, "duree": duree, "date_debut": date_debut, "projectName": projectName};
-                sprintCollection.insert(sprintData, function (err, doc) {
+                var sprintData = {"number": sprintNumber, "duree": duree, "date_debut": date_debut, "projectName": projectName};
+                sprintCollection.insert(sprintData, function (err) {
                     if (err) {
                         res.status(500).send("There was a problem with the database while creating the sprint.");
                     }
@@ -121,7 +117,7 @@ router.patch('/:number/projects/:name/userStories/', function (req, res) {
             //add the userStory in the sprintCollection
             var updateSprint = {$addToSet: {userStories: {"description": description, "difficulty": difficulty, "priority": priority}}};
             var sprintQuery={number: sprintNumber, projectName: projectName};
-            sprintCollection.update(sprintQuery, updateSprint, function (err, doc) {
+            sprintCollection.update(sprintQuery, updateSprint, function (err) {
                 if (err) {
                     res.status(500).send("There was a problem with the database while updating the sprint: adding the userStory to the sprint's userStory list.");
                 }
