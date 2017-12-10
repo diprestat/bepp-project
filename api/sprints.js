@@ -74,7 +74,7 @@ router.put('/projects/:name', function (req, res) {
             db.get('sprintCollection').count(sprintQuery,function(error, count) {
              //add the sprint in the sprintCollection
                 var sprintNumber=count+1;
-                var sprintData = {"number": sprintNumber, "duree": duree, "date_debut": date_debut, "projectName": projectName};
+                var sprintData = {"number": sprintNumber.toString(), "duree": duree, "date_debut": date_debut, "projectName": projectName};
                 sprintCollection.insert(sprintData, function (err) {
                     if (err) {
                         res.status(500).send("There was a problem with the database while creating the sprint.");
@@ -98,32 +98,45 @@ router.put('/projects/:name', function (req, res) {
 //Suppose :
 // PUT : {"name":"Bepp"}
 // PUT : url?name=Bepp
-router.patch('/:number/projects/:name/userStories/', function (req, res) {
+router.put('/:number/projects/:name/userStories/', function (req, res) {
     var description = req.body.description;
-    var difficulty = req.body.difficulty;
-    var priority = req.body.priority;
     var projectName = req.params.name;
     var sprintNumber = req.params.number;
 
-    if (description === undefined || difficulty === undefined) {
+    if (description === undefined ) {
         res.status(422).send("Missing Arguments.");
     }
     else {
         var db = req.db;
         var sprintCollection = db.get('sprintCollection');
+        var projectCollection = db.get('projectCollection');
 
         verifyAuth(req, res, function () {
-
-            //add the userStory in the sprintCollection
-            var updateSprint = {$addToSet: {userStories: {"description": description, "difficulty": difficulty, "priority": priority}}};
-            var sprintQuery={number: sprintNumber, projectName: projectName};
-            sprintCollection.update(sprintQuery, updateSprint, function (err) {
+            projectCollection.findOne({name: projectName, 'userStories.description': description}, function(err, userStory) {
                 if (err) {
-                    res.status(500).send("There was a problem with the database while updating the sprint: adding the userStory to the sprint's userStory list.");
+                    res.status(500).send("There was a problem with the database while updating the sprint: checking the userStory.");
                 }
                 else {
-                    res.status(200).send({success: true});
+                    if(userStory.length!=0) {
+                        var difficulty = userStory.userStories[0].difficulty;
+                        var priority = userStory.userStories[0].priority;
+
+                        //add the userStory in the sprintCollection
+                        var updateSprint = {$addToSet: {userStories: {"description": description, "difficulty": difficulty, "priority": priority}}};
+                        var sprintQuery = {number: sprintNumber, projectName: projectName};
+
+                        sprintCollection.update(sprintQuery, updateSprint, function (err) {
+                            if (err) {
+                                res.status(500).send("There was a problem with the database while updating the sprint: adding the userStory to the sprint's userStory list.");
+                            }
+                            else {
+                                res.status(200).send({success: true});
+                            }
+                        });
+                    }
                 }
+
+
             });
         });
     }

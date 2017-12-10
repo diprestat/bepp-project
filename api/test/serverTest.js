@@ -502,7 +502,7 @@ describe("PUT Créer une user story", function() {
 
 
 
-/*
+
 
 describe("PATCH Modifier une user story", function() {
         var localurl = url + "userStories/ma_user_story_preferee/projects/Bepp/";
@@ -861,8 +861,8 @@ describe("POST Créer un sprint", function() {
 
 
 
-describe("PATCH Associer une UserStory à un sprint", function() {
-        var localurl = url + "sprints/1/projects/Bepp/userStories";
+describe("PUT Associer une UserStory à un sprint", function() {
+        var localurl = url + "sprints/2/projects/Bepp/userStories";
         var authurl = url + "users/token";
 
         it("Bad request (missing Argument) : returns status 422", function(done) {
@@ -872,10 +872,10 @@ describe("PATCH Associer une UserStory à un sprint", function() {
                 form:    { login: "dprestat", password: "dp33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                request.patch({
+                request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
-                    form:    { description: "my_best_user_story"}
+                    form:    { priority: 4}
                 }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
@@ -885,7 +885,7 @@ describe("PATCH Associer une UserStory à un sprint", function() {
         });
 
         it("Bad request (missing Token) : returns status 40", function(done) {
-                request.patch({
+                request.put({
                     url:     localurl,
                     form:    { name: "Bepp"}
                 }, function(error, response) {
@@ -901,7 +901,7 @@ describe("PATCH Associer une UserStory à un sprint", function() {
                 form:    { login: "abounad", password: "ab33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                request.patch({
+                request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "my_best_user_story", difficulty: 3, priority: 1}
@@ -920,7 +920,7 @@ describe("PATCH Associer une UserStory à un sprint", function() {
                 form:    { login: "dprestat", password: "dp33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                request.patch({
+                request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "my_best_user_story", difficulty: 3, priority: 1}
@@ -933,7 +933,7 @@ describe("PATCH Associer une UserStory à un sprint", function() {
         });
 
     });
-*/
+
 
 
 });
