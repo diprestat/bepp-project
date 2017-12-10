@@ -69,17 +69,32 @@ router.put('/projects/:name', function (req, res) {
 
         verifyAuth(req, res, function () {
 
-            //add the userStory in the projectCollection
-            var updateProject = {$addToSet: {userStories: {"description": description, "difficulty": difficulty}}};
-            var projectQuery = {name: projectName};
-            projectCollection.update(projectQuery, updateProject, function (err) {
-                    if (err) {
-                        res.status(500).send("There was a problem with the database while updating the project: adding the userStory to the project's userStory list.");
+
+            projectCollection.findOne({name: projectName, 'userStories.description': description}, function(err, userStory){
+                if(err){
+                    res.status(500).send("There was a problem with the database while creating the userStory: checking if the userStory description is already used.");
+                }
+                else{
+                    if(userStory == null){
+                        //add the userStory in the projectCollection
+                        var updateProject = {$addToSet: {userStories: {"description": description, "difficulty": difficulty}}};
+                        var projectQuery = {name: projectName};
+                        projectCollection.update(projectQuery, updateProject, function (err) {
+                            if (err) {
+                                res.status(500).send("There was a problem with the database while creating the userStory: adding the userStory to the project's userStory list.");
+                            }
+                            else {
+                                res.status(200).send({success: true});
+                            }
+                        });
                     }
-                    else {
-                        res.status(200).send({success: true});
+                    else{
+                        res.status(409).send("There was a problem with the database while creating the userStory: this description is already used in this project.");
                     }
+                }
             });
+
+
         });
     }
 });

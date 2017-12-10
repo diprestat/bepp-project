@@ -474,12 +474,35 @@ describe("PUT Créer une user story", function() {
             });
         });
 
+
+
+
+    it("Bad request : returns status 409", function(done) {
+        request.post({
+            headers: {'content-type' : 'application/x-www-form-urlencoded'},
+            url:     authurl,
+            form:    { login: "dprestat", password: "dp33"}
+        }, function(error, response, body) {
+            var bodyJson = JSON.parse(body);
+            request.put({
+                headers: {'x-access-token' : bodyJson.token},
+                url:     localurl,
+                form:    { description: "ma_user_story_preferee", difficulty: "4" }
+            }, function(error, response) {
+                expect(response.statusCode).to.equal(409);
+                done();
+            });
+
+        });
+    });
+
+
     });
 
 
 
 
-
+/*
 
 describe("PATCH Modifier une user story", function() {
         var localurl = url + "userStories/ma_user_story_preferee/projects/Bepp/";
@@ -910,7 +933,7 @@ describe("PATCH Associer une UserStory à un sprint", function() {
         });
 
     });
-
+*/
 
 
 });
