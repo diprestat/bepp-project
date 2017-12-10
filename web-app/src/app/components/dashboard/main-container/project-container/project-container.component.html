@@ -3,18 +3,11 @@
         <a name="vueensemble" [routerLink]="['overview']">Vue d'ensemble</a>
     </li>
     <li role="presentation" routerLinkActive="active">
-        <a [routerLink]="['backlog']">Backlog</a>
+        <a name="backlog" [routerLink]="['backlog']">Backlog</a>
     </li>
     <li role="presentation" routerLinkActive="active" class="dropdown" appDropDown>
-        <a [routerLink]="['sprints']" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-           aria-haspopup="true" aria-expanded="false">
-            Sprints <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a>Sprint 1</a></li>
-            <li><a>Sprint 2</a></li>
-            <li><a>Sprint 3</a></li>
-        </ul>
+        <a [routerLink]="['sprints']" href="#" role="button" name="sprints"
+           aria-haspopup="true" aria-expanded="false">Sprints</a>
     </li>
 </ul>
 
