@@ -68,8 +68,6 @@ router.put('/projects/:name', function (req, res) {
         var projectCollection = db.get('projectCollection');
 
         verifyAuth(req, res, function () {
-
-
             projectCollection.findOne({name: projectName, 'userStories.description': description}, function(err, userStory){
                 if(err){
                     res.status(500).send("There was a problem with the database while creating the userStory: checking if the userStory description is already used.");
@@ -93,8 +91,6 @@ router.put('/projects/:name', function (req, res) {
                     }
                 }
             });
-
-
         });
     }
 });
@@ -103,8 +99,8 @@ router.put('/projects/:name', function (req, res) {
 //Add a UserStory Service
 //Update a userStory in the project's array of userStories
 //Suppose :
-// PATCH : {"id":"usid", "name":"project1"}
-// PATCH : url?id=usid&name=project1
+// PATCH : {"oldDescription":"ma_description", "name":"project1"}
+// PATCH : url?oldDescription=ma_description&name=project1
 router.patch('/:oldDescription/projects/:name/', function (req, res) {
     var description = req.body.description;
     var difficulty = req.body.difficulty;

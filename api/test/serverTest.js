@@ -384,7 +384,7 @@ describe("Scrum Management API", function() {
 
 
 
-describe("PUT Créer une user story", function() {
+    describe("PUT Créer une user story", function() {
         var localurl = url + "userStories/projects/Bepp";
         var authurl = url + "users/token";
 
@@ -477,24 +477,24 @@ describe("PUT Créer une user story", function() {
 
 
 
-    it("Bad request : returns status 409", function(done) {
-        request.post({
-            headers: {'content-type' : 'application/x-www-form-urlencoded'},
-            url:     authurl,
-            form:    { login: "dprestat", password: "dp33"}
-        }, function(error, response, body) {
-            var bodyJson = JSON.parse(body);
-            request.put({
-                headers: {'x-access-token' : bodyJson.token},
-                url:     localurl,
-                form:    { description: "ma_user_story_preferee", difficulty: "4" }
-            }, function(error, response) {
-                expect(response.statusCode).to.equal(409);
-                done();
+        it("Bad request : returns status 409", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.put({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { description: "ma_user_story_preferee", difficulty: "4" }
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(409);
+                    done();
+                });
+
             });
-
         });
-    });
 
 
     });
@@ -504,7 +504,7 @@ describe("PUT Créer une user story", function() {
 
 
 
-describe("PATCH Modifier une user story", function() {
+    describe("PATCH Modifier une user story", function() {
         var localurl = url + "userStories/ma_user_story_preferee/projects/Bepp/";
         var authurl = url + "users/token";
 
@@ -599,7 +599,7 @@ describe("PATCH Modifier une user story", function() {
 
 
 
-    describe("PATCH Modifier desrcription et difficulty d'une user story", function() {
+    describe("PATCH Modifier description et difficulty d'une user story", function() {
         var localurl = url + "userStories/my_prefered_user_story4/projects/Bepp/user/Product%20Owner";
         var authurl = url + "users/token";
 
@@ -691,7 +691,9 @@ describe("PATCH Modifier une user story", function() {
 
     });
 
-describe("DELETE Supprimer une user story", function() {
+
+
+    describe("DELETE Supprimer une user story", function() {
         var localurl = url + "userStories/my_prefered_user_story/projects/Bepp/";
         var authurl = url + "users/token";
 
@@ -766,7 +768,7 @@ describe("DELETE Supprimer une user story", function() {
 
 
 
-describe("POST Créer un sprint", function() {
+    describe("POST Créer un sprint", function() {
         var localurl = url + "sprints/projects/Bepp";
         var authurl = url + "users/token";
 
@@ -780,7 +782,7 @@ describe("POST Créer un sprint", function() {
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
-                    form:    { duree: "2"}
+                    form:    { time: "2"}
                 }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
@@ -809,7 +811,7 @@ describe("POST Créer un sprint", function() {
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
-                    form:    { duree: "2", date_debut: "15/12/2017"}
+                    form:    { time: "2", startingDate: "15/12/2017"}
                 }, function(error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
@@ -817,6 +819,7 @@ describe("POST Créer un sprint", function() {
 
             });
         });
+
 
         it("Good request : returns status 200", function(done) {
             request.post({
@@ -828,7 +831,7 @@ describe("POST Créer un sprint", function() {
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
-                    form:    { duree: "2", date_debut: "15/12/2017"}
+                    form:    { time: "2", startingDate: "15/12/2017"}
                 }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
@@ -847,7 +850,7 @@ describe("POST Créer un sprint", function() {
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
-                    form:    { duree: "3", date_debut: "29/12/2017"}
+                    form:    { time: "3", startingDate: "29/12/2017"}
                 }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
@@ -861,7 +864,7 @@ describe("POST Créer un sprint", function() {
 
 
 
-describe("PUT Associer une UserStory à un sprint", function() {
+    describe("PUT Associer une UserStory à un sprint", function() {
         var localurl = url + "sprints/2/projects/Bepp/userStories";
         var authurl = url + "users/token";
 
@@ -924,6 +927,292 @@ describe("PUT Associer une UserStory à un sprint", function() {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:    { description: "my_best_user_story", difficulty: 3, priority: 1}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+
+            });
+        });
+
+    });
+
+
+
+    describe("PUT Créer une tache", function() {
+        var localurl = url + "sprints/2/projects/Bepp/tasks/";
+        var authurl = url + "users/token";
+
+        it("Bad request (missing Argument) : returns status 422", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.put({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { description: "my_best_task"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(422);
+                    done();
+                });
+
+            });
+        });
+
+        it("Bad request (missing Token) : returns status 401", function(done) {
+            request.put({
+                url:     localurl,
+                form:    { name: "Bepp"}
+            }, function(error, response) {
+                expect(response.statusCode).to.equal(422);
+                done();
+            });
+        });
+
+        it("Bad request (bad Token) : returns status 401", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "abounad", password: "ab33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.put({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { description: "my_best_task_presentation", name: "T1_P"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(401);
+                    done();
+                });
+
+            });
+        });
+
+        it("Good request : returns status 200", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.put({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { description: "my_best_task_presentation", name: "T1_P"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+
+            });
+        });
+
+        it("Another Good request : returns status 200", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.put({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { description: "my_best_task_presentation_metier", name: "T1_PM"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+
+            });
+        });
+    });
+
+
+
+
+
+
+    describe("PATCH Modifier date debut et duree d'un sprint", function() {
+        var localurl = url + "sprints/2/projects/Bepp/";
+        var authurl = url + "users/token";
+
+        it("Bad request (missing Argument) : returns status 422", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(422);
+                    done();
+                });
+
+            });
+        });
+
+        it("Bad request (missing Token) : returns status 401", function(done) {
+            request.patch({
+                url:     localurl,
+                form:    { name: "Bepp"}
+            }, function(error, response) {
+                expect(response.statusCode).to.equal(422);
+                done();
+            });
+        });
+
+        it("Bad request (bad Token) : returns status 401", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "abounad", password: "ab33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { time: "1", startingDate: "10/12/2017"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(401);
+                    done();
+                });
+
+            });
+        });
+
+        it("Bad request (UserStory not found) : returns status 409", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     url + "sprints/2/projects/Bep/",
+                    form:    { time: "1", startingDate: "10/12/2017"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(409);
+                    done();
+                });
+
+            });
+        });
+
+        it("Good request : returns status 200", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { time: "1", startingDate: "10/12/2017"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+
+            });
+        });
+
+    });
+
+
+
+
+
+
+    describe("PATCH Modifier description et nom d'une tache d'un sprint", function() {
+        var localurl = url + "sprints/2/projects/Bepp/tasks/T1_P";
+        var authurl = url + "users/token";
+
+        it("Bad request (missing Argument) : returns status 422", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { name: "T2_P"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(422);
+                    done();
+                });
+
+            });
+        });
+
+        it("Bad request (missing Token) : returns status 401", function(done) {
+            request.patch({
+                url:     localurl,
+                form:    { name: "Bepp"}
+            }, function(error, response) {
+                expect(response.statusCode).to.equal(422);
+                done();
+            });
+        });
+
+        it("Bad request (bad Token) : returns status 401", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "abounad", password: "ab33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { name: "T2_P", description: "my_modified_task"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(401);
+                    done();
+                });
+
+            });
+        });
+
+        it("Bad request (UserStory not found) : returns status 409", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     url + "sprints/2/projects/Bepp/tasks/T3_P",
+                    form:    { name: "T4_P", description: "my_modified_task"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(409);
+                    done();
+                });
+
+            });
+        });
+
+        it("Good request : returns status 200", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { name: "T2_P", description: "my_modified_task"}
                 }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
