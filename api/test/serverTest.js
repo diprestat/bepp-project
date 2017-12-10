@@ -427,7 +427,7 @@ describe("PUT Créer une user story", function() {
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
-                    form:    { description: "ma_user_story_preferee", difficulte: "3"}
+                    form:    { description: "ma_user_story_preferee", difficulty: "3"}
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(401);
                     done();
@@ -446,7 +446,26 @@ describe("PUT Créer une user story", function() {
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
-                    form:    { description: "ma_user_story_preferee", difficulte: "3" }
+                    form:    { description: "ma_user_story_preferee", difficulty: "3" }
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+
+            });
+        });
+
+        it("Another Good request : returns status 200", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.put({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { description: "my_best_user_story", difficulty: "3" }
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(200);
                     done();
@@ -505,7 +524,7 @@ describe("PATCH Modifier une user story", function() {
                 request.patch({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
-                    form:    { description: "ma_user_story_pref", difficulte: "3"}
+                    form:    { description: "ma_user_story_pref", difficulty: "3"}
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(401);
                     done();
@@ -525,12 +544,11 @@ describe("PATCH Modifier une user story", function() {
                 request.patch({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl2,
-                    form:    { description: "ma_user_story_pref3", difficulte: "3" }
+                    form:    { description: "ma_user_story_pref3", difficulty: "3" }
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(409);
                     done();
                 });
-
             });
         });
 
@@ -544,7 +562,7 @@ describe("PATCH Modifier une user story", function() {
                 request.patch({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
-                    form:    { description: "my_prefered_user_story4", difficulte: "3" }
+                    form:    { description: "my_prefered_user_story4", difficulty: "3" }
                 }, function(error, response, body) {
                     expect(response.statusCode).to.equal(200);
                     done();
@@ -558,7 +576,7 @@ describe("PATCH Modifier une user story", function() {
 
 
 
-    describe("PATCH Modifier desrcription et difficulte d'une user story", function() {
+    describe("PATCH Modifier desrcription et difficulty d'une user story", function() {
         var localurl = url + "userStories/my_prefered_user_story4/projects/Bepp/user/Product%20Owner";
         var authurl = url + "users/token";
 
@@ -821,6 +839,78 @@ describe("POST Créer un sprint", function() {
 
 
 
+describe("PATCH Associer une UserStory à un sprint", function() {
+        var localurl = url + "sprints/1/projects/Bepp/userStories";
+        var authurl = url + "users/token";
+
+        it("Bad request (missing Argument) : returns status 422", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { description: "my_best_user_story"}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(422);
+                    done();
+                });
+
+            });
+        });
+
+        it("Bad request (missing Token) : returns status 40", function(done) {
+                request.patch({
+                    url:     localurl,
+                    form:    { name: "Bepp"}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(422);
+                    done();
+                });
+        });
+
+        it("Bad request (bad Token) : returns status 401", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "abounad", password: "ab33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { description: "my_best_user_story", difficulty: 3, priority: 1}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(401);
+                    done();
+                });
+
+            });
+        });
+
+        it("Good request : returns status 200", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.patch({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:    { description: "my_best_user_story", difficulty: 3, priority: 1}
+                }, function(error, response, body) {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+
+            });
+        });
+
+    });
 
 
 

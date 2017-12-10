@@ -58,10 +58,10 @@ function verifyAuth(req, res, next) {
 // PUT : url?name=foo
 router.put('/projects/:name', function (req, res) {
     var description = req.body.description;
-    var difficulte = req.body.difficulte;
+    var difficulty = req.body.difficulty;
     var projectName = req.params.name;
 
-    if (description == null || difficulte == null) {
+    if (description == null || difficulty == null) {
         res.status(422).send("Missing Arguments.");
     }
     else {
@@ -71,7 +71,7 @@ router.put('/projects/:name', function (req, res) {
         verifyAuth(req, res, function () {
 
             //add the userStory in the projectCollection
-            var updateProject = {$addToSet: {userStories: {"description": description, "difficulty": difficulte}}};
+            var updateProject = {$addToSet: {userStories: {"description": description, "difficulty": difficulty}}};
             var projectQuery = {name: projectName};
             projectCollection.update(projectQuery, updateProject, function (err, doc) {
                     if (err) {
@@ -93,12 +93,12 @@ router.put('/projects/:name', function (req, res) {
 // PATCH : url?id=usid&name=project1
 router.patch('/:oldDescription/projects/:name/', function (req, res) {
     var description = req.body.description;
-    var difficulte = req.body.difficulte;
+    var difficulty = req.body.difficulty;
     var priority = req.body.priority;
     var projectName = req.params.name;
     var userStoryOldDescription = req.params.oldDescription;
 
-    if (description == null || difficulte == null) {
+    if (description == null || difficulty == null) {
         res.status(422).send("Missing Arguments.");
     }
     else {
@@ -108,17 +108,10 @@ router.patch('/:oldDescription/projects/:name/', function (req, res) {
         verifyAuth(req, res, function () {
             //update the userStory in the projectCollection's array
 
-            var updateProject = {$set: {"userStories.$": {"description": description, "difficulty": difficulte}}};
+            var updateProject = {$set: {"userStories.$": {"description": description, "difficulty": difficulty}}};
             
             var projectQuery = {name: projectName, userStories: { $elemMatch: {"description": userStoryOldDescription}}};
-            //REQUETE QUI FONCTIONNE DANS MONGO
-            //db.projectCollection.update({name: "Bepp", "userStories.description": "ma_user_story_preferee", "userStories.difficulty": "3"}, {$set: {"userStories.$.description": "mon_us", "userStories.$.difficulty": 4}})
-
-            /*var updateProject = {$set: {"userStories.$.description": description, "userStories.$.difficulty": difficulte}}};
-            var projectQuery = {name: projectName, "userStories.description": userStoryOldDescription};*/
-            console.log(projectQuery);
-            console.log(updateProject);
-
+            
             projectCollection.update(projectQuery, updateProject, function (err, doc) {
                 console.log("Request (Patch): " + projectName + " " + description + " " + userStoryOldDescription);
                 console.log(doc);

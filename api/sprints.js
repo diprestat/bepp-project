@@ -56,10 +56,10 @@ function verifyAuth(req, res, next) {
 
 
 //Add a Sprint Service
-//Add an Sprint in the projectCollection array: sprint
+//Add a Sprint in the sprintCollection
 //Suppose :
 // PUT : {"name":"Bepp"}
-// PUT : url?name=foo
+// PUT : url?name=Bepp
 router.put('/projects/:name', function (req, res) {
     var duree = req.body.duree;
     var date_debut = req.body.date_debut;
@@ -96,5 +96,41 @@ router.put('/projects/:name', function (req, res) {
 
 
 
+
+//Add a Sprint Service
+//Add an userStory in the sprintCollection array: userStories
+//Suppose :
+// PUT : {"name":"Bepp"}
+// PUT : url?name=Bepp
+router.patch('/:number/projects/:name/userStories/', function (req, res) {
+    var description = req.body.description;
+    var difficulty = req.body.difficulty;
+    var priority = req.body.priority;
+    var projectName = req.params.name;
+    var sprintNumber = req.params.number;
+
+    if (description === undefined || difficulty === undefined) {
+        res.status(422).send("Missing Arguments.");
+    }
+    else {
+        var db = req.db;
+        var sprintCollection = db.get('sprintCollection');
+
+        verifyAuth(req, res, function () {
+
+            //add the userStory in the sprintCollection
+            var updateSprint = {$addToSet: {userStories: {"description": description, "difficulty": difficulty, "priority": priority}}};
+            var sprintQuery={number: sprintNumber, projectName: projectName};
+            sprintCollection.update(sprintQuery, updateSprint, function (err, doc) {
+                if (err) {
+                    res.status(500).send("There was a problem with the database while updating the sprint: adding the userStory to the sprint's userStory list.");
+                }
+                else {
+                    res.status(200).send({success: true});
+                }
+            });
+        });
+    }
+});
 
 module.exports = router;
