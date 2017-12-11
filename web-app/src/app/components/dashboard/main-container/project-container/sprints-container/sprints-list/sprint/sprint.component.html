@@ -1,0 +1,274 @@
+<br>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <h1 align="center">Sprint 1</h1>
+        <p align="center">De : 23/22/12 à 30/12/12</p>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Mini Backlog</div>
+            <table class="table">
+                <tr>
+                    <th>ID</th>
+                    <th>UserStory</th>
+                    <th>Difficulté</th>
+                    <th>Priorité</th>
+                    <th>Fait</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>En tant que ***, Je souhaite *** afin de ***</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>XXX</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="panel panel-default" [hidden]="!showSelectUS">
+
+            <table class="table">
+                <tr>
+                    <th>UserStory</th>
+                    <th>Difficulté</th>
+                    <th>Priorité</th>
+                    <th>Selectionner</th>
+                </tr>
+                <tr>
+                    <td>
+                        <div>En tant que *** Je souhaite *** afin de ***</div>
+                    </td>
+                    <td>
+                        <div>3</div>
+                    </td>
+                    <td>
+                        <div>3</div>
+                    </td>
+                    <td align="center">
+                        <input class="done_checkbox" type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>En tant que *** Je souhaite *** afin de ***</div>
+
+                    </td>
+                    <td>
+                        <div>3</div>
+                    </td>
+                    <td>
+                        <div>3</div>
+                    </td>
+                    <td align="center">
+                        <input class="done_checkbox" type="checkbox">
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+
+        <div class="panel-body" [hidden]="showSelectUS">
+            <button class="btn-add btn btn-primary pull-right" name="newus" (click)="toggleSelectUS()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <span >Selectionner UserStory</span>
+            </button>
+        </div>
+        <div class="panel-body" [hidden]="!showSelectUS">
+            <button class="btn-add btn btn-success pull-right" name="addus" (click)="submitSelectUSForm()">
+                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                <span > Ajouter</span>
+            </button>
+        </div>
+        <div class="panel-body" [hidden]="!showSelectUS">
+            <button class="btn-add btn btn-default pull-right" name="cancel_add" (click)="toggleSelectUS()">
+                <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                <span > Annuler</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Tâches</div>
+            <table class="table">
+                <tr>
+                    <th>ID Tâche</th>
+                    <th>Intitulé</th>
+                    <th>Tâches reliées</th>
+                    <th>Durée estimée (jh)</th>
+                    <th>État</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr [hidden]="showModifyTask">
+                    <td>1</td>
+                    <td>Visualiser les pages</td>
+                    <td>1 - 2</td>
+                    <td>2</td>
+                    <td>
+                        <!--<button class="btn-xs btn-danger" disabled>To do</button>-->
+                        <!--<button class="btn-xs btn-warning" disabled>In progress</button>-->
+                        <button class="btn-xs btn-success" disabled>Done</button>
+                    </td>
+                    <td><button class="btn-xs btn-info" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-edit"></span>
+                        Modifier
+                    </button></td>
+                    <td><button class="btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span>
+                        Supprimer
+                    </button></td>
+                </tr>
+                <tr [hidden]="!showModifyTask">
+                    <td></td>
+                    <td>
+                        <input type="text" class="form-control"/>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control"/>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control"/>
+                    </td>
+                    <td>
+                        <select class="form-control">
+                            <option>To do</option>
+                            <option>In Progress</option>
+                            <option>Done</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" (click)="ModifyTask()"><span class="glyphicon glyphicon-edit"></span>
+                        Valider
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-ban-circle"></span>
+                        Annuler
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10">
+        <div [hidden]="!showAddTask" class="panel panel-default">
+            <h4 align="center">Ajouter une tâche</h4>
+            <form novalidate [formGroup]="addTaskForm">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <div class="form-group has-feedback">
+                                <label>Intitulé du tâche</label>
+                                <input class="form-control"
+                                       type="text"
+                                       name="task_desc"
+                                       id="task_desc"
+                                       [formControlName]="'task_desc'"/>
+
+                                <!--<span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"-->
+                                <!--[ngClass]="{ 'show': task_desc.invalid && (task_desc.dirty || task_desc.touched || addTaskSubmitted) }"></span>-->
+                                <!--<div class="col-12 text-danger"-->
+                                <!--*ngIf="start_date.invalid && (task_desc.dirty || task_desc.touched || addTaskSubmitted)">-->
+                                <!--<span class="validation-message" *ngIf="start_date.errors.required">La description du tâche doit être saisie.</span>-->
+                                <!--</div>-->
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group has-feedback">
+                                <label>Difficulté</label>
+                                <input type="number"
+                                       id="task_difficulty"
+                                       name="task_difficulty"
+                                       class="form-control"
+                                       [formControlName]="'task_difficulty'"/>
+
+                                <!--<span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"-->
+                                <!--[ngClass]="{ 'show': task_difficulty.invalid && (task_difficulty.dirty || task_difficulty.touched || addTaskSubmitted) }"></span>-->
+                                <!--<div class="col-12 text-danger"-->
+                                <!--*ngIf="difficulty.invalid && (task_difficulty.dirty || task_difficulty.touched || addTaskSubmitted)">-->
+                                <!--<span class="validation-message" *ngIf="task_difficulty.errors.required">La difficulté du tâche doit être saisie.</span>-->
+                                <!--</div>-->
+                            </div>
+
+                        </td>
+                        <td>
+                            <div class="form-group has-feedback">
+                                <label>Tâches reliés</label>
+                                <input type="text"
+                                       id="related_tasks"
+                                       name="related_tasks"
+                                       class="form-control"
+                                       [formControlName]="'related_tasks'"/>
+
+                                <!--<span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"-->
+                                <!--[ngClass]="{ 'show': related_tasks.invalid && (related_tasks.dirty || related_tasks.touched || addTaskSubmitted) }"></span>-->
+                                <!--<div class="col-12 text-danger"-->
+                                <!--*ngIf="difficulty.invalid && (related_tasks.dirty || related_tasks.touched || addTaskSubmitted)">-->
+                                <!--<span class="validation-message" *ngIf="related_tasks.errors.required">Les tâches reliées doivent être saisie.</span>-->
+                                <!--</div>-->
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="panel-body" [hidden]="showAddTask">
+            <button class="btn-add btn btn-primary pull-right" name="newtask" (click)="toggleAddTask()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <span >Ajouter une tâche</span>
+            </button>
+        </div>
+        <div class="panel-body" [hidden]="!showAddTask">
+            <button class="btn-add btn btn-success pull-right" name="addtask" (click)="submitAddTaskForm()">
+                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                <span>Ajouter</span>
+            </button>
+        </div>
+        <div class="panel-body" [hidden]="!showAddTask">
+            <button class="btn-add btn btn-default pull-right" name="addtask" (click)="toggleAddTask()">
+                <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                <span>Annuler</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                Tasks timeline here !
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                Kankan here !!
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
