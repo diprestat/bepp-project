@@ -1,18 +1,11 @@
-var express = require('express');
-var bodyParser = require("body-parser");
-var monk = require('monk');	//we use monk to talk to MongoDB
-var db = monk('mongo:27017/nodetest1');	//our database is nodetest1
-var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-var http = require('http');
-var path = require('path');
-var fs = require('fs');
-const users = require('./users');
+const env = require ('./utils/environments');
+
+const express = require('express');
+const constants = require('./utils/api-constants');
+const monk = require('monk');	//we use monk to talk to MongoDB
+const db = monk(env.DB_URL);	//our database is nodetest1
+const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const router = express.Router();
-
-var app = express();
-
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
 
 // Make our db accessible to our router
 router.use(function (req, res, next) {
@@ -20,15 +13,12 @@ router.use(function (req, res, next) {
     next();
 });
 
-app.set('superSecret', "12345"); // secret variable
-
-
 //Authentification Service
 //Check Login Password
 router.post('/token', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var userLogin = req.body.login;
-    var userPassword = req.body.password;
+    const userLogin = req.body.login;
+    const userPassword = req.body.password;
 
     if (userLogin == null || userPassword == null) {
         res.status(422).send("Missing Arguments.");
@@ -43,8 +33,8 @@ router.post('/token', function (req, res) {
 
         db.collection("userCollection").find(query, {}, function (e, docs) {
             if (docs.length != 0) {
-                var query = {login: userLogin};
-                var token = jwt.sign(docs[0], app.get('superSecret'));
+                var query = { login: userLogin };
+                var token = jwt.sign(docs[0], constants.superSecret);
                 res.json({
                     success: true,
                     message: 'Authentication succeded!',
@@ -63,6 +53,8 @@ router.post('/token', function (req, res) {
 // POST : {"name":"foo", "surname":"bar", "login":"user", "password":"pwd"}
 // POST : url?name=foo&surname=bar&login=user&password=pwd
 router.post('/', function (req, res) {
+
+    console.log (req.db)
     var name = req.body.name;
     var surname = req.body.surname;
     var login = req.body.login;
@@ -76,7 +68,7 @@ router.post('/', function (req, res) {
         var collection = db.get('userCollection');
 
         //Check if login already exists
-        collection.find({login: login}, {}, function (err, doc) {
+        collection.find({ login: login }, {}, function (err, doc) {
             if (err) {
                 res.status(500).send("There was a problem with the database while checking if the login already exists.");
             }
@@ -93,7 +85,7 @@ router.post('/', function (req, res) {
                             res.status(500).send("There was a problem with the database while adding the user.");
                         }
                         else {
-                            res.status(200).send({success: true});
+                            res.status(200).send({ success: true });
                         }
                     });
                 }
