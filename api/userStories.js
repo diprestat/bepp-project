@@ -3,6 +3,7 @@ const env = require ('./utils/environment');
 const monk = require('monk');	//we use monk to talk to MongoDB
 const db = monk(env.DB_URL);	//our database is nodetest1
 const router = express.Router();
+const verifyAuth = require('./utils/verify-auth');
 
 // Make our db accessible to our router
 router.use(function (req, res, next) {
@@ -106,25 +107,28 @@ router.patch('/:oldDescription/projects/:name/', function (req, res) {
 router.delete('/:description/projects/:name', function (req, res) {
     var projectName = req.params.name;
     var userStoryDescription = req.params.description;
+    console.log ('Request DELETE userStories // '+ userStoryDescription)
 
     var db = req.db;
     var projectCollection = db.get('projectCollection');
-
     verifyAuth(req, res, function () {
+        console.log ('------- > CHECK AUTH Request DELETE userStories // '+ userStoryDescription)
         //Update projectCollection by removing the userstory of it's list
-        var updateProject = {$pull: {userStories: {"description": userStoryDescription}}};
-        var projectQuery = {name: projectName};
+        const updateProject = { $pull: { userStories: { "description": userStoryDescription } } };
+        const projectQuery = { name: projectName };
         console.log(projectQuery);
         console.log(updateProject);
-        projectCollection.update(projectQuery, updateProject, {}, function (err, doc) {
+        projectCollection.update(projectQuery, updateProject, {}, function (err, doc, toto ) {
+            console.log ('------- > RES Request DELETE userStories // '+ userStoryDescription)
             console.log("Delete");
-            console.log(doc);
-            if (doc.nModified != 0) {
+            console.log(JSON.stringify(doc));
+            console.log (JSON.stringify(toto))
+            if (doc.nModified !== 0) {
                 if (err) {
                     res.status(500).send("There was a problem with the database while updating the project: removing the userStory in the project's userStory list.");
                 }
                 else {
-                    res.status(200).send({success: true});
+                    res.status(200).send({ success: true, toto: userStoryDescription });
                 }
             }
             else{
