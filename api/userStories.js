@@ -107,19 +107,16 @@ router.patch('/:oldDescription/projects/:name/', function (req, res) {
 router.delete('/:description/projects/:name', function (req, res) {
     var projectName = req.params.name;
     var userStoryDescription = req.params.description;
-    console.log ('Request DELETE userStories // '+ userStoryDescription)
 
     var db = req.db;
     var projectCollection = db.get('projectCollection');
     verifyAuth(req, res, function () {
-        console.log ('------- > CHECK AUTH Request DELETE userStories // '+ userStoryDescription)
         //Update projectCollection by removing the userstory of it's list
         const updateProject = { $pull: { userStories: { "description": userStoryDescription } } };
         const projectQuery = { name: projectName };
         console.log(projectQuery);
         console.log(updateProject);
         projectCollection.update(projectQuery, updateProject, {}, function (err, doc, toto ) {
-            console.log ('------- > RES Request DELETE userStories // '+ userStoryDescription)
             console.log("Delete");
             console.log(JSON.stringify(doc));
             console.log (JSON.stringify(toto))
@@ -131,7 +128,7 @@ router.delete('/:description/projects/:name', function (req, res) {
                     res.status(200).send({ success: true, toto: userStoryDescription });
                 }
             }
-            else{
+            else {
                 res.status(409).send("UserStory not found.");
             }
         });
