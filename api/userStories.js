@@ -1,5 +1,5 @@
 const express = require('express');
-const env = require ('./utils/environments');
+const env = require ('./utils/environment');
 const monk = require('monk');	//we use monk to talk to MongoDB
 const db = monk(env.DB_URL);	//our database is nodetest1
 const router = express.Router();

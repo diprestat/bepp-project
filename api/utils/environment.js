@@ -3,7 +3,7 @@ const env = {
         DB_URL: 'localhost:27017/nodetest1'
     },
     prod: {
-        DB_URL: 'mongo:27017/nodetest1'
+        DB_URL: process.env.MONGOLAB_URI || 'mongo:27017/nodetest1'
     }
 };
 

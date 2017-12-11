@@ -1,4 +1,4 @@
-const env = require ('./utils/environments');
+const env = require ('./utils/environment');
 
 const express = require('express');
 const constants = require('./utils/api-constants');
