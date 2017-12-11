@@ -1086,7 +1086,7 @@ describe("Scrum Management API", function() {
             });
         });
 
-        it("Bad request (UserStory not found) : returns status 409", function(done) {
+        it("Bad request (not found) : returns status 409", function(done) {
             request.post({
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
                 url:     authurl,
@@ -1183,7 +1183,7 @@ describe("Scrum Management API", function() {
             });
         });
 
-        it("Bad request (UserStory not found) : returns status 409", function(done) {
+        it("Bad request (not found) : returns status 409", function(done) {
             request.post({
                 headers: {'content-type' : 'application/x-www-form-urlencoded'},
                 url:     authurl,
@@ -1222,6 +1222,105 @@ describe("Scrum Management API", function() {
         });
 
     });
+
+
+
+
+
+
+    describe("DELETE Supprimer une tache", function() {
+        var localurl = url + "sprints/2/projects/Bepp/tasks/";
+        var authurl = url + "users/token";
+
+
+        it("Bad request (missing Argument) : returns status 422", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.delete({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(422);
+                    done();
+                });
+
+            });
+        });
+
+
+        it("Bad request (missing Token) : returns status 401", function(done) {
+            request.delete({
+                url:     localurl,
+                form:    { name: "Bepp"}
+            }, function(error, response) {
+                expect(response.statusCode).to.equal(422);
+                done();
+            });
+        });
+
+        it("Bad request (bad Token) : returns status 401", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "abounad", password: "ab33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.delete({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form: {description: "my_modified_task"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(401);
+                    done();
+                });
+
+            });
+        });
+
+        it("Bad request (not found) : returns status 409", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.delete({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:    url + "sprints/2/projects/Bepp/tasks/",
+                    form:   {description: "my_task"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(409);
+                    done();
+                });
+            });
+        });
+
+        it("Good request : returns status 200", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.delete({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl,
+                    form:   {description: "my_modified_task"}
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+
+            });
+        });
+    });
+
+
+
 
 
 

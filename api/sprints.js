@@ -253,13 +253,14 @@ router.patch('/:number/projects/:name/', function (req, res) {
 
 
 //Add a Sprint Service
-//Update a userStory in the project's array of userStories
+//Update a task in the sprint's array of tasks
 //Suppose :
-// PATCH : {"number":"2", "name":"Bepp"}
-// PATCH : url?number=2&name=Bepp
+// PATCH : {"number":"2", "name":"Bepp", "oldName":"T1_P"}
+// PATCH : url?number=2&name=Bepp&oldName=T1_P
 router.patch('/:number/projects/:name/tasks/:oldName', function (req, res) {
     var description = req.body.description;
     var taskName = req.body.name;
+
     var projectName = req.params.name;
     var oldTaskName = req.params.oldName;
     var sprintNumber = req.params.number;
@@ -292,5 +293,47 @@ router.patch('/:number/projects/:name/tasks/:oldName', function (req, res) {
         });
     }
 });
+
+
+
+
+
+//Add a Sprint Service
+//Delete a task (by it's description) in the sprintCollection
+//Suppose :
+// DELETE : {"number":"2", "name":"Bepp"}
+// DELETE : url?number=2&name=Bepp
+router.delete('/:number/projects/:name/tasks/', function (req, res) {
+    var taskDescription = req.body.description;
+    var projectName = req.params.name;
+    var sprintNumber = req.params.number;
+
+    if (taskDescription == null) {
+        res.status(422).send("Missing Arguments.");
+    }
+    else {
+        var db = req.db;
+        var sprintCollection = db.get('sprintCollection');
+
+        verifyAuth(req, res, function () {
+            var updateSprint = {$pull: {tasks: {"description": taskDescription}}};
+            var sprintQuery = {projectName: projectName, number: sprintNumber};
+            sprintCollection.update(sprintQuery, updateSprint, function (err, doc) {
+                if (err) {
+                    res.status(500).send("There was a problem with the database while updating the sprint: removing the task in the sprint's tasks list.");
+                }
+                else {
+                    if (doc.nModified != 0) {
+                        res.status(200).send({success: true});
+                    }
+                    else {
+                        res.status(409).send("Task not found.");
+                    }
+                }
+            });
+        });
+    }
+});
+
 
 module.exports = router;
