@@ -53,8 +53,6 @@ router.post('/token', function (req, res) {
 // POST : {"name":"foo", "surname":"bar", "login":"user", "password":"pwd"}
 // POST : url?name=foo&surname=bar&login=user&password=pwd
 router.post('/', function (req, res) {
-
-    console.log (req.db)
     var name = req.body.name;
     var surname = req.body.surname;
     var login = req.body.login;
