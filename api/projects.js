@@ -3,9 +3,6 @@ var bodyParser = require("body-parser");
 var monk = require('monk'); //we use monk to talk to MongoDB
 var db = monk('mongo:27017/nodetest1'); //our database is nodetest1
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-var http = require('http');
-var path = require('path');
-var fs = require('fs');
 const projects = require('./projects');
 const router = express.Router();
 
@@ -66,11 +63,9 @@ router.post('/', function (req, res) {
         res.status(422).send("Missing Arguments.");
     }
     else {
-        var token = req.body.token;
-
         var db = req.db;
         var userCollection = db.get('userCollection');
-        var projectCollection = db.get('projectCollection')
+        var projectCollection = db.get('projectCollection');
 
         verifyAuth(req, res, function () {
 
@@ -102,7 +97,7 @@ router.post('/', function (req, res) {
                                 req.decoded.role = "Développeur";
 
                                 var updateProject = {$addToSet: {users: req.decoded}};
-                                projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err, doc) {
+                                projectCollection.update(projectQuery, updateProject, {upsert: true}, function (err) {
                                     if (err) {
                                         res.status(500).send("There was a problem with the database while creating the project: adding the user to the project's user list.");
                                     }
