@@ -8,7 +8,7 @@ const env = {
 };
 
 const modeIndex = 2;
-const envName = process.argv[modeIndex] === 'prod' ? 'prod' : 'dev';
+const envName = process.argv[modeIndex] === 'dev' ? 'dev' : 'prod';
 
 /**
  * The current env with the given parameter
