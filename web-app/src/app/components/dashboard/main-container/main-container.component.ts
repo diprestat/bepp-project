@@ -14,6 +14,4 @@ export class MainContainerComponent implements OnInit {
 
     public ngOnInit(): void {}
 
-    public ngOnDestroy ():void  {}
-
 }
