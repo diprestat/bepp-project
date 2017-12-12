@@ -1294,10 +1294,7 @@ describe("Scrum Management API", function () {
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
                     form:   {description: "my_modified_task"}
-                }, function(error, response) {
-                    headers: {'x-access-token': bodyJson.token},
-                    url: url + "userStories/my_prefered_user_story4/projects/Bepp/"
-                }, function (error, response, body) {
+                }, function (error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
                 });
