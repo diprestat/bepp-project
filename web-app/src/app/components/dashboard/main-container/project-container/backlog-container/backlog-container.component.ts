@@ -233,7 +233,6 @@ export class BacklogContainerComponent implements OnInit {
                 delete body.priority;
             }
 
-            body.difficulte = body.difficulty;
             body.description = body.us;
 
             const projectName = encodeURIComponent(this.currentProject.name);
@@ -282,11 +281,9 @@ export class BacklogContainerComponent implements OnInit {
                     delete body.priority;
                 }
 
-                body.difficulte = body.difficulty;
                 body.description = body.us;
             }
 
-            delete body.difficulty;
             delete body.us;
 
             this.httpClient.patch(service,
