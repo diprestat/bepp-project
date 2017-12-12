@@ -1,58 +1,6 @@
-var express = require('express');
-var bodyParser = require("body-parser");
-var monk = require('monk');	//we use monk to talk to MongoDB
-var db = monk(process.env.MONGOLAB_URI || 'mongo:27017/nodetest1');	//our database is nodetest1
-var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-var http = require('http');
-var path = require('path');
-var fs = require('fs');
-const userStories = require('./userStories');
+const express = require('express');
 const router = express.Router();
-
-var app = express();
-
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-
-// Make our db accessible to our router
-router.use(function (req, res, next) {
-    req.db = db;
-    next();
-});
-
-app.set('superSecret', "12345"); // secret variable
-
-// route middleware to verify a token
-function verifyAuth(req, res, next) {
-
-    // check header or url parameters or post parameters for token
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
-    // decode token
-    if (token) {
-
-        // verifies secret and checks exp
-        jwt.verify(token, app.get('superSecret'), function (err, decoded) {
-            if (err) {
-                res.success(401).json({success: false, message: 'Failed to authenticate token.'});
-            } else {
-                // if everything is good, save to request for use in other routes
-                req.decoded = decoded;
-                next();
-            }
-        });
-
-    } else {
-
-        // if there is no token
-        // return an error
-        res.status(401).send({
-            success: false,
-            message: 'No token provided.'
-        });
-    }
-}
-
+const verifyAuth = require('./utils/verify-auth');
 
 //Add a UserStory Service
 //Add an userStory in the projectCollection array: userStories
@@ -61,10 +9,10 @@ function verifyAuth(req, res, next) {
 // PUT : url?name=foo
 router.put('/projects/:name', function (req, res) {
     var description = req.body.description;
-    var difficulte = req.body.difficulte;
+    var difficulty = req.body.difficulty;
     var projectName = req.params.name;
 
-    if (description == null || difficulte == null) {
+    if (description == null || difficulty == null) {
         res.status(422).send("Missing Arguments.");
     }
     else {
@@ -72,17 +20,28 @@ router.put('/projects/:name', function (req, res) {
         var projectCollection = db.get('projectCollection');
 
         verifyAuth(req, res, function () {
-
-            //add the userStory in the projectCollection
-            var updateProject = {$addToSet: {userStories: {"description": description, "difficulty": difficulte}}};
-            var projectQuery = {name: projectName};
-            projectCollection.update(projectQuery, updateProject, function (err, doc) {
-                    if (err) {
-                        res.status(500).send("There was a problem with the database while updating the project: adding the userStory to the project's userStory list.");
+            projectCollection.findOne({ name: projectName, 'userStories.description': description}, function(err, userStory) {
+                if(err) {
+                    res.status(500).send("There was a problem with the database while creating the userStory: checking if the userStory description is already used.");
+                }
+                else {
+                    if(userStory == null) {
+                        //add the userStory in the projectCollection
+                        var updateProject = {$addToSet: {userStories: {"description": description, "difficulty": difficulty}}};
+                        var projectQuery = {name: projectName};
+                        projectCollection.update(projectQuery, updateProject, function (err) {
+                            if (err) {
+                                res.status(500).send("There was a problem with the database while creating the userStory: adding the userStory to the project's userStory list.");
+                            }
+                            else {
+                                res.status(200).send({ success: true });
+                            }
+                        });
                     }
                     else {
-                        res.status(200).send({success: true});
+                        res.status(409).send("There was a problem with the database while creating the userStory: this description is already used in this project.");
                     }
+                }
             });
         });
     }
@@ -92,16 +51,15 @@ router.put('/projects/:name', function (req, res) {
 //Add a UserStory Service
 //Update a userStory in the project's array of userStories
 //Suppose :
-// PATCH : {"id":"usid", "name":"project1"}
-// PATCH : url?id=usid&name=project1
+// PATCH : {"oldDescription":"ma_description", "name":"project1"}
+// PATCH : url?oldDescription=ma_description&name=project1
 router.patch('/:oldDescription/projects/:name/', function (req, res) {
     var description = req.body.description;
-    var difficulte = req.body.difficulte;
-    var priority = req.body.priority;
+    var difficulty = req.body.difficulty;
     var projectName = req.params.name;
     var userStoryOldDescription = req.params.oldDescription;
 
-    if (description == null || difficulte == null) {
+    if (description == null || difficulty == null) {
         res.status(422).send("Missing Arguments.");
     }
     else {
@@ -111,16 +69,9 @@ router.patch('/:oldDescription/projects/:name/', function (req, res) {
         verifyAuth(req, res, function () {
             //update the userStory in the projectCollection's array
 
-            var updateProject = {$set: {"userStories.$": {"description": description, "difficulty": difficulte}}};
+            var updateProject = {$set: {"userStories.$": {"description": description, "difficulty": difficulty}}};
             
             var projectQuery = {name: projectName, userStories: { $elemMatch: {"description": userStoryOldDescription}}};
-            //REQUETE QUI FONCTIONNE DANS MONGO
-            //db.projectCollection.update({name: "Bepp", "userStories.description": "ma_user_story_preferee", "userStories.difficulty": "3"}, {$set: {"userStories.$.description": "mon_us", "userStories.$.difficulty": 4}})
-
-            /*var updateProject = {$set: {"userStories.$.description": description, "userStories.$.difficulty": difficulte}}};
-            var projectQuery = {name: projectName, "userStories.description": userStoryOldDescription};*/
-            console.log(projectQuery);
-            console.log(updateProject);
 
             projectCollection.update(projectQuery, updateProject, function (err, doc) {
                 console.log("Request (Patch): " + projectName + " " + description + " " + userStoryOldDescription);
@@ -156,22 +107,22 @@ router.delete('/:description/projects/:name', function (req, res) {
 
     verifyAuth(req, res, function () {
         //Update projectCollection by removing the userstory of it's list
-        var updateProject = {$pull: {userStories: {"description": userStoryDescription}}};
-        var projectQuery = {name: projectName};
+        const updateProject = { $pull: { userStories: { "description": userStoryDescription } } };
+        const projectQuery = { name: projectName };
         console.log(projectQuery);
         console.log(updateProject);
         projectCollection.update(projectQuery, updateProject, {}, function (err, doc) {
             console.log("Delete");
             console.log(doc);
-            if (doc.nModified != 0) {
+            if (doc.nModified !== 0) {
                 if (err) {
                     res.status(500).send("There was a problem with the database while updating the project: removing the userStory in the project's userStory list.");
                 }
                 else {
-                    res.status(200).send({success: true});
+                    res.status(200).send({ success: true });
                 }
             }
-            else{
+            else {
                 res.status(409).send("UserStory not found.");
             }
         });

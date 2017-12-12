@@ -1,50 +1,50 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-sprints-list',
-  templateUrl: './sprints-list.component.html',
-  styleUrls: ['./sprints-list.component.css']
+    selector: 'app-sprints-list',
+    templateUrl: './sprints-list.component.html',
+    styleUrls: ['./sprints-list.component.css']
 })
 export class SprintsListComponent implements OnInit {
 
-   private showAddSprint: boolean;
-   private showModifySprint: boolean;
-   private addSprintForm: FormGroup;
-   private addSprintSubmitted: boolean;
+    public showAddSprint: boolean;
+    public showModifySprint: boolean;
+    public addSprintForm: FormGroup;
+    public addSprintSubmitted: boolean;
 
-  constructor() {
+    constructor() {
 
-      this.showAddSprint = false;
-      this.showModifySprint = false;
+        this.showAddSprint = false;
+        this.showModifySprint = false;
 
-      this.addSprintForm = new FormGroup ({
-          sprint_start: new FormControl(''),
-          sprint_end: new FormControl('')
-      });
-  }
+        this.addSprintForm = new FormGroup({
+            sprint_start: new FormControl(''),
+            sprint_end: new FormControl('')
+        });
+    }
 
-  ngOnInit() {
+    ngOnInit() {
 
-  }
+    }
 
-  private submitAddSprintForm() {
-       this.toggleAddSprint();
-  }
+    public submitAddSprintForm() {
+        this.toggleAddSprint();
+    }
 
-  private toggleAddSprint() {
+    public toggleAddSprint() {
         this.showAddSprint = !this.showAddSprint;
-  }
+    }
 
-  private toggleModifySprint() {
+    public toggleModifySprint() {
         this.showModifySprint = !this.showModifySprint;
-  }
+    }
 
-  private ModifySprint() {
-       this.toggleModifySprint();
-  }
+    public ModifySprint() {
+        this.toggleModifySprint();
+    }
 
-  private cancelModifySprint() {
-       this.toggleModifySprint();
-  }
+    public cancelModifySprint() {
+        this.toggleModifySprint();
+    }
 }

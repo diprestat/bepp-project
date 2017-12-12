@@ -21,42 +21,42 @@ export class BacklogContainerComponent implements OnInit {
      * else false.
      * @type {boolean}
      */
-    private backlogLoading: boolean;
+    public backlogLoading: boolean;
 
-    private nbReceivedServices: number;
-
-    /**
-     * If true, the form for adding a US is shown.
-     * @type {boolean}
-     */
-    private showAddUS: boolean;
+    public nbReceivedServices: number;
 
     /**
      * If true, the form for adding a US is shown.
      * @type {boolean}
      */
-    private showModifyUS: boolean;
+    public showAddUS: boolean;
+
+    /**
+     * If true, the form for adding a US is shown.
+     * @type {boolean}
+     */
+    public showModifyUS: boolean;
 
     /**
      * FormGroup for add member form
      */
-    private addUSForm: FormGroup;
+    public addUSForm: FormGroup;
 
-    private userIsPO: boolean;
+    public userIsPO: boolean;
 
-    private currentProject;
-    private currentUser;
+    public currentProject;
+    public currentUser;
 
-    private addUsLoading: boolean;
-    private addUsSubmitted: boolean;
+    public addUsLoading: boolean;
+    public addUsSubmitted: boolean;
 
-    private modifyUsForm: FormGroup;
-    private modifyUsLoading: boolean;
-    private modifyUsSubmitted: boolean;
+    public modifyUsForm: FormGroup;
+    public modifyUsLoading: boolean;
+    public modifyUsSubmitted: boolean;
 
-    private shownModifyDescription: string|null;
+    public shownModifyDescription: string|null;
 
-    private deleteUsLoading: boolean;
+    public deleteUsLoading: boolean;
 
 
     public constructor(private projectManagerService: ProjectManagerService,
@@ -233,7 +233,6 @@ export class BacklogContainerComponent implements OnInit {
                 delete body.priority;
             }
 
-            body.difficulte = body.difficulty;
             body.description = body.us;
 
             const projectName = encodeURIComponent(this.currentProject.name);
@@ -282,11 +281,9 @@ export class BacklogContainerComponent implements OnInit {
                     delete body.priority;
                 }
 
-                body.difficulte = body.difficulty;
                 body.description = body.us;
             }
 
-            delete body.difficulty;
             delete body.us;
 
             this.httpClient.patch(service,

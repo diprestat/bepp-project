@@ -8,13 +8,14 @@ if [[ $1 == "dev" ]]
 then
     # run angular compilation
     cd web-app ; \
-    ng build --watch -dev & PID_ANGULAR=$!
+    npm run build:dev & PID_ANGULAR=$!
 
     # run mongodb server
     # And run api server
     cd ../api ; \
+    mkdir data/ ;
     mongod --dbpath data/ & PID_MONGO=$! ; \
-    node api.js & PID_NODE=$! ;
+    npm run start:dev & PID_NODE=$! ;
 
     while :
     do
