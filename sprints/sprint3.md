@@ -21,7 +21,7 @@ Sprint 3
 | T4_DEPLOY | Intégrer à Travis un déploiement continu à l'aide d'heroku | Dimitri | 3 |  | :x:
 | T5_P | Créer l'interface Front-end de creation des tâches<br><ul><li>Création d'une interface permettant aux utilisateur de remplir les champs 'description', 'difficulté' et 'tâches reliés' afin de créer une tâche</li></ul> | Amine | 2 | 9 | :white_check_mark:
 | T6_P | Créer l'interface Front-end de modification/suppression d'une tâche : <br><ul><li>Bouton suppression</li><li>Bouton modification</li><li>des inputs pour la modification</li><li>Bouton pour assigner la tâche</li></ul> | Amine | 2 | 10 | :white_check_mark:
-| T7_P | Créer l'interface Front-end pour la modification des sprints<br><ul><li>Modification des dates : début et fin de sprint.</li></ul> | Amine | 3 | 7 - 8 | :white_check_mark:
+| T7_P | Créer l'interface Front-end pour la modification des sprints<br><ul><li>Modification des dates : début et fin de sprint.</li></ul> | Amine | 2 | 7 - 8 | :white_check_mark:
 | T8_GITFLOW | Mettre la structure du gestion de projet sur Github 'projects' | Amine | 3 |  | :white_check_mark:
 | T9_DOC | Compléter le Swagger afin d'intégrer les nouveaux services |  | 2 | 1 | :x:
 | T10_M | Service PATCH du modification du nombre de sprints et de leurs durées  |  | 2 | 1 | :x:
