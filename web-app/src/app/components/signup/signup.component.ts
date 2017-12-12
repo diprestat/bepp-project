@@ -18,22 +18,22 @@ export class SignupComponent implements OnInit {
     /**
      * FormGroup for the signup.
      */
-    private signupForm: FormGroup;
+    public signupForm: FormGroup;
 
     /**
      * True if the form has been submitted at least one.
      */
-    private signupSubmitted: boolean;
+    public signupSubmitted: boolean;
 
     /**
      * True if the form has been submitted but response not received.
      */
-    private signupLoading: boolean;
+    public signupLoading: boolean;
 
     /**
      * Signup error to display.
      */
-    private signupError: string;
+    public signupError: string;
 
     /**
      * SignupComponent constructor.
