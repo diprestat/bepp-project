@@ -1,17 +1,7 @@
-const env = require ('./utils/environment');
-
 const express = require('express');
 const constants = require('./utils/api-constants');
-const monk = require('monk');	//we use monk to talk to MongoDB
-const db = monk(env.DB_URL);	//our database is nodetest1
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const router = express.Router();
-
-// Make our db accessible to our router
-router.use(function (req, res, next) {
-    req.db = db;
-    next();
-});
 
 //Authentification Service
 //Check Login Password

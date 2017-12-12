@@ -1,15 +1,6 @@
 const express = require('express');
-const env = require ('./utils/environment');
-const monk = require('monk');	//we use monk to talk to MongoDB
-const db = monk(env.DB_URL);	//our database is nodetest1
 const router = express.Router();
 const verifyAuth = require('./utils/verify-auth');
-
-// Make our db accessible to our router
-router.use(function (req, res, next) {
-    req.db = db;
-    next();
-});
 
 //Add a UserStory Service
 //Add an userStory in the projectCollection array: userStories
