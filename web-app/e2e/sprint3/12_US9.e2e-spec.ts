@@ -28,6 +28,7 @@ describe('Adding a task to the Sprint', function() {
         element(by.name('task_desc')).sendKeys('Making exemple task to test the feature');
         element(by.name('task_difficulty')).sendKeys('1');
         element(by.name('related_tasks')).sendKeys('1');
+        element(by.name('jh')).sendKeys('2');
 
         element(by.name('addtask')).click();
         browser.sleep(3000);

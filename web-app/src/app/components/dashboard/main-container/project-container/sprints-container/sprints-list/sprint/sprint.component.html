@@ -130,16 +130,16 @@
                 <tr [hidden]="!showModifyTask">
                     <td></td>
                     <td>
-                        <input type="text" class="form-control"/>
+                        <input type="text" name="desc_modify" class="form-control"/>
                     </td>
                     <td>
-                        <input type="text" class="form-control"/>
+                        <input type="text" name="related_modify" class="form-control"/>
                     </td>
                     <td>
-                        <input type="text" class="form-control"/>
+                        <input type="text" name="jh_modify" class="form-control"/>
                     </td>
                     <td>
-                        <select class="form-control">
+                        <select class="form-control" name="progress">
                             <option>To do</option>
                             <option>In Progress</option>
                             <option>Done</option>
@@ -219,7 +219,15 @@
                                 <!--<span class="validation-message" *ngIf="related_tasks.errors.required">Les tâches reliées doivent être saisie.</span>-->
                                 <!--</div>-->
                             </div>
-
+                        <td>
+                            <div class="form-group has-feedback">
+                                <label>Durée estimé</label>
+                                <input type="text"
+                                       id="jh"
+                                       name="jh"
+                                       class="form-control"
+                                       [formControlName]="'jh'"/>
+                            </div>
                         </td>
                     </tr>
                 </table>
