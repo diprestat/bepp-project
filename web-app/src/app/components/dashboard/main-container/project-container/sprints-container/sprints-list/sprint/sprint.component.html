@@ -120,10 +120,10 @@
                         <!--<button class="btn-xs btn-warning" disabled>In progress</button>-->
                         <button class="btn-xs btn-success" disabled>Done</button>
                     </td>
-                    <td><button class="btn-xs btn-info" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-edit"></span>
+                    <td><button class="btn-xs btn-info" name="modify_task" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-edit"></span>
                         Modifier
                     </button></td>
-                    <td><button class="btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span>
+                    <td><button class="btn-xs btn-danger" name="delete_task"><span class="glyphicon glyphicon-trash"></span>
                         Supprimer
                     </button></td>
                 </tr>
@@ -146,7 +146,7 @@
                         </select>
                     </td>
                     <td>
-                        <button class="btn btn-success" (click)="ModifyTask()"><span class="glyphicon glyphicon-edit"></span>
+                        <button class="btn btn-success" name="apply_task_modifs" (click)="ModifyTask()"><span class="glyphicon glyphicon-edit"></span>
                         Valider
                         </button>
                     </td>
