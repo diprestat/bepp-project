@@ -385,15 +385,15 @@ describe("Scrum Management API", function () {
 
         it("Bad request (missing Argument) : returns status 422", function (done) {
             request.post({
-                headers: {'content-type': 'application/x-www-form-urlencoded'},
+                headers: { 'content-type': 'application/x-www-form-urlencoded' },
                 url: authurl,
-                form: {login: "dprestat", password: "dp33"}
+                form: { login: "dprestat", password: "dp33" }
             }, function (error, response, body) {
                 const bodyJson = JSON.parse(body);
                 request.put({
-                    headers: {'x-access-token': bodyJson.token},
+                    headers: { 'x-access-token': bodyJson.token },
                     url: localurl,
-                    form: {description: "ma user story préférée"}
+                    form: { description: "ma user story préférée" }
                 }, function (error, response, body) {
                     expect(response.statusCode).to.equal(422);
                     done();
@@ -420,9 +420,9 @@ describe("Scrum Management API", function () {
             }, function (error, response, body) {
                 const bodyJson = JSON.parse(body);
                 request.put({
-                    headers: {'x-access-token': bodyJson.token},
+                    headers: { 'x-access-token': bodyJson.token },
                     url: localurl,
-                    form: {description: "ma_user_story_preferee", difficulte: "3"}
+                    form: { description: "ma_user_story_preferee", difficulty: "3" }
                 }, function (error, response) {
                     expect(response.statusCode).to.equal(401);
                     done();
@@ -433,15 +433,15 @@ describe("Scrum Management API", function () {
 
         it("Good request : returns status 200", function (done) {
             request.post({
-                headers: {'content-type': 'application/x-www-form-urlencoded'},
+                headers: { 'content-type': 'application/x-www-form-urlencoded' },
                 url: authurl,
-                form: {login: "dprestat", password: "dp33"}
+                form: { login: "dprestat", password: "dp33" }
             }, function (error, response, body) {
                 var bodyJson = JSON.parse(body);
                 request.put({
-                    headers: {'x-access-token': bodyJson.token},
+                    headers: { 'x-access-token': bodyJson.token },
                     url: localurl,
-                    form: {description: "ma_user_story_preferee", difficulte: "3"}
+                    form: { description: "ma_user_story_preferee", difficulty: "3" }
                 }, function(error, response) {
                     expect(response.statusCode).to.equal(200);
                     done();
@@ -452,9 +452,9 @@ describe("Scrum Management API", function () {
 
         it("Another Good request : returns status 200", function(done) {
             request.post({
-                headers: {'content-type' : 'application/x-www-form-urlencoded'},
-                url:     authurl,
-                form:    { login: "dprestat", password: "dp33"}
+                headers: { 'content-type': 'application/x-www-form-urlencoded' },
+                url: authurl,
+                form: { login: "dprestat", password: "dp33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
                 request.put({
@@ -533,9 +533,9 @@ describe("Scrum Management API", function () {
             }, function (error, response, body) {
                 var bodyJson = JSON.parse(body);
                 request.patch({
-                    headers: {'x-access-token': bodyJson.token},
+                    headers: { 'x-access-token': bodyJson.token },
                     url: localurl,
-                    form: {description: "ma_user_story_pref", difficulte: "3"}
+                    form: { description: "ma_user_story_pref", difficulty: "3" }
                 }, function (error, response, body) {
                     expect(response.statusCode).to.equal(401);
                     done();
@@ -547,15 +547,15 @@ describe("Scrum Management API", function () {
         var localurl2 = url + "userStories/ma_user_story/projects/Bepp/";
         it("Bad request (UserStory not found) : returns status 409", function (done) {
             request.post({
-                headers: {'content-type': 'application/x-www-form-urlencoded'},
+                headers: { 'content-type': 'application/x-www-form-urlencoded'},
                 url: authurl,
                 form: {login: "dprestat", password: "dp33"}
             }, function (error, response, body) {
                 var bodyJson = JSON.parse(body);
                 request.patch({
-                    headers: {'x-access-token': bodyJson.token},
+                    headers: { 'x-access-token': bodyJson.token },
                     url: localurl2,
-                    form: {description: "ma_user_story_pref3", difficulte: "3"}
+                    form: { description: "ma_user_story_pref3", difficulty: "3" }
                 }, function (error, response, body) {
                     expect(response.statusCode).to.equal(409);
                     done();
@@ -573,7 +573,7 @@ describe("Scrum Management API", function () {
                 request.patch({
                     headers: {'x-access-token': bodyJson.token},
                     url: localurl,
-                    form: {description: "my_prefered_user_story4", difficulte: "3"}
+                    form: {description: "my_prefered_user_story4", difficulty: "3"}
                 }, function (error, response, body) {
                     expect(response.statusCode).to.equal(200);
                     done();
@@ -585,7 +585,7 @@ describe("Scrum Management API", function () {
     });
 
 
-    describe("PATCH Modifier desrcription et difficulte d'une user story", function () {
+    describe("PATCH Modifier desrcription et difficulty d'une user story", function () {
         var localurl = url + "userStories/my_prefered_user_story4/projects/Bepp/user/Product%20Owner";
         var authurl = url + "users/token";
 

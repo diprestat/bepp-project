@@ -34,11 +34,11 @@ router.put('/projects/:name', function (req, res) {
                                 res.status(500).send("There was a problem with the database while creating the userStory: adding the userStory to the project's userStory list.");
                             }
                             else {
-                                res.status(200).send({success: true});
+                                res.status(200).send({ success: true });
                             }
                         });
                     }
-                    else{
+                    else {
                         res.status(409).send("There was a problem with the database while creating the userStory: this description is already used in this project.");
                     }
                 }
