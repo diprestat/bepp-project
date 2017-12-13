@@ -100,7 +100,7 @@ export class BacklogContainerComponent implements OnInit {
     private createFormGroup () {
         if (this.currentUser && this.currentProject) {
             const descriptionValidators = this.userIsPO ?
-                []:
+                [] :
                 [Validators.required];
 
             const difficultyValidators = this.userIsPO ?

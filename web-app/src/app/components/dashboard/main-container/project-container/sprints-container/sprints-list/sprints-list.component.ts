@@ -1,50 +1,98 @@
-import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
+import {HttpClient} from "@angular/common/http";
+import {ProjectManagerService} from "../../../../../../services/project-manager.service";
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
+import {AppConstants} from "../../../../../../app-constants";
 
 @Component({
-  selector: 'app-sprints-list',
-  templateUrl: './sprints-list.component.html',
-  styleUrls: ['./sprints-list.component.css']
+    selector: 'bepp-sprints-list',
+    templateUrl: './sprints-list.component.html',
+    styleUrls: ['./sprints-list.component.css']
 })
 export class SprintsListComponent implements OnInit {
 
-   public showAddSprint: boolean;
-   public showModifySprint: boolean;
-   public addSprintForm: FormGroup;
-   public addSprintSubmitted: boolean;
+    private currentProject;
 
-  constructor() {
+    public showAddSprint: boolean;
+    public showModifySprint: boolean;
+    public addSprintForm: FormGroup;
+    public addSprintSubmitted: boolean;
+    public addSprintLoading: boolean;
 
-      this.showAddSprint = false;
-      this.showModifySprint = false;
 
-      this.addSprintForm = new FormGroup ({
-          sprint_start: new FormControl(''),
-          sprint_end: new FormControl('')
-      });
-  }
+    public constructor(private httpClient: HttpClient,
+                       private projectManager: ProjectManagerService,
+                       private activatedRoute: ActivatedRoute) {
 
-  ngOnInit() {
+        this.showAddSprint = false;
+        this.showModifySprint = false;
+        this.addSprintLoading = false;
 
-  }
+        this.addSprintForm = new FormGroup({
+            sprint_start: new FormControl('', [Validators.required]),
+            sprint_end: new FormControl('', [Validators.required])
+        });
+    }
 
-  public submitAddSprintForm() {
-       this.toggleAddSprint();
-  }
+    public ngOnInit(): void {
+        const projectName = this.activatedRoute.snapshot.parent.parent.params.name;
 
-  public toggleAddSprint() {
+        this.projectManager.get(projectName).subscribe((project) => {
+            this.currentProject = project;
+        });
+    }
+
+    public submitAddSprintForm() {
+        this.addSprintSubmitted = true;
+        if (this.addSprintForm.valid && this.addSprintLoading) {
+            this.addSprintLoading = true;
+            const startingDate = new Date (this.addSprintForm.value.sprint_start);
+            const endDate = new Date (this.addSprintForm.value.sprint_end);
+
+            this.httpClient.put(
+                `/api/sprints/projects/${encodeURIComponent(this.currentProject.name)}`, {
+
+                    startingDate: startingDate.toISOString(),
+                    time: ((endDate.getTime() - startingDate.getTime()) / 1000),
+                    token: localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME)
+                }
+            ).subscribe((response) => {
+                // TODO Maj list
+
+                this.toggleAddSprint();
+                this.addSprintLoading = false;
+            }, () => {
+                this.addSprintLoading = false;
+                // TODO handle errors
+            });
+
+        }
+    }
+
+    public toggleAddSprint() {
+        this.addSprintSubmitted = false;
+        this.addSprintForm.reset();
         this.showAddSprint = !this.showAddSprint;
-  }
+    }
 
-  public toggleModifySprint() {
+    public toggleModifySprint() {
         this.showModifySprint = !this.showModifySprint;
-  }
+    }
 
-  public ModifySprint() {
-       this.toggleModifySprint();
-  }
+    public ModifySprint() {
+        this.toggleModifySprint();
+    }
 
-  public cancelModifySprint() {
-       this.toggleModifySprint();
-  }
+    public cancelModifySprint() {
+        this.toggleModifySprint();
+    }
+
+    public get sprint_start(): AbstractControl {
+        return this.addSprintForm.get('sprint_start');
+    }
+
+    public get sprint_end(): AbstractControl {
+        return this.addSprintForm.get('sprint_end');
+    }
 }

@@ -175,18 +175,18 @@ router.patch('/:number/projects/:name/', function (req, res) {
 
         verifyAuth(req, res, function () {
 
-            var updateSprint = {$set: {time: time, startingDate: startingDate}};
+            var updateSprint = { $set: { time: time, startingDate: startingDate } };
             var sprintQuery = {projectName: projectName, number: sprintNumber};
 
             sprintCollection.update(sprintQuery, updateSprint, function (err, doc) {
                 if (err) {
                     res.status(500).send("There was a problem with the database while updating the sprint: updating the sprint's starting date and time length.");
                 }
-                else{
+                else {
                     if (doc.nModified != 0) {
-                        res.status(200).send({success: true});
+                        res.status(200).send({ success: true });
                     }
-                    else{
+                    else {
                         res.status(409).send("There was a problem with the database while updating the sprint: no updated document.");
                     }
                 }

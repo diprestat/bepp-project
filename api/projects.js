@@ -11,13 +11,13 @@ router.post('/', function (req, res) {
     var name = req.body.name;
     var description = req.body.description;
 
-    if (name == null || description == null) {
+    if (!name || !description) {
         res.status(422).send("Missing Arguments.");
     }
     else {
-        var db = req.db;
-        var userCollection = db.get('userCollection');
-        var projectCollection = db.get('projectCollection');
+        const db = req.db;
+        const userCollection = db.get('userCollection');
+        const projectCollection = db.get('projectCollection');
 
         verifyAuth(req, res, function () {
 
@@ -60,10 +60,11 @@ router.post('/', function (req, res) {
 
                                 console.log("doc Project");
                                 console.log(docProject);
-                                if (docProject.users != undefined)
-                                    delete docProject['users'];
+                                if (docProject.users != undefined) {
+                                    delete docProject.users;
+                                }
                                 //Add the user to the project's list
-                                var updateUser = {$addToSet: {projects: docProject}};
+                                var updateUser = { $addToSet: { projects: docProject } };
                                 userCollection.update(userQuery, updateUser, {upsert: true}, function (err, doc) {
                                     if (err) {
                                         res.status(500).send("There was a problem with the database while creating the project: adding the project to the user's project list.");
@@ -71,7 +72,7 @@ router.post('/', function (req, res) {
                                     else {
                                         console.log("Updated : ");
                                         console.log(doc);
-                                        res.status(200).send({success: true});
+                                        res.status(200).send({ success: true });
                                     }
                                 });
                             }
@@ -95,32 +96,32 @@ router.get('/:name', function (req, res) {
     var db = req.db;
 
     // Find in a collection
-    var query = {name: projectName};
+    var query = { name: projectName };
 
     verifyAuth(req, res, function () {
         //Fetch Project
         db.collection("projectCollection").find(query, {}, function (e, docs) {
-            if (docs.length != 0) {
+            if (docs.length > 0) {
                 //Check if the user is in the project
                 var found = false;
                 console.log(docs);
                 for (var i = 0; i < docs[0].users.length; i++) {
-                    if (docs[0].users[i].login == req.decoded.login) {
+                    if (docs[0].users[i].login === req.decoded.login) {
                         found = true;
                     }
                 }
                 if (found) {
-                    req.decoded.project=projectName;
+                    req.decoded.project = projectName;
                     res.status(200).send(docs);
                 }
                 else {
                     res.status(403);
-                    res.send({error: 403});
+                    res.send({ error: 403 });
                 }
             }
             else {
                 res.status(404);
-                res.send({error: 404});
+                res.send({ error: 404 });
             }
         });
     });
