@@ -5,12 +5,14 @@
   "main": "api.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec --timeout 10000",
-    "docker-dev": "pm2-dev start api.js"
+    "start:prod": "node api.js prod",
+    "start:dev": "./node_modules/pm2/bin/pm2-dev api.js --x -- dev"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "webpack-dev-server": "^1.9.0"
   },
   "dependencies": {
     "chai": "^4.1.2",

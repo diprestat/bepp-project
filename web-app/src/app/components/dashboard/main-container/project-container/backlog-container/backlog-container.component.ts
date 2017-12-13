@@ -17,15 +17,6 @@ import {CheckAuthService} from "../../../../../services/check-auth.service";
 export class BacklogContainerComponent implements OnInit {
 
     /**
-     * Boolean to True when the GET project of api has been received.
-     * else false.
-     * @type {boolean}
-     */
-    private backlogLoading: boolean;
-
-    private nbReceivedServices: number;
-
-    /**
      * If true, the form for adding a US is shown.
      * @type {boolean}
      */
@@ -58,6 +49,15 @@ export class BacklogContainerComponent implements OnInit {
 
     private deleteUsLoading: boolean;
 
+    private nbReceivedServices: number;
+
+
+    /**
+     * Boolean to True when the GET project of api has been received.
+     * else false.
+     * @type {boolean}
+     */
+    public backlogLoading: boolean;
 
     public constructor(private projectManagerService: ProjectManagerService,
                        private activatedRoute: ActivatedRoute,
@@ -233,7 +233,6 @@ export class BacklogContainerComponent implements OnInit {
                 delete body.priority;
             }
 
-            body.difficulte = body.difficulty;
             body.description = body.us;
 
             const projectName = encodeURIComponent(this.currentProject.name);
@@ -282,11 +281,9 @@ export class BacklogContainerComponent implements OnInit {
                     delete body.priority;
                 }
 
-                body.difficulte = body.difficulty;
                 body.description = body.us;
             }
 
-            delete body.difficulty;
             delete body.us;
 
             this.httpClient.patch(service,

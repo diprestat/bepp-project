@@ -20,23 +20,23 @@ export class NewProjectComponent implements OnInit {
      * FormGroup of form for project creation
      * @type {FormGroup}
      */
-    private newProjectForm: FormGroup;
+    public newProjectForm: FormGroup;
 
     /**
      * To true if api service for creation has been called and response is not received.
      * @type {boolean}
      */
-    private newProjectLoading: boolean;
+    public newProjectLoading: boolean;
 
     /**
      * True if project has been submit at least one time.
      */
-    private newProjectSubmitted: boolean;
+    public newProjectSubmitted: boolean;
 
     /**
      * Error message to show to the user.
      */
-    private newProjectMessage: string;
+    public newProjectMessage: string;
 
     /**
      * NewProjectComponent constructor.
