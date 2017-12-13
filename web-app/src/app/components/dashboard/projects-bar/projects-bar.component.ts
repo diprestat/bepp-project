@@ -19,18 +19,18 @@ export class ProjectsBarComponent implements OnInit, OnDestroy {
     /**
      * If true the api service for get projects has been called but not received.
      */
-    public projectsLoading: boolean;
+    private projectsLoading: boolean;
 
     /**
      * Project list to displayed.
      * Gotten with api service
      */
-    public projectsList: Array<string>;
+    private projectsList: Array<string>;
 
     /**
      * Subscription to destroy it in ngOnDestroy.
      */
-    public updateListProjectSub: Subscription;
+    private updateListProjectSub: Subscription;
 
     /**
      * ProjectsBarComponent constructor.

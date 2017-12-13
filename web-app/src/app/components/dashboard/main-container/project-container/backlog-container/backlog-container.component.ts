@@ -21,42 +21,42 @@ export class BacklogContainerComponent implements OnInit {
      * else false.
      * @type {boolean}
      */
-    public backlogLoading: boolean;
+    private backlogLoading: boolean;
 
-    public nbReceivedServices: number;
-
-    /**
-     * If true, the form for adding a US is shown.
-     * @type {boolean}
-     */
-    public showAddUS: boolean;
+    private nbReceivedServices: number;
 
     /**
      * If true, the form for adding a US is shown.
      * @type {boolean}
      */
-    public showModifyUS: boolean;
+    private showAddUS: boolean;
+
+    /**
+     * If true, the form for adding a US is shown.
+     * @type {boolean}
+     */
+    private showModifyUS: boolean;
 
     /**
      * FormGroup for add member form
      */
-    public addUSForm: FormGroup;
+    private addUSForm: FormGroup;
 
-    public userIsPO: boolean;
+    private userIsPO: boolean;
 
-    public currentProject;
-    public currentUser;
+    private currentProject;
+    private currentUser;
 
-    public addUsLoading: boolean;
-    public addUsSubmitted: boolean;
+    private addUsLoading: boolean;
+    private addUsSubmitted: boolean;
 
-    public modifyUsForm: FormGroup;
-    public modifyUsLoading: boolean;
-    public modifyUsSubmitted: boolean;
+    private modifyUsForm: FormGroup;
+    private modifyUsLoading: boolean;
+    private modifyUsSubmitted: boolean;
 
-    public shownModifyDescription: string|null;
+    private shownModifyDescription: string|null;
 
-    public deleteUsLoading: boolean;
+    private deleteUsLoading: boolean;
 
 
     public constructor(private projectManagerService: ProjectManagerService,

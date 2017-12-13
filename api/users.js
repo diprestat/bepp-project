@@ -23,7 +23,7 @@ router.post('/token', function (req, res) {
 
         db.collection("userCollection").find(query, {}, function (e, docs) {
             if (docs.length != 0) {
-                var token = jwt.sign(docs[0], constants.superSecret);
+                const token = jwt.sign(docs[0], constants.superSecret);
                 res.json({
                     success: true,
                     message: 'Authentication succeded!',
