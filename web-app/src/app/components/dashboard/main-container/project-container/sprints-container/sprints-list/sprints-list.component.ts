@@ -8,10 +8,10 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class SprintsListComponent implements OnInit {
 
-   private showAddSprint: boolean;
-   private showModifySprint: boolean;
-   private addSprintForm: FormGroup;
-   private addSprintSubmitted: boolean;
+   public showAddSprint: boolean;
+   public showModifySprint: boolean;
+   public addSprintForm: FormGroup;
+   public addSprintSubmitted: boolean;
 
   constructor() {
 
@@ -28,23 +28,23 @@ export class SprintsListComponent implements OnInit {
 
   }
 
-  private submitAddSprintForm() {
+  public submitAddSprintForm() {
        this.toggleAddSprint();
   }
 
-  private toggleAddSprint() {
+  public toggleAddSprint() {
         this.showAddSprint = !this.showAddSprint;
   }
 
-  private toggleModifySprint() {
+  public toggleModifySprint() {
         this.showModifySprint = !this.showModifySprint;
   }
 
-  private ModifySprint() {
+  public ModifySprint() {
        this.toggleModifySprint();
   }
 
-  private cancelModifySprint() {
+  public cancelModifySprint() {
        this.toggleModifySprint();
   }
 }
