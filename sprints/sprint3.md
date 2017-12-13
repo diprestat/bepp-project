@@ -32,7 +32,7 @@
 | T15_M | Service PATCH d'ajout de tâches à un sprint  |  | 2 | 1 | :white_check_mark:
 | T16_M | Service PATCH de modification de tâches dans un sprint  |  | 2 | 1 | :white_check_mark:
 | T17_M | Service PATCH de suppression de tâches dans un sprint  |  | 2 | 1 | :white_check_mark:
-| T18_PM | Ajouter dans la création de projet, le nombre et la durée des sprints |  | 2 | 7 | :x:
+| T18_PM | Créer le formulaire TS d'ajout de sprint à un projet |  | 2 | 7 | :white_check_mark:
 | T19_PM | Créer le formulaire TS d'ajout d'US à un sprint |  | 2 | 8 | :x:
 | T20_PM | Créer le formulaire TS d'ajout de tâche à un sprint |  | 2 | 9 | :x:
 | T21_PM | Créer le formulaire TS de modification d'une tâche (dans un sprint) |  | 2 | 10 | :x:

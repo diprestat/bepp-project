@@ -34,9 +34,9 @@ app.use('/api/sprints', sprints);
 
 // Catch all other routes and return an application file
 app.get(['/', '/:requested'], function (req, res, next) {
-    var requestedFileName = req.params.requested ? req.params.requested : 'index.html';
+    const requestedFileName = req.params.requested ? req.params.requested : 'index.html';
 
-    var requestedPath = path.join(__dirname, '../web-app/dist', requestedFileName);
+    const requestedPath = path.join(__dirname, '../web-app/dist', requestedFileName);
 
     // if redirected file exists, then redirect it else go to next catch
     if (fs.existsSync(requestedPath)) {
