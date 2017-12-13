@@ -25,15 +25,24 @@
                     <td>1</td>
                     <td>12/12/17</td>
                     <td>20/12/18</td>
-                    <td><button class="btn-xs btn-primary" [routerLink]="['test']" name="goto"><span class="glyphicon glyphicon-open"></span>
-                        Aller à
-                    </button></td>
-                    <td><button class="btn-xs btn-info" (click)="toggleModifySprint()"><span class="glyphicon glyphicon-edit"></span>
-                        Modifier
-                    </button></td>
-                    <td><button class="btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span>
-                        Supprimer
-                    </button></td>
+                    <td>
+                        <button class="btn btn-xs btn-primary" [routerLink]="['test']" name="goto">
+                            <span class="glyphicon glyphicon-open"></span>
+                            Aller à
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-xs btn-info" (click)="toggleModifySprint()">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Modifier
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-xs btn-danger">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            Supprimer
+                        </button>
+                    </td>
                 </tr>
                 <tr [hidden]="!showModifySprint">
                     <td></td>
@@ -57,41 +66,45 @@
     <div class="col-md-10">
         <div [hidden]="!showAddSprint" class="panel panel-default">
             <h4 align="center">Ajouter un sprint</h4>
-            <form novalidate [formGroup]="addSprintForm">
+            <form novalidate
+                  [formGroup]="addSprintForm"
+                  (submit)="submitAddSprintForm()">
                 <table class="table">
                     <tr>
                         <td>
-                            <div class="form-group has-feedback">
-                                <label>Date de début</label>
+                            <div class="form-group has-feedback"
+                                 [ngClass]="{ 'has-error': sprint_start.invalid && (sprint_start.dirty || sprint_start.touched || addSprintSubmitted) }">
+                                <label for="start_date">Date de début</label>
                                 <input class="form-control"
                                        type="date"
                                        name="start_date"
                                        id="start_date"
                                        [formControlName]="'sprint_start'"/>
 
-                                <!--<span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"-->
-                                      <!--[ngClass]="{ 'show': start_date.invalid && (start_date.dirty || start_date.touched || addSprintSubmitted) }"></span>-->
-                                <!--<div class="col-12 text-danger"-->
-                                     <!--*ngIf="start_date.invalid && (start_date.dirty || start_date.touched || addSprintSubmitted)">-->
-                                    <!--<span class="validation-message" *ngIf="start_date.errors.required">La date de début doit être saisie.</span>-->
-                                <!--</div>-->
+                                <span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"
+                                      [ngClass]="{ 'show': sprint_start.invalid && (sprint_start.dirty || sprint_start.touched || addSprintSubmitted) }"></span>
+                                <div class="col-12 text-danger"
+                                     *ngIf="sprint_start.invalid && (sprint_start.dirty || sprint_start.touched || addSprintSubmitted)">
+                                    <span class="validation-message" *ngIf="sprint_start.errors.required">La date de début doit être saisie.</span>
+                                </div>
                             </div>
                         </td>
                         <td>
-                            <div class="form-group has-feedback">
-                                <label>Date de fin</label>
+                            <div class="form-group has-feedback"
+                                 [ngClass]="{ 'has-error': sprint_end.invalid && (sprint_end.dirty || sprint_end.touched || addSprintSubmitted) }">
+                                <label for="end_date">Date de fin</label>
                                 <input type="date"
                                        id="end_date"
                                        name="end_date"
                                        class="form-control"
                                        [formControlName]="'sprint_end'"/>
 
-                                <!--<span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"-->
-                                      <!--[ngClass]="{ 'show': sprint_end.invalid && (sprint_end.dirty || sprint_end.touched || addSprintSubmitted) }"></span>-->
-                                <!--<div class="col-12 text-danger"-->
-                                     <!--*ngIf="difficulty.invalid && (sprint_end.dirty || sprint_end.touched || addSprintSubmitted)">-->
-                                    <!--<span class="validation-message" *ngIf="sprint_end.errors.required">La date de fin doit être saisie.</span>-->
-                                <!--</div>-->
+                                <span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"
+                                      [ngClass]="{ 'show': sprint_end.invalid && (sprint_end.dirty || sprint_end.touched || addSprintSubmitted) }"></span>
+                                <div class="col-12 text-danger"
+                                     *ngIf="sprint_end.invalid && (sprint_end.dirty || sprint_end.touched || addSprintSubmitted)">
+                                    <span class="validation-message" *ngIf="sprint_end.errors.required">La date de fin doit être saisie.</span>
+                                </div>
                             </div>
 
                         </td>
@@ -116,7 +129,7 @@
         <div class="panel-body" [hidden]="!showAddSprint">
             <button class="btn-add btn btn-default pull-right" name="cancel_add" (click)="toggleAddSprint()">
                 <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-                <span > Annuler</span>
+                <span> Annuler</span>
             </button>
         </div>
     </div>

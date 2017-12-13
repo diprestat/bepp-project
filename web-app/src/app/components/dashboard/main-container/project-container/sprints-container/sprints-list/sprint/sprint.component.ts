@@ -9,10 +9,10 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class SprintComponent implements OnInit {
 
-  private showSelectUS: boolean;
-  private showAddTask: boolean;
-  private showModifyTask: boolean;
-  private addTaskForm: FormGroup;
+  public showSelectUS: boolean;
+  public showAddTask: boolean;
+  public showModifyTask: boolean;
+  public addTaskForm: FormGroup;
 
   constructor() {
       this.showSelectUS = false;
