@@ -17,47 +17,47 @@ import {CheckAuthService} from "../../../../../services/check-auth.service";
 export class BacklogContainerComponent implements OnInit {
 
     /**
+     * If true, the form for adding a US is shown.
+     * @type {boolean}
+     */
+    private showAddUS: boolean;
+
+    /**
+     * If true, the form for adding a US is shown.
+     * @type {boolean}
+     */
+    private showModifyUS: boolean;
+
+    /**
+     * FormGroup for add member form
+     */
+    private addUSForm: FormGroup;
+
+    private userIsPO: boolean;
+
+    private currentProject;
+    private currentUser;
+
+    private addUsLoading: boolean;
+    private addUsSubmitted: boolean;
+
+    private modifyUsForm: FormGroup;
+    private modifyUsLoading: boolean;
+    private modifyUsSubmitted: boolean;
+
+    private shownModifyDescription: string|null;
+
+    private deleteUsLoading: boolean;
+
+    private nbReceivedServices: number;
+
+
+    /**
      * Boolean to True when the GET project of api has been received.
      * else false.
      * @type {boolean}
      */
     public backlogLoading: boolean;
-
-    public nbReceivedServices: number;
-
-    /**
-     * If true, the form for adding a US is shown.
-     * @type {boolean}
-     */
-    public showAddUS: boolean;
-
-    /**
-     * If true, the form for adding a US is shown.
-     * @type {boolean}
-     */
-    public showModifyUS: boolean;
-
-    /**
-     * FormGroup for add member form
-     */
-    public addUSForm: FormGroup;
-
-    public userIsPO: boolean;
-
-    public currentProject;
-    public currentUser;
-
-    public addUsLoading: boolean;
-    public addUsSubmitted: boolean;
-
-    public modifyUsForm: FormGroup;
-    public modifyUsLoading: boolean;
-    public modifyUsSubmitted: boolean;
-
-    public shownModifyDescription: string|null;
-
-    public deleteUsLoading: boolean;
-
 
     public constructor(private projectManagerService: ProjectManagerService,
                        private activatedRoute: ActivatedRoute,

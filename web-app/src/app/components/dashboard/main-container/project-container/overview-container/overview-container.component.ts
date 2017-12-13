@@ -58,8 +58,8 @@ export class OverviewContainerComponent implements OnInit {
      * @type {{id: number, name: string}[]}
      */
     public availabledRole = [
-        { id: 0, name: 'Développeur' },
-        {id: 1, name: 'Product Owner' }
+        {id: 0, name: "Développeur"},
+        {id: 1, name: "Product Owner"}
     ];
 
     /**

@@ -84,7 +84,7 @@ router.patch('/:oldDescription/projects/:name/', function (req, res) {
                         res.status(200).send({success: true});
                     }
                 }
-                else{
+                else {
                     res.status(409).send("UserStory not found.");
                 }
             });

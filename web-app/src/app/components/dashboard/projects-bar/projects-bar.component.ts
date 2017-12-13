@@ -58,7 +58,7 @@ export class ProjectsBarComponent implements OnInit, OnDestroy {
     /**
      * Call service to get project list of current user.
      */
-    private updateProjectList () {
+    public updateProjectList () {
         const userLogin = encodeURIComponent(localStorage.getItem(AppConstants.LOGIN_USER));
         this.httpClient.get(`/api/users/${userLogin}`,
             {
