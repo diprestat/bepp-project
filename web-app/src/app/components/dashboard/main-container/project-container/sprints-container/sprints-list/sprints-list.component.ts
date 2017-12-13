@@ -45,7 +45,7 @@ export class SprintsListComponent implements OnInit {
 
     public submitAddSprintForm() {
         this.addSprintSubmitted = true;
-        if (this.addSprintForm.valid && this.addSprintLoading) {
+        if (this.addSprintForm.valid && !this.addSprintLoading) {
             this.addSprintLoading = true;
             const startingDate = new Date (this.addSprintForm.value.sprint_start);
             const endDate = new Date (this.addSprintForm.value.sprint_end);
