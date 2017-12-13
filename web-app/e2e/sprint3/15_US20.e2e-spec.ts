@@ -24,4 +24,5 @@ describe('Showing the tasks related to a sprint', function() {
         element(by.name('logout')).click();
 
     });
+
 });
