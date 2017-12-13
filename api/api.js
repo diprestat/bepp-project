@@ -28,7 +28,7 @@ app.use(function (req, res, next) {
 app.use('/api/users', users);
 app.use('/api/projects', projects);
 app.use('/api/userStories', userStories);
-app.use('/api/sprints', sprints);
+app.use('/api', sprints);
 
 ////// Attach application /////
 

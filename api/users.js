@@ -80,7 +80,7 @@ router.post('/', function (req, res) {
                     res.status(409).send("There is already a user with this login.");
                 }
             }
-        })
+        });
     }
 });
 
@@ -94,15 +94,15 @@ router.get('/:login', function (req, res) {
     var db = req.db;
 
     // Find in a collection
-    var query = {login: userLogin};
+    var query = { login: userLogin };
 
     db.collection("userCollection").find(query, {}, function (e, docs) {
-        if (docs.length != 0) {
+        if (docs.length > 0) {
             res.status(200).send(docs[0]);
         }
         else {
             res.status(404);
-            res.send({error: 404});
+            res.send({ error: 404 });
         }
     });
 });

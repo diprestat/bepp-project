@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
-import {ProjectManagerService} from "../../../../../../services/project-manager.service";
-import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
-import {AppConstants} from "../../../../../../app-constants";
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
+import {ActivatedRoute} from '@angular/router';
+import {ProjectManagerService} from '@app/services/project-manager.service';
+import {AppConstants} from '@app/app-constants';
 
 @Component({
     selector: 'bepp-sprints-list',
@@ -64,7 +64,6 @@ export class SprintsListComponent implements OnInit {
                 this.addSprintLoading = false;
             }, () => {
                 this.addSprintLoading = false;
-                // TODO handle errors
             });
 
         }

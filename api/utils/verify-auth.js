@@ -13,8 +13,10 @@ module.exports = function verifyAuth(req, res, next) {
         // verifies secret and checks exp
         jwt.verify(token, superSecret, function (err, decoded) {
             if (err) {
-                res.success(401).json({success: false, message: 'Failed to authenticate token.'});
-            } else {
+                res.status(401)
+                   .json({ success: false, message: 'Failed to authenticate token.' });
+            }
+            else {
                 // if everything is good, save to request for use in other routes
                 req.decoded = decoded;
                 next();
