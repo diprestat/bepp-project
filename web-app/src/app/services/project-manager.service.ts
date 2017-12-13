@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import {Router} from "@angular/router";
-import {AppConstants} from "../app-constants";
-import {ReplaySubject} from "rxjs/ReplaySubject";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
-import {CheckAuthService} from "./check-auth.service";
+import {AppConstants} from '../app-constants';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {CheckAuthService} from './check-auth.service';
 
 /**
  * Check Api error response to redirect to login if authentication failed.
@@ -23,14 +22,14 @@ export class ProjectManagerService {
      * @param {string} projectName
      */
     public get (projectName: string): Observable<any> {
-        let httpParams = new HttpParams()
+        const httpParams = new HttpParams()
             .set('token', localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME));
 
         const ret = new ReplaySubject<any>(1);
 
         projectName = encodeURIComponent(projectName);
 
-        this.httpClient.get(`/api/projects/${projectName}`,{
+        this.httpClient.get(`/api/projects/${projectName}`, {
             params: httpParams,
             responseType: 'json'
         }).subscribe((response: any) => {
@@ -40,6 +39,6 @@ export class ProjectManagerService {
             ret.next(null);
         });
 
-        return ret.take(1)
+        return ret.take(1);
     }
 }
