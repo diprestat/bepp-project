@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {ProjectManagerService} from '@app/services/project-manager.service';
 import {AppConstants} from '@app/app-constants';
@@ -13,6 +13,8 @@ import {AppConstants} from '@app/app-constants';
 export class SprintsListComponent implements OnInit {
 
     private currentProject;
+
+    public currentSprintsList;
 
     public showAddSprint: boolean;
     public showModifySprint: boolean;
@@ -29,9 +31,27 @@ export class SprintsListComponent implements OnInit {
         this.showModifySprint = false;
         this.addSprintLoading = false;
 
+        this.currentSprintsList = [];
+
         this.addSprintForm = new FormGroup({
             sprint_start: new FormControl('', [Validators.required]),
             sprint_end: new FormControl('', [Validators.required])
+        });
+    }
+
+    private getSprintList() {
+        this.httpClient.get(
+            `/api/projects/${encodeURIComponent(this.currentProject.name)}/sprints`, {
+                params: (new HttpParams()).set('token', localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME))
+            }).subscribe((response) => {
+            this.currentSprintsList = response;
+
+            for (const sprint of this.currentSprintsList) {
+                sprint.startingDate = new Date(sprint.startingDate);
+                sprint.endDate = new Date (sprint.startingDate.getTime() + sprint.time * 1000);
+            }
+        }, () => {
+
         });
     }
 
@@ -40,6 +60,7 @@ export class SprintsListComponent implements OnInit {
 
         this.projectManager.get(projectName).subscribe((project) => {
             this.currentProject = project;
+            this.getSprintList();
         });
     }
 
@@ -58,8 +79,7 @@ export class SprintsListComponent implements OnInit {
                     token: localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME)
                 }
             ).subscribe((response) => {
-                // TODO Maj list
-
+                this.getSprintList ();
                 this.toggleAddSprint();
                 this.addSprintLoading = false;
             }, () => {

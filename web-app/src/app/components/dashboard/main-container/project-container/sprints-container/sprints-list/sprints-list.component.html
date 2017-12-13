@@ -21,10 +21,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr [hidden]="showModifySprint">
-                    <td>1</td>
-                    <td>12/12/17</td>
-                    <td>20/12/18</td>
+                <tr *ngFor="let sprint of currentSprintsList"
+                    [hidden]="showModifySprint">
+                    <td>{{ sprint.number }}</td>
+                    <td>{{ sprint.startingDate.toLocaleDateString() }}</td>
+                    <td>{{ sprint.endDate.toLocaleDateString() }}</td>
                     <td>
                         <button class="btn btn-xs btn-primary" [routerLink]="['test']">
                             <span class="glyphicon glyphicon-open"></span>
