@@ -15,8 +15,9 @@ RUN npm install -save
 
 COPY web-app/. /home/node/app/web-app
 
-# buidl:prod for production
-CMD ["npm", "run", "build:dev"]
+RUN cd /home/node/app/web-app && npm run build:prod
+
+COPY web-app/. /home/node/app/web-app
 
 #Run Express
 
@@ -30,8 +31,8 @@ COPY api/package-lock.json /home/node/app/api
 
 RUN npm install -save
 
-COPY api/. /home/node/app/api
+COPY api /home/node/app/api
 
 EXPOSE 8080
 
-CMD ["npm", "run", "docker-dev"]
+CMD ["npm", "run", "start:prod"]

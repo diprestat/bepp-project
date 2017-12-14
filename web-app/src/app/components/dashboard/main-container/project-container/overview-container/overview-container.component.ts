@@ -20,44 +20,44 @@ export class OverviewContainerComponent implements OnInit {
      * If true, the form for adding member is shown.
      * @type {boolean}
      */
-    private showAddMember: boolean;
+    public showAddMember: boolean;
 
     /**
      * True if the GET project has been called but not received.
      * @type {boolean}
      */
-    private overviewLoading: boolean;
+    public overviewLoading: boolean;
 
     /**
      * Received data from api, project to display.
      */
-    private currentProject: any;
+    public currentProject: any;
 
     /**
      * FormGroup for add member form
      */
-    private addMemberForm: FormGroup;
+    public addMemberForm: FormGroup;
 
     /**
      * True if adding member has been submit at least one time.
      */
-    private addMemberFormSubmitted: boolean;
+    public addMemberFormSubmitted: boolean;
 
     /**
      * True if adding member has been submit, and response not received.
      */
-    private addMemberFormLoading: boolean;
+    public addMemberFormLoading: boolean;
 
     /**
      * Error to show for add memeber form.
      */
-    private errorMessageAddMember: string;
+    public errorMessageAddMember: string;
 
     /**
      * Option of select for role (add member form)
      * @type {{id: number, name: string}[]}
      */
-    private availabledRole = [
+    public availabledRole = [
         {id: 0, name: "Développeur"},
         {id: 1, name: "Product Owner"}
     ];

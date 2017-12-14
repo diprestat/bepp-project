@@ -1,55 +1,7 @@
-var express = require('express');
-var bodyParser = require("body-parser");
-var monk = require('monk'); //we use monk to talk to MongoDB
-var db = monk('mongo:27017/nodetest1'); //our database is nodetest1
-var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-const projects = require('./projects');
+const express = require('express');
 const router = express.Router();
 
-var app = express();
-
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-
-// Make our db accessible to our router
-router.use(function (req, res, next) {
-    req.db = db;
-    next();
-});
-
-app.set('superSecret', "12345"); // secret variable
-
-// route middleware to verify a token
-function verifyAuth(req, res, next) {
-
-    // check header or url parameters or post parameters for token
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
-    // decode token
-    if (token) {
-
-        // verifies secret and checks exp
-        jwt.verify(token, app.get('superSecret'), function (err, decoded) {
-            if (err) {
-                res.success(401).json({success: false, message: 'Failed to authenticate token.'});
-            } else {
-                // if everything is good, save to request for use in other routes
-                req.decoded = decoded;
-                next();
-            }
-        });
-
-    } else {
-
-        // if there is no token
-        // return an error
-        res.status(401).send({
-            success: false,
-            message: 'No token provided.'
-        });
-    }
-
-}
+const verifyAuth = require('./utils/verify-auth');
 
 //Add a Project Service
 //Suppose :
@@ -59,13 +11,13 @@ router.post('/', function (req, res) {
     var name = req.body.name;
     var description = req.body.description;
 
-    if (name == null || description == null) {
+    if (!name || !description) {
         res.status(422).send("Missing Arguments.");
     }
     else {
-        var db = req.db;
-        var userCollection = db.get('userCollection');
-        var projectCollection = db.get('projectCollection');
+        const db = req.db;
+        const userCollection = db.get('userCollection');
+        const projectCollection = db.get('projectCollection');
 
         verifyAuth(req, res, function () {
 
@@ -108,10 +60,11 @@ router.post('/', function (req, res) {
 
                                 console.log("doc Project");
                                 console.log(docProject);
-                                if (docProject.users != undefined)
-                                    delete docProject['users'];
+                                if (docProject.users != undefined) {
+                                    delete docProject.users;
+                                }
                                 //Add the user to the project's list
-                                var updateUser = {$addToSet: {projects: docProject}};
+                                var updateUser = { $addToSet: { projects: docProject } };
                                 userCollection.update(userQuery, updateUser, {upsert: true}, function (err, doc) {
                                     if (err) {
                                         res.status(500).send("There was a problem with the database while creating the project: adding the project to the user's project list.");
@@ -119,7 +72,7 @@ router.post('/', function (req, res) {
                                     else {
                                         console.log("Updated : ");
                                         console.log(doc);
-                                        res.status(200).send({success: true});
+                                        res.status(200).send({ success: true });
                                     }
                                 });
                             }
@@ -143,32 +96,32 @@ router.get('/:name', function (req, res) {
     var db = req.db;
 
     // Find in a collection
-    var query = {name: projectName};
+    var query = { name: projectName };
 
     verifyAuth(req, res, function () {
         //Fetch Project
         db.collection("projectCollection").find(query, {}, function (e, docs) {
-            if (docs.length != 0) {
+            if (docs.length > 0) {
                 //Check if the user is in the project
                 var found = false;
                 console.log(docs);
                 for (var i = 0; i < docs[0].users.length; i++) {
-                    if (docs[0].users[i].login == req.decoded.login) {
+                    if (docs[0].users[i].login === req.decoded.login) {
                         found = true;
                     }
                 }
                 if (found) {
-                    req.decoded.project=projectName;
+                    req.decoded.project = projectName;
                     res.status(200).send(docs);
                 }
                 else {
                     res.status(403);
-                    res.send({error: 403});
+                    res.send({ error: 403 });
                 }
             }
             else {
                 res.status(404);
-                res.send({error: 404});
+                res.send({ error: 404 });
             }
         });
     });
