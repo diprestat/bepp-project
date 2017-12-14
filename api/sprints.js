@@ -340,7 +340,7 @@ router.delete('/:number/projects/:name/tasks/', function (req, res) {
 // Get service for sprint list of a given project
 // projectName required in path
 // token required for add a sprint
-router.get('/projects/:projectName/sprints', function (req, res) {
+router.get('sprints/projects/:projectName/', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
 
     verifyAuth(req, res, () => {
