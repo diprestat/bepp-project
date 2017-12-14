@@ -340,10 +340,10 @@ router.delete('/:number/projects/:name/tasks/', function (req, res) {
 // Get service for sprint list of a given project
 // projectName required in path
 // token required for add a sprint
-router.get('sprints/projects/:projectName/', function (req, res) {
+router.get('/projects/:projectName/', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
 
-    verifyAuth(req, res, () => {
+    verifyAuth(req, res, function () {
 
         const userLogin = req.decoded.login;
         const projectName = req.params.projectName;
@@ -360,17 +360,12 @@ router.get('sprints/projects/:projectName/', function (req, res) {
                 const projectsList = user.projects || [];
 
                 while (!userAllowed && indexProject < projectsList.length) {
-                    console.log (`${projectsList[indexProject].name} / ${projectName}`)
                     userAllowed = (projectsList[indexProject].name === projectName);
                     indexProject++;
                 }
 
                 if (!user || !userAllowed) {
-                    // user is not authorized, so throw error
-                    res.status(401).send({
-                        success: false,
-                        message: `User isn't authorized to get this project sprints list.`
-                    });
+                    res.status(401).send({ success: false, message: `User isn't authorized to get this project sprints list.` });
                 }
                 else {
                     db.collection("sprintCollection").find({ projectName: projectName }, {}, function (e, docs) {
@@ -378,7 +373,11 @@ router.get('sprints/projects/:projectName/', function (req, res) {
                             res.status(500).send("There was a problem with the database.");
                         }
                         else {
-                            res.status(200).send(docs || []);
+                            if(docs.length<1){
+                                docs=[];
+                            }
+
+                            res.status(200).send(docs);
                         }
                     });
                 }
@@ -386,6 +385,7 @@ router.get('sprints/projects/:projectName/', function (req, res) {
         });
     });
 });
+
 
 
 

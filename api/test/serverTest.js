@@ -1,6 +1,6 @@
 var expect  = require("chai").expect;
 var request = require("request");
-var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+var jwt = require('jsonwebtoken');
 
 describe("Scrum Management API", function() {
 
@@ -122,7 +122,6 @@ describe("Scrum Management API", function() {
                 form:    { login: "dprestat", password: "dp33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                //done();
                 request.post({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
@@ -152,7 +151,6 @@ describe("Scrum Management API", function() {
                 form:    { login: "abounad", password: "ab33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                //done();
                 request.post({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
@@ -172,7 +170,6 @@ describe("Scrum Management API", function() {
                 form:    { login: "dprestat", password: "dp33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                //done();
                 request.post({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
@@ -193,7 +190,6 @@ describe("Scrum Management API", function() {
                 form:    { login: "dprestat", password: "dp33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                //done();
                 request.post({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
@@ -261,7 +257,6 @@ describe("Scrum Management API", function() {
                 form:    { login: "abounad", password: "ab33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                //done();
                 request.get({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl
@@ -280,7 +275,6 @@ describe("Scrum Management API", function() {
                 form:    { login: "abounader", password: "ab33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                //done();
                 request.get({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl
@@ -298,7 +292,6 @@ describe("Scrum Management API", function() {
                 form:    { login: "dprestat", password: "dp33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                //done();
                 request.get({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl
@@ -331,7 +324,6 @@ describe("Scrum Management API", function() {
                 form:    { login: "abounad", password: "ab33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                //done();
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl
@@ -350,7 +342,6 @@ describe("Scrum Management API", function() {
                 form:    { login: "abounader", password: "ab33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                //done();
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl
@@ -368,7 +359,6 @@ describe("Scrum Management API", function() {
                 form:    { login: "dprestat", password: "dp33"}
             }, function(error, response, body) {
                 var bodyJson = JSON.parse(body);
-                //done();
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl
@@ -1321,7 +1311,87 @@ describe("Scrum Management API", function() {
 
 
 
+    describe("GET Obtenir les sprints d'un projet", function() {
+        var localurl = url + "sprints/projects/Bepp";
+        var authurl = url + "users/token";
 
+        it("Bad request (missing Token) : returns status 401", function(done) {
+            request.get({
+                url:     localurl
+            }, function(error, response) {
+                expect(response.statusCode).to.equal(401);
+                done();
+            });
+        });
+
+        it("Bad request (bad Token) : returns status 401", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "abounad", password: "ab33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.get({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(401);
+                    done();
+                });
+
+            });
+        });
+
+        it("Good request : returns status 200", function(done) {
+            request.post({
+                headers: {'content-type' : 'application/x-www-form-urlencoded'},
+                url:     authurl,
+                form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.get({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl
+                }, function(error, response) {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+
+            });
+        });
+
+
+        it("fetched sprints", function(done) {
+
+            request.post({
+            headers: {'content-type' : 'application/x-www-form-urlencoded'},
+            url:     authurl,
+            form:    { login: "dprestat", password: "dp33"}
+            }, function(error, response, body) {
+                var bodyJson = JSON.parse(body);
+                request.get({
+                    headers: {'x-access-token' : bodyJson.token},
+                    url:     localurl
+                }, function(error, response, body) {
+                    var bodyJson = JSON.parse(body);
+                    var sprint1 = bodyJson[0];
+                    var sprint2 = bodyJson[1];
+                    expect(sprint1.number).to.equal("1");
+                    expect(sprint1.time).to.equal("2");
+                    expect(sprint1.startingDate).to.equal("15/12/2017");
+                    expect(sprint1.projectName).to.equal("Bepp");
+                    expect(sprint2.number).to.equal("2");
+                    expect(sprint2.time).to.equal("1");
+                    expect(sprint2.startingDate).to.equal("10/12/2017");
+                    expect(sprint2.projectName).to.equal("Bepp");
+                    expect(sprint2.userStories[0].description).to.equal("my_best_user_story");
+                    expect(sprint2.userStories[0].difficulty).to.equal("3");
+                    done();
+                });
+            });
+        });
+
+    });
 
 
 });
