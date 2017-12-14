@@ -16,7 +16,7 @@ describe('Adding a userstory to the mini Backlog of a sprint', function() {
 
         //Go to sprints menu
         element(by.name('sprints')).click();
-        browser.sleep(500);
+        browser.sleep(3000);
 
         //Go to sprints menu
         element(by.name('goto')).click();
