@@ -3,6 +3,9 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {SprintsManagerService} from '@app/services/sprints-manager.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectsManagerService} from '@app/services/projects-manager.service';
+import {AppConstants} from "@app/app-constants";
+import {Subject} from "rxjs/Subject";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
     selector: 'bepp-sprint',
@@ -14,6 +17,8 @@ export class SprintComponent implements OnInit {
 
     private projectName: string;
 
+    private usToAdd: string[];
+
     public currentSprint: { [x: string]: any};
 
     public unselectedUS: Array<any>;
@@ -23,15 +28,21 @@ export class SprintComponent implements OnInit {
     public showModifyTask: boolean;
     public addTaskForm: FormGroup;
 
+    public selectUSLoading: boolean;
+
     public constructor(private sprintsManager: SprintsManagerService,
                        private activatedRoute: ActivatedRoute,
                        private router: Router,
-                       private projectManager: ProjectsManagerService) {
+                       private projectManager: ProjectsManagerService,
+                       private httpClient: HttpClient) {
         this.showSelectUS = false;
         this.showAddTask = false;
         this.showModifyTask = false;
 
+        this.selectUSLoading = false;
+
         this.unselectedUS = [];
+        this.usToAdd = [];
 
         this.addTaskForm = new FormGroup({
             task_desc: new FormControl(''),
@@ -93,8 +104,37 @@ export class SprintComponent implements OnInit {
     }
 
     public submitSelectUSForm() {
-        // TODO MAJ LIST
-        this.toggleSelectUS();
+        if (!this.selectUSLoading && this.usToAdd.length > 0) {
+            const usAdded = new Subject<boolean>();
+
+            const usToAddCopy = this.usToAdd;
+
+            usAdded.subscribe((result) => {
+                if (usToAddCopy.length === 0  || !result) {
+                    this.usToAdd = [];
+                    this.toggleSelectUS();
+                    this.getUnselectedUSProject();
+                    this.getSprintList(this.activatedRoute.snapshot.params.sprintNumber);
+                    this.selectUSLoading = false;
+                }
+            });
+
+            for (const usDescription of this.usToAdd) {
+                this.httpClient.put(
+                    `/api/sprints/${this.currentSprint.number}/projects/${this.projectName}/userStories`, {
+                        description: usDescription,
+                        token: localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME)
+                    }
+                ).subscribe(() => {
+                    const index = usToAddCopy.indexOf(usDescription);
+                    usToAddCopy.slice(index, 1);
+                    usAdded.next(true);
+                }, () => {
+                    usAdded.next(false);
+                });
+            }
+            this.toggleSelectUS();
+        }
     }
 
     public submitAddTaskForm() {
@@ -107,6 +147,16 @@ export class SprintComponent implements OnInit {
 
     public ModifyTask() {
         this.toggleModifyTask();
+    }
+
+    public addUsToSprint (descriptionToAdd: string) {
+        const index = this.usToAdd.indexOf(descriptionToAdd);
+        if (index > -1) {
+            this.usToAdd.slice(index, 1);
+        }
+        else {
+            this.usToAdd.push(descriptionToAdd);
+        }
     }
 
 }

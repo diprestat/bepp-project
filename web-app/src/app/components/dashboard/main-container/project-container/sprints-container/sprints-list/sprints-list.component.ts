@@ -44,13 +44,9 @@ export class SprintsListComponent implements OnInit {
     }
 
     private getSprintList() {
-
-        console.log ('////// GET SPRINT')
         this.sprintsManager
             .get(this.currentProject.name)
             .subscribe((sprintsList) => {
-
-                console.log ('->>>>>>>><< RECEIVED SPRINT')
 
                 if (sprintsList) {
                     let lastDate = null;
@@ -87,7 +83,6 @@ export class SprintsListComponent implements OnInit {
 
         this.projectManager.get(projectName).subscribe((project) => {
             this.currentProject = project;
-            console.log ('UPDATE THE PROJECT')
             this.getSprintList();
         });
     }

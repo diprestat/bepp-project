@@ -19,28 +19,32 @@
             <div class="panel-heading">Mini Backlog</div>
             <table class="table">
                 <tr>
-                    <th>ID</th>
                     <th>UserStory</th>
                     <th>Difficulté</th>
                     <th>Priorité</th>
                     <th>Fait</th>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>En tant que ***, Je souhaite *** afin de ***</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>XXX</td>
+
+                <ng-container *ngIf="currentSprint && currentSprint.userStories">
+                    <tr *ngFor="let us of currentSprint.userStories">
+                        <td>{{ us.description }}</td>
+                        <td>{{ us.difficulty }}</td>
+                        <td>{{ us.priority }}</td>
+                        <td><input disabled class="done_checkbox" type="checkbox"></td>
+                    </tr>
+                </ng-container>
+                <tr *ngIf="!currentSprint || !currentSprint.userStories || currentSprint.userStories.length === 0"
+                    class="empty-table text-center">
+                    <td colspan="6">Aucune US pour ce projet</td>
                 </tr>
             </table>
         </div>
 
         <div class="panel panel-default" [hidden]="!showSelectUS">
-
             <table class="table">
                 <thead>
                     <tr>
-                        <th>UserStory</th>
+                        <th>UserStory non ajouté au sprint</th>
                         <th>Difficulté</th>
                         <th>Priorité</th>
                         <th>Selectionner</th>
@@ -56,7 +60,9 @@
                             <td>
                                 <label>
                                     <span hidden>select</span>
-                                    <input class="done_checkbox" type="checkbox">
+                                    <input class="done_checkbox"
+                                           type="checkbox"
+                                           (click)="addUsToSprint(us.description)">
                                 </label>
                             </td>
                         </tr>
@@ -64,7 +70,7 @@
 
                     <tr *ngIf="unselectedUS.length === 0"
                         class="empty-table text-center">
-                        <td colspan="6">Aucune US pour ce projet</td>
+                        <td colspan="6">Aucune US à ajouter au sprint</td>
                     </tr>
                 </tbody>
             </table>
@@ -223,11 +229,11 @@
                         <td>
                             <div class="form-group has-feedback">
                                 <label>Durée estimé</label>
-                                <input type="text"
-                                       id="jh"
-                                       name="jh"
-                                       class="form-control"
-                                       [formControlName]="'jh'"/>
+                                <!--<input type="text"-->
+                                       <!--id="jh"-->
+                                       <!--name="jh"-->
+                                       <!--class="form-control"-->
+                                       <!--[formControlName]="'jh'"/>-->
                             </div>
                         </td>
                     </tr>
