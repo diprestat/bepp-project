@@ -60,10 +60,6 @@ export class SprintsListComponent implements OnInit {
                     }
                     this.currentSprintsList = sprintsList;
 
-                    console.log (this.currentSprintsList)
-
-
-
                     if (lastDate === null) {
                         lastDate = new Date();
                     }
