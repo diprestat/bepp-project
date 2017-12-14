@@ -6,6 +6,7 @@ import {ProjectsManagerService} from '@app/services/projects-manager.service';
 import {AppConstants} from "@app/app-constants";
 import {Subject} from "rxjs/Subject";
 import {HttpClient} from "@angular/common/http";
+import {List} from "linqts";
 
 @Component({
     selector: 'bepp-sprint',
@@ -79,15 +80,28 @@ export class SprintComponent implements OnInit {
                     this.currentSprint.startingDate = startingDate;
                     this.currentSprint.endDate = new Date(startingDate.getTime() + time * 1000);
                 }
+
+                this.cleanUnselectedUS();
             });
     }
 
     private getUnselectedUSProject () {
         this.projectManager.get(this.projectName).subscribe ((project) => {
             this.unselectedUS = project.userStories;
+            this.cleanUnselectedUS();
         }, () => {
             //this.overviewLoading = false;
         });
+    }
+
+    private cleanUnselectedUS () {
+        if (this.currentSprint && this.currentSprint.userStories && this.unselectedUS) {
+            let list = new List<any>(this.unselectedUS);
+            for (const usAlreadyAdded of this.currentSprint.userStories) {
+                list = list.Where((item) => item.description !== usAlreadyAdded.description);
+            }
+            this.unselectedUS = list.ToArray();
+        }
     }
 
     public ngOnInit(): void {
