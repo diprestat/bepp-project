@@ -9,7 +9,7 @@
 
 <div>
     <div class="panel panel-default">
-        <table class="table">
+        <table class="table" id="sprintlist">
             <thead>
                 <tr>
                     <th>Sprints</th>
@@ -28,7 +28,8 @@
                         <td>{{ sprint.startingDate.toLocaleDateString() }}</td>
                         <td>{{ sprint.endDate.toLocaleDateString() }}</td>
                         <td>
-                            <button class="btn btn-xs btn-primary" [routerLink]="[sprint.number]" name="goto">
+                            <button class="btn btn-xs btn-primary"  name="goto" [routerLink]="[sprint.number]"
+                           >
                                 <span class="glyphicon glyphicon-open"></span>
                                 Aller à
                             </button>
