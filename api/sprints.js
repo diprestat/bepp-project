@@ -107,11 +107,16 @@ router.put('/sprints/:number/projects/:name/userStories/', function (req, res) {
 // PUT : url?number=2&name=Bepp
 router.put('/sprints/:number/projects/:name/tasks/', function (req, res) {
     const description = req.body.description;
-    const taskName = req.body.name;
+    const linkedTask = req.body.linkedTask;
+    const estimatedTime = req.body.estimatedTime;
+    const difficulty = req.body.difficulty;
     const projectName = req.params.name;
     const sprintNumber = req.params.number;
 
-    if (description == null || taskName == null) {
+    if (!description ||
+        !linkedTask ||
+        !estimatedTime ||
+        !difficulty) {
         res.status(422).send("Missing Arguments.");
     }
     else {
@@ -126,21 +131,32 @@ router.put('/sprints/:number/projects/:name/tasks/', function (req, res) {
                 }
                 else {
                     if (task.length === 0) {
-                        //add the task in the sprintCollection
-                        const updateSprint = { $addToSet: { tasks: { "description": description, "name": taskName } } };
-                        const sprintQuery = { projectName: projectName, number: sprintNumber };
-                        sprintCollection.update(sprintQuery, updateSprint, function (err, doc) {
-                            if (err) {
-                                res.status(500).send("There was a problem with the database while creating the task: adding the task to the sprint's task list failed.");
-                            }
-                            else {
-                                if (doc.nModified != 0) {
-                                    res.status(200).send({ success: true });
+                        db.get('sprintCollection').findOne({ projectName: projectName, number: sprintNumber }, function (err, sprint) {
+
+                            const tasks = sprint.tasks || [];
+                            //add the task in the sprintCollection
+                            const updateSprint = { $addToSet: { tasks: {
+                                description: description,
+                                linkedTask: linkedTask,
+                                estimatedTime: estimatedTime,
+                                difficulty: difficulty,
+                                number: tasks.length + 1
+                            } } };
+
+                            const sprintQuery = { projectName: projectName, number: sprintNumber };
+                            sprintCollection.update(sprintQuery, updateSprint, function (err, doc) {
+                                if (err) {
+                                    res.status(500).send("There was a problem with the database while creating the task: adding the task to the sprint's task list failed.");
                                 }
                                 else {
-                                    res.status(409).send("There was a problem with the database while creating the task: no updated document.");
+                                    if (doc.nModified != 0) {
+                                        res.status(200).send({success: true});
+                                    }
+                                    else {
+                                        res.status(409).send("There was a problem with the database while creating the task: no updated document.");
+                                    }
                                 }
-                            }
+                            });
                         });
                     }
                     else {

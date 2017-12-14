@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {SprintsManagerService} from '@app/services/sprints-manager.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectsManagerService} from '@app/services/projects-manager.service';
@@ -19,6 +19,9 @@ export class SprintComponent implements OnInit {
     private projectName: string;
 
     private usToAdd: string[];
+
+    private addTaskSubmitted: boolean;
+    private addTaskLoading: boolean;
 
     public currentSprint: { [x: string]: any};
 
@@ -40,16 +43,19 @@ export class SprintComponent implements OnInit {
         this.showAddTask = false;
         this.showModifyTask = false;
 
+        this.addTaskSubmitted = false;
+        this.addTaskLoading = false;
+
         this.selectUSLoading = false;
 
         this.unselectedUS = [];
         this.usToAdd = [];
 
         this.addTaskForm = new FormGroup({
-            task_desc: new FormControl(''),
-            task_difficulty: new FormControl(''),
-            related_tasks: new FormControl(''),
-            jh: new FormControl('')
+            task_desc: new FormControl('', [Validators.required]),
+            task_difficulty: new FormControl('', [Validators.required]),
+            related_tasks: new FormControl('', [Validators.required]),
+            jh: new FormControl('', [Validators.required])
         });
     }
 
@@ -115,6 +121,7 @@ export class SprintComponent implements OnInit {
     }
 
     public toggleAddTask() {
+        this.addTaskSubmitted = false;
         this.showAddTask = !this.showAddTask;
     }
 
@@ -155,7 +162,23 @@ export class SprintComponent implements OnInit {
     }
 
     public submitAddTaskForm() {
-        this.toggleAddTask();
+        this.addTaskSubmitted = true;
+        if (this.addTaskForm.valid && !this.addTaskLoading) {
+            this.httpClient.put(
+                `/api/sprints/${this.currentSprint.number}/projects/${this.projectName}/tasks/`, {
+                    description: this.task_desc.value,
+                    linkedTask: this.related_tasks.value,
+                    estimatedTime: this.jh.value,
+                    difficulty: this.task_difficulty.value,
+                    token: localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME)
+                }).subscribe(() => {
+                    this.toggleAddTask();
+                    this.addTaskSubmitted = false;
+                    this.addTaskLoading = false;
+                    this.addTaskForm.reset();
+                    this.getSprintList(this.currentSprint.number);
+                });
+        }
     }
 
     public toggleModifyTask() {
@@ -174,6 +197,23 @@ export class SprintComponent implements OnInit {
         else {
             this.usToAdd.push(descriptionToAdd);
         }
+    }
+
+    public get task_desc () {
+        return this.addTaskForm.get('task_desc');
+    }
+
+    public get task_difficulty () {
+        return this.addTaskForm.get('task_difficulty');
+    }
+
+
+    public get related_tasks () {
+        return this.addTaskForm.get('related_tasks');
+    }
+
+    public get jh () {
+        return this.addTaskForm.get('jh');
     }
 
 }
