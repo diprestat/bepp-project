@@ -937,7 +937,7 @@ describe("Scrum Management API", function () {
                 request.put({
                     headers: {'x-access-token' : bodyJson.token},
                     url:     localurl,
-                    form:    { description: "my_best_task"}
+                    form:    { linkedTask: "my_best_task"}
                 }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
