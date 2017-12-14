@@ -261,7 +261,7 @@ router.patch('/sprints/:number/projects/:name/tasks/:oldName', function (req, re
 // DELETE : {"number":"2", "name":"Bepp"}
 // DELETE : url?number=2&name=Bepp
 router.delete('/sprints/:number/projects/:name/tasks/', function (req, res) {
-    const taskDescription = req.body.description;
+    const taskDescription = req.query.description;
     const projectName = req.params.name;
     const sprintNumber = req.params.number;
 
