@@ -18,8 +18,8 @@ describe('Showing the tasks related to a sprint', function() {
         element(by.name('sprints')).click();
         browser.sleep(500);
 
-        element(by.name('goto')).click();
-        browser.sleep(500);
+        // element(by.name('goto')).click();
+        // browser.sleep(500);
 
         element(by.name('logout')).click();
 
