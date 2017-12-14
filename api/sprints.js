@@ -1,5 +1,4 @@
 const express = require('express');
-const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const router = express.Router();
 
 const verifyAuth = require('./utils/verify-auth');
@@ -303,10 +302,13 @@ router.get('/projects/:projectName/sprints', function (req, res) {
                 const projectsList = user.projects || [];
 
                 while (!userAllowed && indexProject < projectsList.length) {
-                    console.log (`${projectsList[indexProject].name} / ${projectName}`)
                     userAllowed = (projectsList[indexProject].name === projectName);
                     indexProject++;
                 }
+
+                console.log (user.projects)
+                console.log (projectName)
+
 
                 if (!user || !userAllowed) {
                     // user is not authorized, so throw error
@@ -329,7 +331,5 @@ router.get('/projects/:projectName/sprints', function (req, res) {
         });
     });
 });
-
-
 
 module.exports = router;

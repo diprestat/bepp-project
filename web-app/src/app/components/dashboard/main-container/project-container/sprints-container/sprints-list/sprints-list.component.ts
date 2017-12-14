@@ -43,7 +43,7 @@ export class SprintsListComponent implements OnInit {
         });
     }
 
-    private getSprintList() {
+    private getSprintList() {console.log (this.currentProject.name)
         this.sprintsManager
             .get(this.currentProject.name)
             .subscribe((sprintsList) => {
@@ -93,6 +93,7 @@ export class SprintsListComponent implements OnInit {
             this.addSprintLoading = true;
             const startingDate = new Date (this.addSprintForm.value.sprint_start);
             const endDate = new Date (this.addSprintForm.value.sprint_end);
+
 
             this.httpClient.put(
                 `/api/sprints/projects/${encodeURIComponent(this.currentProject.name)}`, {

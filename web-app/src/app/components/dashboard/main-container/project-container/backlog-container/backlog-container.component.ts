@@ -246,6 +246,7 @@ export class BacklogContainerComponent implements OnInit {
                 this.getProject(currentParams['name']);
                 this.toggleAddUS();
                 this.addUSForm.reset();
+                this.addUsSubmitted = false;
             }, (error) => {
                 this.addUsLoading = false;
                 this.checkAuthService.check(error);

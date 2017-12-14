@@ -7,7 +7,7 @@
             De :
             {{ currentSprint.startingDate.toLocaleDateString() }}
             à
-            {{ currentSprint.startingDate.toLocaleDateString() }}
+            {{ currentSprint.endDate.toLocaleDateString() }}
         </p>
     </div>
 </div>
@@ -229,11 +229,11 @@
                         <td>
                             <div class="form-group has-feedback">
                                 <label>Durée estimé</label>
-                                <!--<input type="text"-->
-                                       <!--id="jh"-->
-                                       <!--name="jh"-->
-                                       <!--class="form-control"-->
-                                       <!--[formControlName]="'jh'"/>-->
+                                <input type="text"
+                                       id="jh"
+                                       name="jh"
+                                       class="form-control"
+                                       [formControlName]="'jh'"/>
                             </div>
                         </td>
                     </tr>

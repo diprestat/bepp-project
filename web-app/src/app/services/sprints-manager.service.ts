@@ -27,8 +27,6 @@ export class SprintsManagerService {
 
         const ret = new ReplaySubject<any>(1);
 
-        projectName = encodeURIComponent(projectName);
-
         this.httpClient.get(
         `/api/projects/${encodeURIComponent(projectName)}/sprints`,
             { params: httpParams }

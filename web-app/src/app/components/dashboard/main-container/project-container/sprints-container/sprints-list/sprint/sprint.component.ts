@@ -47,7 +47,8 @@ export class SprintComponent implements OnInit {
         this.addTaskForm = new FormGroup({
             task_desc: new FormControl(''),
             task_difficulty: new FormControl(''),
-            related_tasks: new FormControl('')
+            related_tasks: new FormControl(''),
+            jh: new FormControl('')
         });
     }
 
@@ -110,6 +111,7 @@ export class SprintComponent implements OnInit {
             const usToAddCopy = this.usToAdd;
 
             usAdded.subscribe((result) => {
+                console.log (usToAddCopy)
                 if (usToAddCopy.length === 0  || !result) {
                     this.usToAdd = [];
                     this.toggleSelectUS();
@@ -126,8 +128,9 @@ export class SprintComponent implements OnInit {
                         token: localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME)
                     }
                 ).subscribe(() => {
+                    console.log (usDescription)
                     const index = usToAddCopy.indexOf(usDescription);
-                    usToAddCopy.slice(index, 1);
+                    usToAddCopy.splice(index, 1);
                     usAdded.next(true);
                 }, () => {
                     usAdded.next(false);
