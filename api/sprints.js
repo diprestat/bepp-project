@@ -210,7 +210,7 @@ router.patch('/sprints/:number/projects/:name/tasks/:oldName', function (req, re
     const oldTaskName = req.params.oldName;
     const sprintNumber = req.params.number;
 
-    if (description == null || taskName == null) {
+    if (!description || !taskName) {
         res.status(422).send("Missing Arguments.");
     }
     else {
@@ -227,7 +227,7 @@ router.patch('/sprints/:number/projects/:name/tasks/:oldName', function (req, re
                     res.status(500).send("There was a problem with the database while updating the project: updating the userStory in the project's userStory list.");
                 }
                 else {
-                    if (doc.nModified != 0) {
+                    if (doc.nModified > 0) {
                         res.status(200).send({ success: true });
                     }
                     else {
@@ -317,11 +317,11 @@ router.get('/projects/:projectName/sprints', function (req, res) {
                 }
                 else {
                     db.collection("sprintCollection").find({ projectName: projectName }, {}, function (e, docs) {
-                        if (docs.length > 0) {
-                            res.status(200).send(docs);
+                        if (e) {
+                            res.status(500).send("There was a problem with the database.");
                         }
                         else {
-                            res.status(404).send({ error: 404 });
+                            res.status(200).send(docs || []);
                         }
                     });
                 }

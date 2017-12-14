@@ -1,9 +1,14 @@
 <br>
 
 <div class="panel panel-default">
-    <div class="panel-body">
-        <h1 align="center">Sprint 1</h1>
-        <p align="center">De : 23/22/12 à 30/12/12</p>
+    <div class="panel-body" *ngIf="currentSprint">
+        <h1 align="center">Sprint {{ currentSprint.number }}</h1>
+        <p align="center">
+            De :
+            {{ currentSprint.startingDate.toLocaleDateString() }}
+            à
+            {{ currentSprint.startingDate.toLocaleDateString() }}
+        </p>
     </div>
 </div>
 
@@ -33,41 +38,35 @@
         <div class="panel panel-default" [hidden]="!showSelectUS">
 
             <table class="table">
-                <tr>
-                    <th>UserStory</th>
-                    <th>Difficulté</th>
-                    <th>Priorité</th>
-                    <th>Selectionner</th>
-                </tr>
-                <tr>
-                    <td>
-                        <div>En tant que *** Je souhaite *** afin de ***</div>
-                    </td>
-                    <td>
-                        <div>3</div>
-                    </td>
-                    <td>
-                        <div>3</div>
-                    </td>
-                    <td align="center">
-                        <input class="done_checkbox" type="checkbox">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div>En tant que *** Je souhaite *** afin de ***</div>
+                <thead>
+                    <tr>
+                        <th>UserStory</th>
+                        <th>Difficulté</th>
+                        <th>Priorité</th>
+                        <th>Selectionner</th>
+                    </tr>
+                </thead>
 
-                    </td>
-                    <td>
-                        <div>3</div>
-                    </td>
-                    <td>
-                        <div>3</div>
-                    </td>
-                    <td align="center">
-                        <input class="done_checkbox" type="checkbox">
-                    </td>
-                </tr>
+                <tbody>
+                    <ng-container *ngFor="let us of unselectedUS">
+                    <tr *ngIf="!showModifyUS || shownModifyDescription !== us.description">
+                        <td>{{ us.description }}</td>
+                        <td>{{ us.difficulty }}</td>
+                        <td>{{ us.priority }}</td>
+                        <td>
+                            <label>
+                                <span hidden>select</span>
+                                <input class="done_checkbox" type="checkbox">
+                            </label>
+                        </td>
+                    </tr>
+                </ng-container>
+
+                    <tr *ngIf="unselectedUS.length === 0"
+                        class="empty-table text-center">
+                        <td colspan="6">Aucune US pour ce projet</td>
+                    </tr>
+                </tbody>
             </table>
 
         </div>
@@ -79,16 +78,17 @@
                 <span >Selectionner UserStory</span>
             </button>
         </div>
-        <div class="panel-body" [hidden]="!showSelectUS">
+        <div class="panel-body" [hidden]="!showSelectUS"
+             *ngIf="unselectedUS && unselectedUS.length > 0">
             <button class="btn-add btn btn-success pull-right" name="addus" (click)="submitSelectUSForm()">
                 <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-                <span > Ajouter</span>
+                <span> Ajouter</span>
             </button>
         </div>
         <div class="panel-body" [hidden]="!showSelectUS">
             <button class="btn-add btn btn-default pull-right" name="cancel_add" (click)="toggleSelectUS()">
                 <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-                <span > Annuler</span>
+                <span> Annuler</span>
             </button>
         </div>
     </div>
@@ -118,12 +118,12 @@
                     <td>
                         <!--<button class="btn-xs btn-danger" disabled>To do</button>-->
                         <!--<button class="btn-xs btn-warning" disabled>In progress</button>-->
-                        <button class="btn-xs btn-success" disabled>Done</button>
+                        <button class="btn btn-xs btn-success" disabled>Done</button>
                     </td>
-                    <td><button class="btn-xs btn-info" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-edit"></span>
+                    <td><button class="btn btn-xs btn-info" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-edit"></span>
                         Modifier
                     </button></td>
-                    <td><button class="btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span>
+                    <td><button class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span>
                         Supprimer
                     </button></td>
                 </tr>

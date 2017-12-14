@@ -29,7 +29,7 @@
                         <td align="right">
                             <div [hidden]="showModifyUS">
                                 <button type="button"
-                                        class="btn-xs btn-default"
+                                        class="btn btn-xs btn-default"
                                         name="modifyus"
                                         (click)="toggleModifyUS(us.description)">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -37,7 +37,7 @@
                                 </button>
 
                                 <button type="button"
-                                        class="btn-xs btn-default"
+                                        class="btn btn-xs btn-default"
                                         name="deleteus"
                                         (click)="deleteUS(us.description)"
                                         *ngIf="!userIsPO">
@@ -93,12 +93,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" name="validatemodifs" class="btn-xs btn-default" (click)="submitModifyUSForm()">
+                                    <button type="button" name="validatemodifs" class="btn btn-xs btn-default" (click)="submitModifyUSForm()">
                                         <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                                         <span> Valider</span>
                                     </button>
                                     <button type="button"
-                                            class="btn-xs btn-default"
+                                            class="btn btn-xs btn-default"
                                             (click)="cancelModifyUS()">Annuler</button>
                                 </div>
                             </div>
@@ -151,7 +151,7 @@
                                                name="priority"
                                                min="0"
                                                size="5"
-                                               name="priority" class="form-control"
+                                               class="form-control"
                                                [formControlName]="'priority'"/>
 
                                         <span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"

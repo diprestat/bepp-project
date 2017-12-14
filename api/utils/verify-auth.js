@@ -9,7 +9,6 @@ module.exports = function verifyAuth(req, res, next) {
 
     // decode token
     if (token) {
-
         // verifies secret and checks exp
         jwt.verify(token, superSecret, function (err, decoded) {
             if (err) {

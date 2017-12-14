@@ -2,8 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-import {ProjectManagerService} from '@app/services/project-manager.service';
+import {ProjectsManagerService} from '@app/services/projects-manager.service';
 import {AppConstants} from '@app/app-constants';
+import {SprintsManagerService} from '@app/services/sprints-manager.service';
+import {MinDateValidator} from '@app/validators/min-date.validator';
+import {BracketDateValidator} from "@app/validators/bracket-date.validator";
 
 @Component({
     selector: 'bepp-sprints-list',
@@ -24,8 +27,9 @@ export class SprintsListComponent implements OnInit {
 
 
     public constructor(private httpClient: HttpClient,
-                       private projectManager: ProjectManagerService,
-                       private activatedRoute: ActivatedRoute) {
+                       private projectManager: ProjectsManagerService,
+                       private activatedRoute: ActivatedRoute,
+                       private sprintsManager: SprintsManagerService) {
 
         this.showAddSprint = false;
         this.showModifySprint = false;
@@ -34,25 +38,48 @@ export class SprintsListComponent implements OnInit {
         this.currentSprintsList = [];
 
         this.addSprintForm = new FormGroup({
-            sprint_start: new FormControl('', [Validators.required]),
+            sprint_start: new FormControl('', [Validators.required, ]),
             sprint_end: new FormControl('', [Validators.required])
         });
     }
 
     private getSprintList() {
-        this.httpClient.get(
-            `/api/projects/${encodeURIComponent(this.currentProject.name)}/sprints`, {
-                params: (new HttpParams()).set('token', localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME))
-            }).subscribe((response) => {
-            this.currentSprintsList = response;
 
-            for (const sprint of this.currentSprintsList) {
-                sprint.startingDate = new Date(sprint.startingDate);
-                sprint.endDate = new Date (sprint.startingDate.getTime() + sprint.time * 1000);
-            }
-        }, () => {
+        console.log ('////// GET SPRINT')
+        this.sprintsManager
+            .get(this.currentProject.name)
+            .subscribe((sprintsList) => {
 
-        });
+                console.log ('->>>>>>>><< RECEIVED SPRINT')
+
+                if (sprintsList) {
+                    let lastDate = null;
+                    for (const sprint of sprintsList) {
+                        sprint.startingDate = new Date(sprint.startingDate);
+                        const endDate = new Date (sprint.startingDate.getTime() + sprint.time * 1000);
+                        if (lastDate !== null) {
+                            lastDate = endDate;
+                        }
+                        sprint.endDate = endDate;
+                    }
+                    this.currentSprintsList = sprintsList;
+
+                    console.log (this.currentSprintsList)
+
+
+
+                    if (lastDate === null) {
+                        lastDate = new Date();
+                    }
+
+                    const startControl = new FormControl('', [Validators.required, MinDateValidator(lastDate)]);
+
+                    this.addSprintForm = new FormGroup({
+                        sprint_start: startControl,
+                        sprint_end: new FormControl('', [Validators.required, BracketDateValidator(startControl)])
+                    });
+                }
+            });
     }
 
     public ngOnInit(): void {
@@ -60,6 +87,7 @@ export class SprintsListComponent implements OnInit {
 
         this.projectManager.get(projectName).subscribe((project) => {
             this.currentProject = project;
+            console.log ('UPDATE THE PROJECT')
             this.getSprintList();
         });
     }
@@ -73,12 +101,11 @@ export class SprintsListComponent implements OnInit {
 
             this.httpClient.put(
                 `/api/sprints/projects/${encodeURIComponent(this.currentProject.name)}`, {
-
                     startingDate: startingDate.toISOString(),
                     time: ((endDate.getTime() - startingDate.getTime()) / 1000),
                     token: localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME)
                 }
-            ).subscribe((response) => {
+            ).subscribe(() => {
                 this.getSprintList ();
                 this.toggleAddSprint();
                 this.addSprintLoading = false;
@@ -91,7 +118,9 @@ export class SprintsListComponent implements OnInit {
 
     public toggleAddSprint() {
         this.addSprintSubmitted = false;
-        this.addSprintForm.reset();
+        if (this.addSprintForm) {
+            this.addSprintForm.reset();
+        }
         this.showAddSprint = !this.showAddSprint;
     }
 

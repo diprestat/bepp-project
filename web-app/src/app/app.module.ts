@@ -22,9 +22,10 @@ import {HttpClientModule} from "@angular/common/http";
 import {UnAuthGuard} from "./guards/un-auth/un-auth.guard";
 import {CheckAuthService} from "./services/check-auth.service";
 import {ApiCallingObserverService} from "./services/api-call-observer.service";
-import {ProjectManagerService} from "./services/project-manager.service";
+import {ProjectsManagerService} from "./services/projects-manager.service";
 import {UserManagerService} from "./services/user-manager.service";
 import { SprintsListComponent } from './components/dashboard/main-container/project-container/sprints-container/sprints-list/sprints-list.component';
+import {SprintsManagerService} from "@app/services/sprints-manager.service";
 
 @NgModule({
     declarations: [
@@ -55,8 +56,9 @@ import { SprintsListComponent } from './components/dashboard/main-container/proj
         UnAuthGuard,
         CheckAuthService,
         ApiCallingObserverService,
-        ProjectManagerService,
-        UserManagerService
+        ProjectsManagerService,
+        UserManagerService,
+        SprintsManagerService
     ],
     bootstrap: [AppComponent]
 })

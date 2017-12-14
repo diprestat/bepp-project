@@ -9,7 +9,7 @@ import {CheckAuthService} from './check-auth.service';
  * Check Api error response to redirect to login if authentication failed.
  */
 @Injectable()
-export class ProjectManagerService {
+export class ProjectsManagerService {
 
     /**
      *  GetProjectService constructor.
