@@ -107,9 +107,9 @@ router.put('/sprints/:number/projects/:name/userStories/', function (req, res) {
 // PUT : url?number=2&name=Bepp
 router.put('/sprints/:number/projects/:name/tasks/', function (req, res) {
     const description = req.body.description;
-    const linkedTask = req.body.linkedTask;
-    const estimatedTime = req.body.estimatedTime;
-    const difficulty = req.body.difficulty;
+    const linkedTask = req.body.linkedTask || '';
+    const estimatedTime = req.body.estimatedTime || '';
+    const difficulty = req.body.difficulty || '';
     const projectName = req.params.name;
     const sprintNumber = req.params.number;
 
