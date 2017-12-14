@@ -30,7 +30,7 @@
                         <td>{{ us.description }}</td>
                         <td>{{ us.difficulty }}</td>
                         <td>{{ us.priority }}</td>
-                        <td><input disabled class="done_checkbox" type="checkbox"></td>
+                        <td><button class="btn btn-xs btn-danger" disabled>To do</button></td>
                     </tr>
                 </ng-container>
                 <tr *ngIf="!currentSprint || !currentSprint.userStories || currentSprint.userStories.length === 0"
