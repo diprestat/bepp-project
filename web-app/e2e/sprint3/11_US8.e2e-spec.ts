@@ -16,10 +16,23 @@ describe('Adding a userstory to the mini Backlog of a sprint', function() {
 
         // Go to sprints menu
         element(by.name('sprints')).click();
-        browser.sleep(500);
 
+        browser.sleep(3000);
 
-        // Go to sprints menu
+        element(by.id('sprintlist')).getAttribute('outerHTML').then(function(text){
+            console.log(text);
+        });
+
+        browser.wait(function() {
+            return element(by.name('goto')).isPresent();
+        }, 60000);
+
+        element(by.id('sprintlist')).getAttribute('outerHTML').then(function(text){
+            console.log("__________________________________________");
+            console.log(text);
+        });
+
+        //Go to sprints menu
         element(by.name('goto')).click();
         browser.sleep(500);
 
