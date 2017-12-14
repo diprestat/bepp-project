@@ -336,4 +336,57 @@ router.delete('/:number/projects/:name/tasks/', function (req, res) {
 });
 
 
+
+// Get service for sprint list of a given project
+// projectName required in path
+// token required for add a sprint
+router.get('/projects/:projectName/sprints', function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+
+    verifyAuth(req, res, () => {
+
+        const userLogin = req.decoded.login;
+        const projectName = req.params.projectName;
+        const db = req.db;
+
+        db.collection("userCollection").findOne({ login: userLogin }, (userError, user) => {
+            if (userError) {
+                res.status(500).send("There was a problem with the database.");
+            }
+            else {
+                // check if request project is a project of the auth user.
+                let userAllowed = false;
+                let indexProject = 0;
+                const projectsList = user.projects || [];
+
+                while (!userAllowed && indexProject < projectsList.length) {
+                    console.log (`${projectsList[indexProject].name} / ${projectName}`)
+                    userAllowed = (projectsList[indexProject].name === projectName);
+                    indexProject++;
+                }
+
+                if (!user || !userAllowed) {
+                    // user is not authorized, so throw error
+                    res.status(401).send({
+                        success: false,
+                        message: `User isn't authorized to get this project sprints list.`
+                    });
+                }
+                else {
+                    db.collection("sprintCollection").find({ projectName: projectName }, {}, function (e, docs) {
+                        if (e) {
+                            res.status(500).send("There was a problem with the database.");
+                        }
+                        else {
+                            res.status(200).send(docs || []);
+                        }
+                    });
+                }
+            }
+        });
+    });
+});
+
+
+
 module.exports = router;
