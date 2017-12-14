@@ -7,6 +7,7 @@ import {AppConstants} from "@app/app-constants";
 import {Subject} from "rxjs/Subject";
 import {HttpClient} from "@angular/common/http";
 import {List} from "linqts";
+import {HttpParams} from "@angular/common/http";
 
 @Component({
     selector: 'bepp-sprint',
@@ -179,6 +180,17 @@ export class SprintComponent implements OnInit {
                     this.getSprintList(this.currentSprint.number);
                 });
         }
+    }
+
+    public submitDeleteTask(description) {
+        this.httpClient.delete(
+            `/api/sprints/${this.currentSprint.number}/projects/${this.projectName}/tasks/`, {
+                params: new HttpParams()
+                    .set('description', description)
+                    .set('token', localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME))
+            }).subscribe(() => {
+                this.getSprintList(this.currentSprint.number);
+            });
     }
 
     public toggleModifyTask() {

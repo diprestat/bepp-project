@@ -6,7 +6,7 @@
 | --- | --- | --- | --- | --- |
 | 7 | En tant que **développeur**, je souhaite pouvoir ajouter un sprint (Date début, durée) à un projet.| 1 | 3 | :white_check_mark:
 | 8 | En tant que **développeur**, je souhaite associer une ou plusieurs US à un sprint.| 1 | 3 | :white_check_mark:
-| 9 | En tant que **développeur**, je souhaite ajouter une tâche (Intitulé)  à la liste des tâches d'un sprint.| 1 | 3 | :x:  
+| 9 | En tant que **développeur**, je souhaite ajouter une tâche (Intitulé)  à la liste des tâches d'un sprint.| 1 | 3 | :white_check_mark: 
 | 10 | En tant que **développeur**, je souhaite modifier / supprimer une tâche de la liste des tâches d'un sprint.| 1 | 4 | :x:
 | 19 | En tant qu'**Utilisateur**, je souhaite pouvoir obtenir la liste des US ciblées dans un Sprint d'un projet.| 2 | 4 | :white_check_mark:
 | 20 | En tant qu'**Utilisateur**, je souhaite pouvoir obtenir la liste des tâches d'un sprint d'un projet avec pour chaque tâche l'assignation, l'état et la date de début/fin.| 2 | 4 | :x:
@@ -34,7 +34,7 @@
 | T17_M | Service PATCH de suppression de tâches dans un sprint  |  | 2 | 1 | :white_check_mark:
 | T18_PM | Créer le formulaire TS d'ajout de sprint à un projet |  | 2 | 7 | :white_check_mark:
 | T19_PM | Créer le formulaire TS d'ajout d'US à un sprint |  | 2 | 8 | :white_check_mark:
-| T20_PM | Créer le formulaire TS d'ajout de tâche à un sprint |  | 2 | 9 | :x:
+| T20_PM | Créer le formulaire TS d'ajout de tâche à un sprint |  | 2 | 9 | :white_check_mark:
 | T21_PM | Créer le formulaire TS de modification d'une tâche (dans un sprint) |  | 2 | 10 | :x:
 | T22_PM | Lier le bouton de suppression d'une tâches au service REST adéquat |  | 2 | 10 | :x:
 | T23_PM | Afficher la liste des US fournies par l'API |  | 2 | 19 | :white_check_mark:

@@ -113,10 +113,7 @@ router.put('/sprints/:number/projects/:name/tasks/', function (req, res) {
     const projectName = req.params.name;
     const sprintNumber = req.params.number;
 
-    if (!description ||
-        !linkedTask ||
-        !estimatedTime ||
-        !difficulty) {
+    if (!description) {
         res.status(422).send("Missing Arguments.");
     }
     else {
