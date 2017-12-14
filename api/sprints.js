@@ -285,13 +285,13 @@ router.delete('/sprints/:number/projects/:name/tasks/', function (req, res) {
 router.get('/projects/:projectName/sprints', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
 
-    verifyAuth(req, res, () => {
+    verifyAuth(req, res, function() {
 
         const userLogin = req.decoded.login;
         const projectName = req.params.projectName;
         const db = req.db;
 
-        db.collection("userCollection").findOne({ login: userLogin }, (userError, user) => {
+        db.collection("userCollection").findOne({ login: userLogin }, function (userError, user) {
             if (userError) {
                 res.status(500).send("There was a problem with the database.");
             }
@@ -306,15 +306,11 @@ router.get('/projects/:projectName/sprints', function (req, res) {
                     indexProject++;
                 }
 
-                console.log (user.projects)
-                console.log (projectName)
-
-
                 if (!user || !userAllowed) {
                     // user is not authorized, so throw error
                     res.status(401).send({
                         success: false,
-                        message: `User isn't authorized to get this project sprints list.`
+                        message: 'User isn\'t authorized to get this project sprints list.'
                     });
                 }
                 else {
