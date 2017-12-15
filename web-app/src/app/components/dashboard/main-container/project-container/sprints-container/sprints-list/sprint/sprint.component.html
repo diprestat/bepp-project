@@ -1,9 +1,14 @@
 <br>
 
 <div class="panel panel-default">
-    <div class="panel-body">
-        <h1 align="center">Sprint 1</h1>
-        <p align="center">De : 23/22/12 à 30/12/12</p>
+    <div class="panel-body" *ngIf="currentSprint">
+        <h1 align="center">Sprint {{ currentSprint.number }}</h1>
+        <p align="center">
+            De :
+            {{ currentSprint.startingDate.toLocaleDateString() }}
+            à
+            {{ currentSprint.endDate.toLocaleDateString() }}
+        </p>
     </div>
 </div>
 
@@ -14,60 +19,60 @@
             <div class="panel-heading">Mini Backlog</div>
             <table class="table">
                 <tr>
-                    <th>ID</th>
                     <th>UserStory</th>
                     <th>Difficulté</th>
                     <th>Priorité</th>
                     <th>Fait</th>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>En tant que ***, Je souhaite *** afin de ***</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>XXX</td>
+
+                <ng-container *ngIf="currentSprint && currentSprint.userStories">
+                    <tr *ngFor="let us of currentSprint.userStories">
+                        <td>{{ us.description }}</td>
+                        <td>{{ us.difficulty }}</td>
+                        <td>{{ us.priority }}</td>
+                        <td><button class="btn btn-xs btn-danger" disabled>To do</button></td>
+                    </tr>
+                </ng-container>
+                <tr *ngIf="!currentSprint || !currentSprint.userStories || currentSprint.userStories.length === 0"
+                    class="empty-table text-center">
+                    <td colspan="6">Aucune US pour ce projet</td>
                 </tr>
             </table>
         </div>
 
         <div class="panel panel-default" [hidden]="!showSelectUS">
-
             <table class="table">
-                <tr>
-                    <th>UserStory</th>
-                    <th>Difficulté</th>
-                    <th>Priorité</th>
-                    <th>Selectionner</th>
-                </tr>
-                <tr>
-                    <td>
-                        <div>En tant que *** Je souhaite *** afin de ***</div>
-                    </td>
-                    <td>
-                        <div>3</div>
-                    </td>
-                    <td>
-                        <div>3</div>
-                    </td>
-                    <td align="center">
-                        <input class="done_checkbox" type="checkbox">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div>En tant que *** Je souhaite *** afin de ***</div>
+                <thead>
+                    <tr>
+                        <th>UserStory non ajoutée au sprint</th>
+                        <th>Difficulté</th>
+                        <th>Priorité</th>
+                        <th>Selectionner</th>
+                    </tr>
+                </thead>
 
-                    </td>
-                    <td>
-                        <div>3</div>
-                    </td>
-                    <td>
-                        <div>3</div>
-                    </td>
-                    <td align="center">
-                        <input class="done_checkbox" type="checkbox">
-                    </td>
-                </tr>
+                <tbody>
+                    <ng-container *ngFor="let us of unselectedUS">
+                        <tr *ngIf="!showModifyUS || shownModifyDescription !== us.description">
+                            <td>{{ us.description }}</td>
+                            <td>{{ us.difficulty }}</td>
+                            <td>{{ us.priority }}</td>
+                            <td>
+                                <label>
+                                    <span hidden>select</span>
+                                    <input class="done_checkbox"
+                                           type="checkbox"
+                                           (click)="addUsToSprint(us.description)">
+                                </label>
+                            </td>
+                        </tr>
+                    </ng-container>
+
+                    <tr *ngIf="unselectedUS.length === 0"
+                        class="empty-table text-center">
+                        <td colspan="6">Aucune US à ajouter au sprint</td>
+                    </tr>
+                </tbody>
             </table>
 
         </div>
@@ -79,16 +84,17 @@
                 <span >Selectionner UserStory</span>
             </button>
         </div>
-        <div class="panel-body" [hidden]="!showSelectUS">
+        <div class="panel-body" [hidden]="!showSelectUS"
+             *ngIf="unselectedUS && unselectedUS.length > 0">
             <button class="btn-add btn btn-success pull-right" name="addus" (click)="submitSelectUSForm()">
                 <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-                <span > Ajouter</span>
+                <span> Ajouter</span>
             </button>
         </div>
         <div class="panel-body" [hidden]="!showSelectUS">
             <button class="btn-add btn btn-default pull-right" name="cancel_add" (click)="toggleSelectUS()">
                 <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-                <span > Annuler</span>
+                <span> Annuler</span>
             </button>
         </div>
     </div>
@@ -110,51 +116,70 @@
                     <th></th>
                     <th></th>
                 </tr>
-                <tr [hidden]="showModifyTask">
-                    <td>1</td>
-                    <td>Visualiser les pages</td>
-                    <td>1 - 2</td>
-                    <td>2</td>
-                    <td>
-                        <!--<button class="btn-xs btn-danger" disabled>To do</button>-->
-                        <!--<button class="btn-xs btn-warning" disabled>In progress</button>-->
-                        <button class="btn-xs btn-success" disabled>Done</button>
-                    </td>
-                    <td><button class="btn-xs btn-info" name="modify_task" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-edit"></span>
-                        Modifier
-                    </button></td>
-                    <td><button class="btn-xs btn-danger" name="delete_task"><span class="glyphicon glyphicon-trash"></span>
-                        Supprimer
-                    </button></td>
-                </tr>
-                <tr [hidden]="!showModifyTask">
-                    <td></td>
-                    <td>
-                        <input type="text" name="desc_modify" class="form-control"/>
-                    </td>
-                    <td>
-                        <input type="text" name="related_modify" class="form-control"/>
-                    </td>
-                    <td>
-                        <input type="text" name="jh_modify" class="form-control"/>
-                    </td>
-                    <td>
-                        <select class="form-control" name="progress">
-                            <option>To do</option>
-                            <option>In Progress</option>
-                            <option>Done</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button class="btn btn-success" name="apply_task_modifs" (click)="ModifyTask()"><span class="glyphicon glyphicon-edit"></span>
-                        Valider
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-ban-circle"></span>
-                        Annuler
-                        </button>
-                    </td>
+
+                <ng-container *ngIf="currentSprint && currentSprint.tasks">
+                    <ng-container *ngFor="let task of currentSprint.tasks">
+                        <tr [hidden]="taskToEdit === task.number">
+                            <td>{{ task.number }}</td>
+                            <td>{{ task.description }}</td>
+                            <td>{{ task.linkedTask }}</td>
+                            <td>{{ task.estimatedTime }}</td>
+                            <td>
+                                <button class="btn btn-xs btn-danger" disabled>To do</button>
+                                <!--<button class="btn btn-xs btn-warning" disabled>In progress</button>-->
+                                <!--<button class="btn btn-xs btn-success" disabled>Done</button>-->
+                            </td>
+                            <td><button class="btn btn-xs btn-info" name="modify_task" (click)="toggleModifyTask(task.number)"><span class="glyphicon glyphicon-edit"></span>
+                                Modifier
+                            </button></td>
+                            <td>
+                                <button class="btn btn-xs btn-danger" name="delete_task"
+                                        (click)="submitDeleteTask(task.description)">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                    Supprimer
+                                </button>
+                            </td>
+                        </tr>
+                        <tr [hidden]="taskToEdit !== task.number">
+                            <td></td>
+                            <td>
+                                <input type="text" name="desc_modify" class="form-control"
+                                       [ngClass]="{ taskModification: taskToEdit !== task.number}"
+                                       [value]="task.description"/>
+                            </td>
+                            <td>
+                                <input type="text" name="related_modify" class="form-control"
+                                       [ngClass]="{ taskModification: taskToEdit !== task.number}"
+                                       [value]="task.linkedTask"/>
+                            </td>
+                            <td>
+                                <input type="text" name="jh_modify" class="form-control"
+                                       [ngClass]="{ taskModification: taskToEdit !== task.number}"
+                                       [value]="task.estimatedTime"/>
+                            </td>
+                            <td>
+                                <select class="form-control" name="progress">
+                                    <option>To do</option>
+                                    <option>In Progress</option>
+                                    <option>Done</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn btn-success" name="apply_task_modifs" (click)="ModifyTask()"><span class="glyphicon glyphicon-edit"></span>
+                                    Valider
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" (click)="toggleModifyTask(null)"><span class="glyphicon glyphicon-ban-circle"></span>
+                                    Annuler
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-container>
+                <tr *ngIf="!currentSprint || !currentSprint.tasks || currentSprint.tasks.length === 0"
+                    class="empty-table text-center">
+                    <td colspan="7">Aucune tâche pour ce sprint</td>
                 </tr>
             </table>
         </div>
@@ -169,64 +194,76 @@
                 <table class="table">
                     <tr>
                         <td>
-                            <div class="form-group has-feedback">
-                                <label>Intitulé du tâche</label>
+                            <div class="form-group has-feedback"
+                                 [ngClass]="{ 'has-error': task_desc.invalid && (task_desc.dirty || task_desc.touched || addTaskSubmitted) }">
+                                <label for="task_desc">Intitulé du tâche</label>
                                 <input class="form-control"
                                        type="text"
                                        name="task_desc"
                                        id="task_desc"
                                        [formControlName]="'task_desc'"/>
 
-                                <!--<span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"-->
-                                <!--[ngClass]="{ 'show': task_desc.invalid && (task_desc.dirty || task_desc.touched || addTaskSubmitted) }"></span>-->
-                                <!--<div class="col-12 text-danger"-->
-                                <!--*ngIf="start_date.invalid && (task_desc.dirty || task_desc.touched || addTaskSubmitted)">-->
-                                <!--<span class="validation-message" *ngIf="start_date.errors.required">La description du tâche doit être saisie.</span>-->
-                                <!--</div>-->
+                                <span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"
+                                      [ngClass]="{ 'show': task_desc.invalid && (task_desc.dirty || task_desc.touched || addTaskSubmitted) }"></span>
+                                <div class="col-12 text-danger"
+                                     *ngIf="task_desc.invalid && (task_desc.dirty || task_desc.touched || addTaskSubmitted)">
+                                    <span class="validation-message" *ngIf="task_desc.errors.required">La description de la tâche doit être saisie.</span>
+                                </div>
                             </div>
                         </td>
                         <td>
-                            <div class="form-group has-feedback">
-                                <label>Difficulté</label>
+                            <div class="form-group has-feedback"
+                                 [ngClass]="{ 'has-error': task_difficulty.invalid && (task_difficulty.dirty || task_difficulty.touched || addTaskSubmitted) }">
+                                <label for="task_difficulty">Difficulté</label>
                                 <input type="number"
                                        id="task_difficulty"
                                        name="task_difficulty"
                                        class="form-control"
                                        [formControlName]="'task_difficulty'"/>
 
-                                <!--<span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"-->
-                                <!--[ngClass]="{ 'show': task_difficulty.invalid && (task_difficulty.dirty || task_difficulty.touched || addTaskSubmitted) }"></span>-->
-                                <!--<div class="col-12 text-danger"-->
-                                <!--*ngIf="difficulty.invalid && (task_difficulty.dirty || task_difficulty.touched || addTaskSubmitted)">-->
-                                <!--<span class="validation-message" *ngIf="task_difficulty.errors.required">La difficulté du tâche doit être saisie.</span>-->
-                                <!--</div>-->
+                                <span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"
+                                      [ngClass]="{ 'show': task_difficulty.invalid && (task_difficulty.dirty || task_difficulty.touched || addTaskSubmitted) }"></span>
+                                <div class="col-12 text-danger"
+                                     *ngIf="task_difficulty.invalid && (task_difficulty.dirty || task_difficulty.touched || addTaskSubmitted)">
+                                    <span class="validation-message" *ngIf="task_difficulty.errors.required">La difficulté de la tâche doit être saisie.</span>
+                                </div>
                             </div>
 
                         </td>
                         <td>
-                            <div class="form-group has-feedback">
-                                <label>Tâches reliés</label>
+                            <div class="form-group has-feedback"
+                                 [ngClass]="{ 'has-error': related_tasks.invalid && (related_tasks.dirty || related_tasks.touched || addTaskSubmitted) }">
+                                <label for="related_tasks">Tâches reliés</label>
                                 <input type="text"
                                        id="related_tasks"
                                        name="related_tasks"
                                        class="form-control"
                                        [formControlName]="'related_tasks'"/>
 
-                                <!--<span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"-->
-                                <!--[ngClass]="{ 'show': related_tasks.invalid && (related_tasks.dirty || related_tasks.touched || addTaskSubmitted) }"></span>-->
-                                <!--<div class="col-12 text-danger"-->
-                                <!--*ngIf="difficulty.invalid && (related_tasks.dirty || related_tasks.touched || addTaskSubmitted)">-->
-                                <!--<span class="validation-message" *ngIf="related_tasks.errors.required">Les tâches reliées doivent être saisie.</span>-->
-                                <!--</div>-->
+                                <span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"
+                                      [ngClass]="{ 'show': related_tasks.invalid && (related_tasks.dirty || related_tasks.touched || addTaskSubmitted) }"></span>
+                                <div class="col-12 text-danger"
+                                     *ngIf="related_tasks.invalid && (related_tasks.dirty || related_tasks.touched || addTaskSubmitted)">
+                                    <span class="validation-message" *ngIf="related_tasks.errors.required">Les tâches reliées doivent être saisie.</span>
+                                </div>
                             </div>
+                        </td>
                         <td>
-                            <div class="form-group has-feedback">
-                                <label>Durée estimé</label>
+                            <div class="form-group has-feedback"
+                                 [ngClass]="{ 'has-error': jh.invalid && (jh.dirty || jh.touched || addTaskSubmitted) }">
+                                <label for="jh">Durée estimé</label>
                                 <input type="text"
                                        id="jh"
                                        name="jh"
                                        class="form-control"
                                        [formControlName]="'jh'"/>
+
+                                <span class="glyphicon glyphicon-remove form-control-feedback hide" aria-hidden="true"
+                                      [ngClass]="{ 'show': jh.invalid && (jh.dirty || jh.touched || addTaskSubmitted) }"></span>
+                                <div class="col-12 text-danger"
+                                     *ngIf="jh.invalid && (jh.dirty || jh.touched || addTaskSubmitted)">
+                                    <span class="validation-message" *ngIf="jh.errors.required">Les tâches reliées doivent être saisie.</span>
+                                </div>
                             </div>
                         </td>
                     </tr>

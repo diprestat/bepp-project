@@ -9,7 +9,7 @@
 
 <div>
     <div class="panel panel-default">
-        <table class="table">
+        <table class="table" id="sprintlist">
             <thead>
                 <tr>
                     <th>Sprints</th>
@@ -17,44 +17,46 @@
                     <th>Date de fin</th>
                     <th></th>
                     <th></th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr [hidden]="showModifySprint">
-                    <td>1</td>
-                    <td>12/12/17</td>
-                    <td>20/12/18</td>
-                    <td>
-                        <button class="btn btn-xs btn-primary" [routerLink]="['test']" name="goto">
-                            <span class="glyphicon glyphicon-open"></span>
-                            Aller à
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-xs btn-info" (click)="toggleModifySprint()">
-                            <span class="glyphicon glyphicon-edit"></span>
-                            Modifier
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-xs btn-danger">
-                            <span class="glyphicon glyphicon-trash"></span>
-                            Supprimer
-                        </button>
-                    </td>
-                </tr>
-                <tr [hidden]="!showModifySprint">
-                    <td></td>
-                    <td><input type="date" class="form-control"/></td>
-                    <td><input type="date" class="form-control"/></td>
-                    <td></td>
-                    <td><button class="btn btn-success" (click)="ModifySprint()"><span class="glyphicon glyphicon-check"></span>
-                        Valider
-                    </button></td>
-                    <td><button class="btn btn-danger" (click)="cancelModifySprint()"><span class="glyphicon glyphicon-ban-circle"></span>
-                        Annuler
-                    </button></td>
+                <ng-container *ngIf="currentSprintsList && currentSprintsList.length > 0">
+                    <tr *ngFor="let sprint of currentSprintsList"
+                        [hidden]="showModifySprint">
+                        <td>{{ sprint.number }}</td>
+                        <td>{{ sprint.startingDate.toLocaleDateString() }}</td>
+                        <td>{{ sprint.endDate.toLocaleDateString() }}</td>
+                        <td>
+                            <button class="btn btn-xs btn-primary"  name="goto" [routerLink]="[sprint.number]"
+                           >
+                                <span class="glyphicon glyphicon-open"></span>
+                                Aller à
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-xs btn-info" (click)="toggleModifySprint()">
+                                <span class="glyphicon glyphicon-edit"></span>
+                                Modifier
+                            </button>
+                        </td>
+                    </tr>
+                    <tr [hidden]="!showModifySprint">
+                        <td></td>
+                        <td><input type="date" class="form-control"/></td>
+                        <td><input type="date" class="form-control"/></td>
+                        <td></td>
+                        <td><button class="btn btn-success" (click)="ModifySprint()"><span class="glyphicon glyphicon-check"></span>
+                            Valider
+                        </button></td>
+                        <td><button class="btn btn-danger" (click)="cancelModifySprint()"><span class="glyphicon glyphicon-ban-circle"></span>
+                            Annuler
+                        </button></td>
+                    </tr>
+                </ng-container>
+                <tr *ngIf="!currentSprintsList || currentSprintsList.length === 0"
+                    class="no-sprint">
+                    <td colspan="6"
+                        class="text-center">Aucun sprint pour ce projet</td>
                 </tr>
             </tbody>
         </table>
@@ -67,6 +69,7 @@
         <div [hidden]="!showAddSprint" class="panel panel-default">
             <h4 align="center">Ajouter un sprint</h4>
             <form novalidate
+                  *ngIf="addSprintForm"
                   [formGroup]="addSprintForm"
                   (submit)="submitAddSprintForm()">
                 <table class="table">
@@ -86,6 +89,7 @@
                                 <div class="col-12 text-danger"
                                      *ngIf="sprint_start.invalid && (sprint_start.dirty || sprint_start.touched || addSprintSubmitted)">
                                     <span class="validation-message" *ngIf="sprint_start.errors.required">La date de début doit être saisie.</span>
+                                    <span class="validation-message" *ngIf="sprint_start.errors.minDate">La date doit être supérieure <br/>ou égale à la date du jour.</span>
                                 </div>
                             </div>
                         </td>
@@ -104,6 +108,7 @@
                                 <div class="col-12 text-danger"
                                      *ngIf="sprint_end.invalid && (sprint_end.dirty || sprint_end.touched || addSprintSubmitted)">
                                     <span class="validation-message" *ngIf="sprint_end.errors.required">La date de fin doit être saisie.</span>
+                                    <span class="validation-message" *ngIf="sprint_end.errors.dateBracket">La fourchette de date est invalide.</span>
                                 </div>
                             </div>
 

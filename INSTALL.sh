@@ -9,7 +9,7 @@ then
     # run angular compilation
     cd web-app ; \
     npm install ;\
-    npm run build:dev & PID_ANGULAR=$!
+    ng build --watch -dev & PID_ANGULAR=$!
 
     # run mongodb server
     # And run api server

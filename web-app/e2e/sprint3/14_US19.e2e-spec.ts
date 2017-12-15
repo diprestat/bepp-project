@@ -18,8 +18,8 @@ describe('Showing the userstories of a sprint (mini Backlog)', function() {
         element(by.name('sprints')).click();
         browser.sleep(500);
 
-        element(by.name('goto')).click();
-        browser.sleep(500);
+        // element(by.name('goto')).click();
+        // browser.sleep(500);
 
         element(by.name('logout')).click();
 

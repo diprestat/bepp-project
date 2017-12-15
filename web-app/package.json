@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve -H 0.0.0.0",
-    "build:dev": "ng build --watch -dev",
+    "build:dev": "ng build -dev",
     "build:prod": "ng build -prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -28,6 +28,7 @@
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
+    "linqts": "^1.10.0",
     "ng2-datepicker-bootstrap": "^1.0.0",
     "ng2-opd-popup": "^1.1.21",
     "ngx-cookie-service": "^1.0.9",

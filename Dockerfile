@@ -15,7 +15,7 @@ RUN npm install -save
 
 COPY web-app/. /home/node/app/web-app
 
-RUN cd /home/node/app/web-app && npm run build:prod
+RUN cd /home/node/app/web-app && npm run build:dev
 
 COPY web-app/. /home/node/app/web-app
 

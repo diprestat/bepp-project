@@ -5,7 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
 import {CheckAuthService} from "../../../../../services/check-auth.service";
 import "rxjs/add/operator/take";
-import {ProjectManagerService} from "../../../../../services/project-manager.service";
+import {ProjectsManagerService} from "../../../../../services/projects-manager.service";
 
 /**
  * Logic for the overview page of one project.
@@ -67,15 +67,24 @@ export class OverviewContainerComponent implements OnInit {
      * @param {HttpClient} httpClient
      * @param {ActivatedRoute} activatedRoute
      * @param {CheckAuthService} checkAuthService
-     * @param {ProjectManagerService} projectManagerService
+     * @param {ProjectsManagerService} projectManagerService
      */
     public constructor(private httpClient: HttpClient,
                        private activatedRoute: ActivatedRoute,
                        private checkAuthService: CheckAuthService,
-                       private projectManagerService: ProjectManagerService) {
+                       private projectManagerService: ProjectsManagerService) {
         this.overviewLoading = true;
         this.errorMessageAddMember = null;
         this.showAddMember = false;
+    }
+
+    private getProject (name: string) {
+        this.projectManagerService.get(name).subscribe ((project) => {
+            this.overviewLoading = false;
+            this.currentProject = project;
+        }, () => {
+            this.overviewLoading = false;
+        });
     }
 
     /**
@@ -103,14 +112,7 @@ export class OverviewContainerComponent implements OnInit {
         this.getProject(currentParams['name']);
     }
 
-    private getProject (name: string) {
-        this.projectManagerService.get(name).subscribe ((project) => {
-            this.overviewLoading = false;
-            this.currentProject = project;
-        }, () => {
-            this.overviewLoading = false;
-        })
-    }
+
 
     /**
      * Toggle addMember form
