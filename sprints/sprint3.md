@@ -44,7 +44,6 @@
 ### Organisation des tâches
 
 Mis en place avec les onglets `issues` et `projects` de github.
-
 Timeline et Kanban sur le [lien suivant](sprint3/organisation.md).
 
 ### Les tests E2E
