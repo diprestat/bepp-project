@@ -1213,7 +1213,7 @@ describe("Scrum Management API", function () {
 
 
     describe("DELETE Supprimer une tache", function() {
-        var localurl = url + "sprints/2/projects/Bepp/tasks/";
+        var localurl = url + "sprints/2/projects/Bepp/tasks/?description=my_modified_task";
         var authurl = url + "users/token";
 
 
@@ -1226,7 +1226,7 @@ describe("Scrum Management API", function () {
                 var bodyJson = JSON.parse(body);
                 request.delete({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:     localurl
+                    url:     url + "sprints/2/projects/Bepp/tasks/"
                 }, function(error, response) {
                     expect(response.statusCode).to.equal(422);
                     done();
@@ -1241,7 +1241,7 @@ describe("Scrum Management API", function () {
                 url:     localurl,
                 form:    { name: "Bepp"}
             }, function(error, response) {
-                expect(response.statusCode).to.equal(422);
+                expect(response.statusCode).to.equal(401);
                 done();
             });
         });
@@ -1258,6 +1258,7 @@ describe("Scrum Management API", function () {
                     url:     localurl,
                     form: {description: "my_modified_task"}
                 }, function(error, response) {
+                    console.log(localurl);
                     expect(response.statusCode).to.equal(401);
                     done();
                 });
@@ -1274,7 +1275,7 @@ describe("Scrum Management API", function () {
                 var bodyJson = JSON.parse(body);
                 request.delete({
                     headers: {'x-access-token' : bodyJson.token},
-                    url:    url + "sprints/2/projects/Bepp/tasks/",
+                    url:    url + "sprints/2/projects/Bepp/tasks/?description=pasbon",
                     form:   {description: "my_task"}
                 }, function(error, response) {
                     expect(response.statusCode).to.equal(409);

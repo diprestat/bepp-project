@@ -107,6 +107,7 @@ router.put('/sprints/:number/projects/:name/userStories/', function (req, res) {
 // PUT : url?number=2&name=Bepp
 router.put('/sprints/:number/projects/:name/tasks/', function (req, res) {
     const description = req.body.description;
+    const name = req.body.name;
     const linkedTask = req.body.linkedTask || '';
     const estimatedTime = req.body.estimatedTime || '';
     const difficulty = req.body.difficulty || '';
@@ -134,6 +135,7 @@ router.put('/sprints/:number/projects/:name/tasks/', function (req, res) {
                             //add the task in the sprintCollection
                             const updateSprint = { $addToSet: { tasks: {
                                 description: description,
+                                name: name,
                                 linkedTask: linkedTask,
                                 estimatedTime: estimatedTime,
                                 difficulty: difficulty,
