@@ -3,11 +3,13 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {SprintsManagerService} from '@app/services/sprints-manager.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectsManagerService} from '@app/services/projects-manager.service';
-import {AppConstants} from "@app/app-constants";
-import {Subject} from "rxjs/Subject";
-import {HttpClient} from "@angular/common/http";
-import {List} from "linqts";
-import {HttpParams} from "@angular/common/http";
+import {AppConstants} from '@app/app-constants';
+import {Subject} from 'rxjs/Subject';
+import {HttpClient} from '@angular/common/http';
+import {List} from 'linqts';
+import {HttpParams} from '@angular/common/http';
+
+declare const $: any;
 
 @Component({
     selector: 'bepp-sprint',
@@ -23,6 +25,8 @@ export class SprintComponent implements OnInit {
 
     private addTaskSubmitted: boolean;
     private addTaskLoading: boolean;
+
+    public taskToEdit: number|null;
 
     public currentSprint: { [x: string]: any};
 
@@ -51,6 +55,8 @@ export class SprintComponent implements OnInit {
 
         this.unselectedUS = [];
         this.usToAdd = [];
+
+        this.taskToEdit = null;
 
         this.addTaskForm = new FormGroup({
             task_desc: new FormControl('', [Validators.required]),
@@ -96,8 +102,6 @@ export class SprintComponent implements OnInit {
         this.projectManager.get(this.projectName).subscribe ((project) => {
             this.unselectedUS = project.userStories;
             this.cleanUnselectedUS();
-        }, () => {
-            //this.overviewLoading = false;
         });
     }
 
@@ -133,7 +137,7 @@ export class SprintComponent implements OnInit {
             const usToAddCopy = this.usToAdd;
 
             usAdded.subscribe((result) => {
-                console.log (usToAddCopy)
+                console.log (usToAddCopy);
                 if (usToAddCopy.length === 0  || !result) {
                     this.usToAdd = [];
                     this.toggleSelectUS();
@@ -150,7 +154,7 @@ export class SprintComponent implements OnInit {
                         token: localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME)
                     }
                 ).subscribe(() => {
-                    console.log (usDescription)
+                    console.log (usDescription);
                     const index = usToAddCopy.indexOf(usDescription);
                     usToAddCopy.splice(index, 1);
                     usAdded.next(true);
@@ -193,12 +197,19 @@ export class SprintComponent implements OnInit {
             });
     }
 
-    public toggleModifyTask() {
-        this.showModifyTask = !this.showModifyTask;
+    public toggleModifyTask(numberTask) {
+        this.taskToEdit = numberTask;
     }
 
-    public ModifyTask() {
-        this.toggleModifyTask();
+    public ModifyTask(old) {
+        /*this.httpClient.delete(
+            `/api/sprints/${this.currentSprint.number}/projects/${this.projectName}/tasks/`, {
+                params: new HttpParams()
+                    .set('description', description)
+                    .set('token', localStorage.getItem(AppConstants.ACCESS_COOKIE_NAME))
+            }).subscribe(() => {
+            this.getSprintList(this.currentSprint.number);
+        });*/
     }
 
     public addUsToSprint (descriptionToAdd: string) {

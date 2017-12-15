@@ -118,27 +118,64 @@
                 </tr>
 
                 <ng-container *ngIf="currentSprint && currentSprint.tasks">
-                    <tr *ngFor="let task of currentSprint.tasks">
-                        <td>{{ task.number }}</td>
-                        <td>{{ task.description }}</td>
-                        <td>{{ task.linkedTask }}</td>
-                        <td>{{ task.estimatedTime }}</td>
-                        <td>
-                            <button class="btn btn-xs btn-danger" disabled>To do</button>
-                            <!--<button class="btn btn-xs btn-warning" disabled>In progress</button>-->
-                            <!--<button class="btn btn-xs btn-success" disabled>Done</button>-->
-                        </td>
-                        <td><button class="btn btn-xs btn-info" name="modify_task" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-edit"></span>
-                            Modifier
-                        </button></td>
-                        <td>
-                            <button class="btn btn-xs btn-danger" name="delete_task"
-                                    (click)="submitDeleteTask(task.description)">
-                                <span class="glyphicon glyphicon-trash"></span>
-                                Supprimer
-                            </button>
-                        </td>
-                    </tr>
+                    <ng-container *ngFor="let task of currentSprint.tasks">
+                        <tr [hidden]="taskToEdit === task.number">
+                            <td>{{ task.number }}</td>
+                            <td>{{ task.description }}</td>
+                            <td>{{ task.linkedTask }}</td>
+                            <td>{{ task.estimatedTime }}</td>
+                            <td>
+                                <button class="btn btn-xs btn-danger" disabled>To do</button>
+                                <!--<button class="btn btn-xs btn-warning" disabled>In progress</button>-->
+                                <!--<button class="btn btn-xs btn-success" disabled>Done</button>-->
+                            </td>
+                            <td><button class="btn btn-xs btn-info" name="modify_task" (click)="toggleModifyTask(task.number)"><span class="glyphicon glyphicon-edit"></span>
+                                Modifier
+                            </button></td>
+                            <td>
+                                <button class="btn btn-xs btn-danger" name="delete_task"
+                                        (click)="submitDeleteTask(task.description)">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                    Supprimer
+                                </button>
+                            </td>
+                        </tr>
+                        <tr [hidden]="taskToEdit !== task.number">
+                            <td></td>
+                            <td>
+                                <input type="text" name="desc_modify" class="form-control"
+                                       [ngClass]="{ taskModification: taskToEdit !== task.number}"
+                                       [value]="task.description"/>
+                            </td>
+                            <td>
+                                <input type="text" name="related_modify" class="form-control"
+                                       [ngClass]="{ taskModification: taskToEdit !== task.number}"
+                                       [value]="task.linkedTask"/>
+                            </td>
+                            <td>
+                                <input type="text" name="jh_modify" class="form-control"
+                                       [ngClass]="{ taskModification: taskToEdit !== task.number}"
+                                       [value]="task.estimatedTime"/>
+                            </td>
+                            <td>
+                                <select class="form-control" name="progress">
+                                    <option>To do</option>
+                                    <option>In Progress</option>
+                                    <option>Done</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn btn-success" name="apply_task_modifs" (click)="ModifyTask()"><span class="glyphicon glyphicon-edit"></span>
+                                    Valider
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" (click)="toggleModifyTask(null)"><span class="glyphicon glyphicon-ban-circle"></span>
+                                    Annuler
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-container>
                 </ng-container>
                 <tr *ngIf="!currentSprint || !currentSprint.tasks || currentSprint.tasks.length === 0"
                     class="empty-table text-center">
@@ -279,45 +316,4 @@
 </div>
 
 
-
-<!--
-
-                <tr [hidden]="showModifyTask">
-                    <td>1</td>
-                    <td>Visualiser les pages</td>
-                    <td>1 - 2</td>
-                    <td>2</td>
-
-                </tr>
-                <tr [hidden]="!showModifyTask">
-                    <td></td>
-                    <td>
-                        <input type="text" name="desc_modify" class="form-control"/>
-                    </td>
-                    <td>
-                        <input type="text" name="related_modify" class="form-control"/>
-                    </td>
-                    <td>
-                        <input type="text" name="jh_modify" class="form-control"/>
-                    </td>
-                    <td>
-                        <select class="form-control" name="progress">
-                            <option>To do</option>
-                            <option>In Progress</option>
-                            <option>Done</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button class="btn btn-success" name="apply_task_modifs" (click)="ModifyTask()"><span class="glyphicon glyphicon-edit"></span>
-                        Valider
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger" (click)="toggleModifyTask()"><span class="glyphicon glyphicon-ban-circle"></span>
-                        Annuler
-                        </button>
-                    </td>
-                </tr>
-
--->
 
