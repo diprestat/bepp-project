@@ -39,11 +39,11 @@ describe('Adding a PO account', function() {
         browser.sleep(2000);
 
         browser.wait(function () {
-            return element(by.name('ProjetTest')).isPresent();
+            return element(by.name('Projet Demo')).isPresent();
         }, 5000);
 
         //Choose the ProjectTest project
-        element(by.name('ProjetTest')).click();
+        element(by.name('Projet Demo')).click();
 
         browser.wait(function () {
             return element(by.name('vueensemble')).isPresent();

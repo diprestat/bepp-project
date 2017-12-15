@@ -11,11 +11,11 @@ describe('PO modifies priority', function() {
         element(by.name('login')).click();
 
         browser.wait(function () {
-            return element(by.name('ProjetTest')).isPresent();
+            return element(by.name('Projet Demo')).isPresent();
         }, 5000);
 
         //Choose the ProjectTest project
-        element(by.name('ProjetTest')).click();
+        element(by.name('Projet Demo')).click();
 
         browser.sleep(3000);
 
