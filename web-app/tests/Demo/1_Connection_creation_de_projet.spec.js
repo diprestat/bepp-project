@@ -43,7 +43,7 @@ describe('Creating a user account', function() {
         browser.sleep(4000);
 
         // Fill the project info form
-        element(by.name('project-name')).sendKeys('ProjetTest');
+        element(by.name('project-name')).sendKeys('Projet Demo');
         element(by.name('datedebut')).sendKeys('15122017');
         element(by.name('description')).sendKeys('This is a demo project');
 

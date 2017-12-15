@@ -10,12 +10,14 @@ describe('niuhouihoiuh', function() {
 
         element(by.name('login')).click();
 
+        browser.sleep(3000);
+
         browser.wait(function () {
-            return element(by.name('ProjetTest')).isPresent();
+            return element(by.name('Projet Demo')).isPresent();
         }, 5000);
 
         //Choose the ProjectTest project
-        element(by.name('ProjetTest')).click();
+        element(by.name('Projet Demo')).click();
 
         browser.sleep(3000);
 
@@ -34,8 +36,21 @@ describe('niuhouihoiuh', function() {
 
         browser.sleep(3000);
 
-        element(by.name('start_date')).sendKeys('15/12/2017');
+        element(by.name('start_date')).sendKeys('16/12/2017');
         element(by.name('end_date')).sendKeys('22/12/2017');
+
+        browser.sleep(4000);
+
+        //Choose the project backlog
+        element(by.name('addsprint')).click();
+        browser.sleep(2000);
+
+        element(by.name('newsprint')).click();
+
+        browser.sleep(3000);
+
+        element(by.name('start_date')).sendKeys('23/12/2017');
+        element(by.name('end_date')).sendKeys('05/01/2018');
 
         browser.sleep(4000);
 
