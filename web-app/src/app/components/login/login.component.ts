@@ -18,22 +18,22 @@ export class LoginComponent implements OnInit {
     /**
      * FormGroup for the login form.
      */
-    private loginForm: FormGroup;
+    public loginForm: FormGroup;
 
     /**
      * If true, show loading spinner on the login submit button.
      */
-    private loginLoading: boolean;
+    public loginLoading: boolean;
 
     /**
      * True if the form has been submitted at least one.
      */
-    private loginSubmitted: boolean;
+    public loginSubmitted: boolean;
 
     /**
      * If true error for run again the login.
      */
-    private loginError: boolean;
+    public loginError: boolean;
 
     /**
      * LoginComponent constructor.

@@ -5,7 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
 import {CheckAuthService} from "../../../../../services/check-auth.service";
 import "rxjs/add/operator/take";
-import {ProjectManagerService} from "../../../../../services/project-manager.service";
+import {ProjectsManagerService} from "../../../../../services/projects-manager.service";
 
 /**
  * Logic for the overview page of one project.
@@ -20,44 +20,44 @@ export class OverviewContainerComponent implements OnInit {
      * If true, the form for adding member is shown.
      * @type {boolean}
      */
-    private showAddMember: boolean;
+    public showAddMember: boolean;
 
     /**
      * True if the GET project has been called but not received.
      * @type {boolean}
      */
-    private overviewLoading: boolean;
+    public overviewLoading: boolean;
 
     /**
      * Received data from api, project to display.
      */
-    private currentProject: any;
+    public currentProject: any;
 
     /**
      * FormGroup for add member form
      */
-    private addMemberForm: FormGroup;
+    public addMemberForm: FormGroup;
 
     /**
      * True if adding member has been submit at least one time.
      */
-    private addMemberFormSubmitted: boolean;
+    public addMemberFormSubmitted: boolean;
 
     /**
      * True if adding member has been submit, and response not received.
      */
-    private addMemberFormLoading: boolean;
+    public addMemberFormLoading: boolean;
 
     /**
      * Error to show for add memeber form.
      */
-    private errorMessageAddMember: string;
+    public errorMessageAddMember: string;
 
     /**
      * Option of select for role (add member form)
      * @type {{id: number, name: string}[]}
      */
-    private availabledRole = [
+    public availabledRole = [
         {id: 0, name: "Développeur"},
         {id: 1, name: "Product Owner"}
     ];
@@ -67,15 +67,24 @@ export class OverviewContainerComponent implements OnInit {
      * @param {HttpClient} httpClient
      * @param {ActivatedRoute} activatedRoute
      * @param {CheckAuthService} checkAuthService
-     * @param {ProjectManagerService} projectManagerService
+     * @param {ProjectsManagerService} projectManagerService
      */
     public constructor(private httpClient: HttpClient,
                        private activatedRoute: ActivatedRoute,
                        private checkAuthService: CheckAuthService,
-                       private projectManagerService: ProjectManagerService) {
+                       private projectManagerService: ProjectsManagerService) {
         this.overviewLoading = true;
         this.errorMessageAddMember = null;
         this.showAddMember = false;
+    }
+
+    private getProject (name: string) {
+        this.projectManagerService.get(name).subscribe ((project) => {
+            this.overviewLoading = false;
+            this.currentProject = project;
+        }, () => {
+            this.overviewLoading = false;
+        });
     }
 
     /**
@@ -103,14 +112,7 @@ export class OverviewContainerComponent implements OnInit {
         this.getProject(currentParams['name']);
     }
 
-    private getProject (name: string) {
-        this.projectManagerService.get(name).subscribe ((project) => {
-            this.overviewLoading = false;
-            this.currentProject = project;
-        }, () => {
-            this.overviewLoading = false;
-        })
-    }
+
 
     /**
      * Toggle addMember form

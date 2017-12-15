@@ -1,0 +1,10 @@
+## Les tests E2E
+
+| US |                             Test associé                                 |
+|----|--------------------------------------------------------------------------|
+|  7 | <ul><li>Selectionner le projet 'ProjetTest'.</li><li> Aller sur l'onglet 'sprints'</li><li>Appuyer sur le bouton "Nouveau sprint".</li><li>Remplir les champs des dates de début et de fin du sprint.</li><li>Vérifier que le sprint est bien ajouté dans la liste des sprints.</li> |
+|  8 | <ul><li>Séléctionner le projet 'ProjetTest'</li><li>Appuyer sur le menu "Sprints".</li><li>Séléctionner le sprint 1</li><li>Dans le mini Backlog, appuyer sur le bouton "Selectionner Userstory".</li><li>Selectionner la première US dans le backlog qui s'affiche.</li><li>Appuyer sur le bouton "Ajouter".</li><li>Vérifier que l'US s'ajoute bien au MiniBacklog du Sprint.</li></ul> |
+|  9 | <ul><li>Séléctionner le projet 'ProjetTest'</li><li>Appuyer sur le menu "Sprints".</li><li>Séléctionner le sprint 1</li><li>Dans la liste des tâche, appuyer sur le bouton "Ajouter tâche".</li><li>Remplir les champs associé à une tâche.</li><li>Appuyer sur le bouton 'valider'</li></ul> |
+|  10 | <ul><li>Séléctionner le projet 'ProjetTest'</li><li>Appuyer sur le menu "Sprints".</li><li>Séléctionner le sprint 1</li><li>Dans la liste des tâche, appuyer sur le bouton "Modifier".</li><li>Modifier les champs associé à une tâche.</li><li>Appuyer sur le bouton 'valider'</li><li>Appuyer sur le bouton 'supprimer'</li></ul> |
+|  19 | <ul><li>Séléctionner le projet 'ProjetTest'</li><li>Appuyer sur le menu "Sprints".</li><li>Séléctionner le sprint 1</li><li>Vérifier qu'il y a bien les US associés à ce sprint.</li>|
+|  20 | <ul><li>Séléctionner le projet 'ProjetTest'</li><li>Appuyer sur le menu "Sprints".</li><li>Séléctionner le sprint 1</li><li>Vérifier qu'il y a bien les tâches avec les informations qui la concernent.</li>|

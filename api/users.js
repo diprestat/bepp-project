@@ -1,34 +1,14 @@
-var express = require('express');
-var bodyParser = require("body-parser");
-var monk = require('monk');	//we use monk to talk to MongoDB
-var db = monk('mongo:27017/nodetest1');	//our database is nodetest1
-var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-var http = require('http');
-var path = require('path');
-var fs = require('fs');
-const users = require('./users');
+const express = require('express');
+const constants = require('./utils/api-constants');
+const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const router = express.Router();
-
-var app = express();
-
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-
-// Make our db accessible to our router
-router.use(function (req, res, next) {
-    req.db = db;
-    next();
-});
-
-app.set('superSecret', "12345"); // secret variable
-
 
 //Authentification Service
 //Check Login Password
 router.post('/token', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    var userLogin = req.body.login;
-    var userPassword = req.body.password;
+    const userLogin = req.body.login;
+    const userPassword = req.body.password;
 
     if (userLogin == null || userPassword == null) {
         res.status(422).send("Missing Arguments.");
@@ -43,8 +23,7 @@ router.post('/token', function (req, res) {
 
         db.collection("userCollection").find(query, {}, function (e, docs) {
             if (docs.length != 0) {
-                var query = {login: userLogin};
-                var token = jwt.sign(docs[0], app.get('superSecret'));
+                const token = jwt.sign(docs[0], constants.superSecret);
                 res.json({
                     success: true,
                     message: 'Authentication succeded!',
@@ -76,7 +55,7 @@ router.post('/', function (req, res) {
         var collection = db.get('userCollection');
 
         //Check if login already exists
-        collection.find({login: login}, {}, function (err, doc) {
+        collection.find({ login: login }, {}, function (err, doc) {
             if (err) {
                 res.status(500).send("There was a problem with the database while checking if the login already exists.");
             }
@@ -88,12 +67,12 @@ router.post('/', function (req, res) {
                         "surname": surname,
                         "login": login,
                         "password": password
-                    }, function (err, doc) {
+                    }, function (err) {
                         if (err) {
                             res.status(500).send("There was a problem with the database while adding the user.");
                         }
                         else {
-                            res.status(200).send({success: true});
+                            res.status(200).send({ success: true });
                         }
                     });
                 }
@@ -101,7 +80,7 @@ router.post('/', function (req, res) {
                     res.status(409).send("There is already a user with this login.");
                 }
             }
-        })
+        });
     }
 });
 
@@ -115,15 +94,15 @@ router.get('/:login', function (req, res) {
     var db = req.db;
 
     // Find in a collection
-    var query = {login: userLogin};
+    var query = { login: userLogin };
 
     db.collection("userCollection").find(query, {}, function (e, docs) {
-        if (docs.length != 0) {
+        if (docs.length > 0) {
             res.status(200).send(docs[0]);
         }
         else {
             res.status(404);
-            res.send({error: 404});
+            res.send({ error: 404 });
         }
     });
 });

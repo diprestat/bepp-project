@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {ProjectManagerService} from "../../../../../services/project-manager.service";
+import {ProjectsManagerService} from "../../../../../services/projects-manager.service";
 import {ActivatedRoute} from "@angular/router";
 import {UserManagerService} from "../../../../../services/user-manager.service";
 import {AuthGuard} from "../../../../../guards/auth/auth.guard";
@@ -15,15 +15,6 @@ import {CheckAuthService} from "../../../../../services/check-auth.service";
   encapsulation: ViewEncapsulation.None
 })
 export class BacklogContainerComponent implements OnInit {
-
-    /**
-     * Boolean to True when the GET project of api has been received.
-     * else false.
-     * @type {boolean}
-     */
-    private backlogLoading: boolean;
-
-    private nbReceivedServices: number;
 
     /**
      * If true, the form for adding a US is shown.
@@ -58,8 +49,17 @@ export class BacklogContainerComponent implements OnInit {
 
     private deleteUsLoading: boolean;
 
+    private nbReceivedServices: number;
 
-    public constructor(private projectManagerService: ProjectManagerService,
+
+    /**
+     * Boolean to True when the GET project of api has been received.
+     * else false.
+     * @type {boolean}
+     */
+    public backlogLoading: boolean;
+
+    public constructor(private projectManagerService: ProjectsManagerService,
                        private activatedRoute: ActivatedRoute,
                        private userManagerProject: UserManagerService,
                        private httpClient: HttpClient,
@@ -100,7 +100,7 @@ export class BacklogContainerComponent implements OnInit {
     private createFormGroup () {
         if (this.currentUser && this.currentProject) {
             const descriptionValidators = this.userIsPO ?
-                []:
+                [] :
                 [Validators.required];
 
             const difficultyValidators = this.userIsPO ?
@@ -233,7 +233,6 @@ export class BacklogContainerComponent implements OnInit {
                 delete body.priority;
             }
 
-            body.difficulte = body.difficulty;
             body.description = body.us;
 
             const projectName = encodeURIComponent(this.currentProject.name);
@@ -247,6 +246,7 @@ export class BacklogContainerComponent implements OnInit {
                 this.getProject(currentParams['name']);
                 this.toggleAddUS();
                 this.addUSForm.reset();
+                this.addUsSubmitted = false;
             }, (error) => {
                 this.addUsLoading = false;
                 this.checkAuthService.check(error);
@@ -282,11 +282,9 @@ export class BacklogContainerComponent implements OnInit {
                     delete body.priority;
                 }
 
-                body.difficulte = body.difficulty;
                 body.description = body.us;
             }
 
-            delete body.difficulty;
             delete body.us;
 
             this.httpClient.patch(service,

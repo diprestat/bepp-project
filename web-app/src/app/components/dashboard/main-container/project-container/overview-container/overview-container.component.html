@@ -7,8 +7,6 @@
         <div class="panel-body" *ngIf="currentProject">
             <h1 align="center">{{ currentProject.name }}</h1>
             <p align="center">{{ currentProject.description }}</p>
-            <p align="center">Date de debut : xx/xx/xxxx</p>
-            <p align="center">Nombre de sprints : 3</p>
         </div>
     </div>
 
@@ -107,6 +105,12 @@
                 <button class="btn-add btn btn-success pull-right" name="addmember" (click)="submitAddMemberForm()">
                     <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                     <span > Ajouter</span>
+                </button>
+            </div>
+            <div class="panel-body" [hidden]="!showAddMember">
+                <button class="btn-add btn btn-default pull-right" name="cancel_add" (click)="toggleAddMember()">
+                    <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                    <span > Annuler</span>
                 </button>
             </div>
         </div>

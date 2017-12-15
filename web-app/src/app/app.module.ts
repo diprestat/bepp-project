@@ -11,7 +11,7 @@ import {MainContainerComponent} from './components/dashboard/main-container/main
 import {OverviewContainerComponent} from './components/dashboard/main-container/project-container/overview-container/overview-container.component';
 import {BacklogContainerComponent} from './components/dashboard/main-container/project-container/backlog-container/backlog-container.component';
 import {SprintsContainerComponent} from './components/dashboard/main-container/project-container/sprints-container/sprints-container.component';
-import {SprintComponent} from './components/dashboard/main-container/project-container/sprints-container/sprint/sprint.component';
+import {SprintComponent} from './components/dashboard/main-container/project-container/sprints-container/sprints-list/sprint/sprint.component';
 import {DropdownDirective} from "./components/directives/dropdown.directive";
 import { SignupComponent } from './components/signup/signup.component';
 import { NewProjectComponent } from './components/dashboard/main-container/new-project/new-project.component';
@@ -22,8 +22,10 @@ import {HttpClientModule} from "@angular/common/http";
 import {UnAuthGuard} from "./guards/un-auth/un-auth.guard";
 import {CheckAuthService} from "./services/check-auth.service";
 import {ApiCallingObserverService} from "./services/api-call-observer.service";
-import {ProjectManagerService} from "./services/project-manager.service";
+import {ProjectsManagerService} from "./services/projects-manager.service";
 import {UserManagerService} from "./services/user-manager.service";
+import { SprintsListComponent } from './components/dashboard/main-container/project-container/sprints-container/sprints-list/sprints-list.component';
+import {SprintsManagerService} from "@app/services/sprints-manager.service";
 
 @NgModule({
     declarations: [
@@ -40,7 +42,8 @@ import {UserManagerService} from "./services/user-manager.service";
         DropdownDirective,
         SignupComponent,
         NewProjectComponent,
-        ProjectContainerComponent
+        ProjectContainerComponent,
+        SprintsListComponent
     ],
     imports: [
         BrowserModule,
@@ -53,8 +56,9 @@ import {UserManagerService} from "./services/user-manager.service";
         UnAuthGuard,
         CheckAuthService,
         ApiCallingObserverService,
-        ProjectManagerService,
-        UserManagerService
+        ProjectsManagerService,
+        UserManagerService,
+        SprintsManagerService
     ],
     bootstrap: [AppComponent]
 })
