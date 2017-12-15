@@ -147,7 +147,7 @@ router.put('/sprints/:number/projects/:name/tasks/', function (req, res) {
                                 }
                                 else {
                                     if (doc.nModified != 0) {
-                                        res.status(200).send({success: true});
+                                        res.status(200).send({ success: true });
                                     }
                                     else {
                                         res.status(409).send("There was a problem with the database while creating the task: no updated document.");
